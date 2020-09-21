@@ -1,3 +1,5 @@
+# GitHub Actions configuration to build documents from LaTeX
+
 name: Compile
 
 on: [push, pull_request]
