@@ -16,4 +16,11 @@ Documents
 |cc| |by| |sa| Licensed under `CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>`_ except where noted.
 
 
-This repository contains slides and other documents made publicly available for free reuse.
+This repository contains slides and other documents made available for free reuse.
+
+
+Included
+========
+
+- ``.github/``: configuration to use GitHub Actions to compile the documents; see `khaeru/latex-gh-actions <https://github.com/khaeru/latex-gh-actions>`_.
+- ``image/git-book``: images from the Pro Git book (https://github.com/progit/progit2), licensed CC BY-NC-SA 3.0.
