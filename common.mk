@@ -1,18 +1,23 @@
-# contains trailing slash
+# Root path of the repo, with trailing slash
 ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
-# Commands for LaTeX
-export LATEXMK_OPTS =
+# Add image and subdirectories to TEXINPUTS from environment
+export TEXINPUTS := $(TEXINPUTS):$(ROOT)/image//:
 
-# Using latexmk
-export LATEXMK ?= latexmk -r $(ROOT)/latexmkrc $(LATEXMK_OPTS)
+# Options for latexmk. Use:
+# -xelatex — e.g. for presentations using the metropolis theme.
+# -shell-escape — e.g. for the minted package or others which run external
+#                 programs during compilation.
+LATEXMK_OPTS =
 
-# XeLaTeX, e.g. for presentations using the metropolis theme
-export XELATEXMK ?= $(LATEXMK) -xelatex
+# Compile PDF from .tex using latexmk
+# FORCE_LATEXMK is a phony target, always required, so that latexmk is always
+# run; it (and not make) chooses whether to recompile the source file(s)
+LATEXMK = latexmk -r $(ROOT)/latexmkrc $(LATEXMK_OPTS)
+%.pdf: %.tex FORCE_LATEXMK
+	$(LATEXMK) $< || cat $(addsuffix .log,$(basename $<))
 
-export TEXINPUTS := $(TEXINPUTS):$(ROOT)/image:
-
-# Compile PDF from .fodt using LibreOffice
+# Compile PDF from ODT using LibreOffice
 %.pdf: %.fodt
 	soffice --headless --convert-to pdf --outdir $(dir $@) $<
 
@@ -20,8 +25,5 @@ export TEXINPUTS := $(TEXINPUTS):$(ROOT)/image:
 %.pdf: %.svg
 	inkscape $< --export-pdf=$@
 
-# Default rule for LaTeX files
-%.pdf: %.tex FORCE_LATEXMK
-	$(LATEXMK) $< || cat $(addsuffix .log,$(basename $<))
 
 .PHONY: FORCE_LATEXMK
