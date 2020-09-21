@@ -11,13 +11,31 @@ jobs:
     - name: Check out source
       uses: actions/checkout@v2
 
+    - name: Check out personal TeX resources
+      uses: actions/checkout@v2
+      with:
+        repository: khaeru/tex
+        path: khaeru-tex
+        submodules: true
+
     - name: Compile
-      run: make
+      # Use personal TeX resources
+      # Want to use env:, but this appears to give a wrong value because the
+      # job is executed in a container
+      # env:
+      #   TEXINPUTS: ".:${{ github.workspace }}/khaeru-tex//:"
+      run: |
+        export TEXINPUTS=.:$GITHUB_WORKSPACE/khaeru-tex//:
+        env | sort
+        kpsewhich beamerthemeiiasa.sty
+        make
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: Documents
+        # TODO collect output files in a single directory and list only that
+        #      directory.
         path: |
           0_demo/main.pdf
           2020/09-10/slides.pdf
