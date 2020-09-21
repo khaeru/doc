@@ -6,7 +6,11 @@ SUBDIRS = 0_demo \
 	2020/09-10
 
 # Default target: all subdirectories
-all: subdirs
+all: output-dir subdirs
+
+# Create the output directory
+output-dir:
+	mkdir -p $(OUT_DIR)
 
 # Recurse by calling make in each subdirectory
 subdirs: $(SUBDIRS)
@@ -15,4 +19,4 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 
 
-.PHONY: subdirs $(SUBDIRS)
+.PHONY: output-dir subdirs $(SUBDIRS)

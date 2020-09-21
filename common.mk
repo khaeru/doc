@@ -5,6 +5,9 @@
 # Root path of the repo, with trailing slash
 ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 
+# Directory for output
+OUT_DIR := $(ROOT)/output/
+
 # Add image/ and its subdirectories to TEXINPUTS
 export TEXINPUTS := $(TEXINPUTS):$(ROOT)/image//:
 

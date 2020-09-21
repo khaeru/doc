@@ -45,13 +45,8 @@ jobs:
         mktexlsr
         make
 
-    - name: Upload artifact
+    - name: Upload compiled documents as a build artifact
       uses: actions/upload-artifact@v2
       with:
         name: Documents
-        # TODO collect output files in a single directory and list only that
-        #      directory.
-        path: |
-          0_demo/main.pdf
-          2020/09-10/slides.pdf
-          2020/09-10/slides.log
+        path: output/*
