@@ -1,0 +1,21 @@
+name: Compile
+
+on: [push, pull_request]
+
+jobs:
+  compile:
+    runs-on: ubuntu-20.04
+    container: mirisbowring/texlive_ctan_full:2019
+
+    steps:
+    - name: Check out source
+      uses: actions/checkout@v2
+
+    - name: Compile
+      run: make
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: document
+        path: 0_demo/main.pdf
