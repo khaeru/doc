@@ -22,6 +22,6 @@ export TEXINPUTS := $(TEXINPUTS):$(ROOT)/image:
 
 # Default rule for LaTeX files
 %.pdf: %.tex FORCE_LATEXMK
-	$(LATEXMK) $<
+	$(LATEXMK) $< || cat $(addsuffix .log,$(basename $<))
 
 .PHONY: FORCE_LATEXMK

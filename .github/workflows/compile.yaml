@@ -21,3 +21,4 @@ jobs:
         path: |
           0_demo/main.pdf
           2020/09-10/slides.pdf
+          2020/09-10/slides.log
