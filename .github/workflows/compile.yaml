@@ -15,19 +15,32 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: khaeru/tex
-        path: khaeru-tex
+        path: tex
         submodules: true
+
+    - name: Check out Google fonts
+      uses: actions/checkout@v2
+      with:
+        repository: google/fonts
+        path: fonts
+
+    # NB can't do this, because the Docker image disables apt.
+    # - name: Scan Google fonts with fontconfig
+    #   run: |
+    #     sudo update && sudo apt-get install -y fontconfig
+    #     which fc-cache
+    #     fc-cache -v fonts
 
     - name: Compile
       # Use personal TeX resources
-      # Want to use env:, but this appears to give a wrong value because the
-      # job is executed in a container
+      # Want to use 'env:', but the ${{ }} substitution seems to give an
+      # incorrect path because the job is executed in a container.
       # env:
       #   TEXINPUTS: ".:${{ github.workspace }}/khaeru-tex//:"
       run: |
-        export TEXINPUTS=.:$GITHUB_WORKSPACE/khaeru-tex//:
-        env | sort
-        kpsewhich beamerthemeiiasa.sty
+        export TEXINPUTS=.:$GITHUB_WORKSPACE/tex//:$TEXINPUTS
+        export TEXFONTS=.:$GITHUB_WORKSPACE/fonts//:$TEXFONTS
+        mktexlsr
         make
 
     - name: Upload artifact
