@@ -12,10 +12,10 @@ This repository contains presentation slides and other documents made available 
 .. |doi| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4042089.svg
    :target: https://doi.org/10.5281/zenodo.4042089
 
-- Copyright © 2019–2020 Paul Natsuo Kishimoto <mail@paul.kishimoto.name>.
+- Copyright © 2019–2021 Paul Natsuo Kishimoto <mail@paul.kishimoto.name>.
 - |cc| |by| |sa| Licensed `CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>`_, except where noted.
 
-  Although the license does not require it, I would appreciate if you let me know if and when you made use of these materials!
+  Although the license does not require it, I would appreciate if you let me know if and when you make use of these materials!
 - Cite as: |doi|
 
 Organization:
