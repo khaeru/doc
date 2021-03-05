@@ -1,9 +1,14 @@
 # Compile PDF
 $pdf_mode = 1;
 
-$pdflatex = "pdflatex -file-line-error -shell-escape %O %S";
-
 $silent = 1;
+
+# For local use, silent=1 isn't sufficient to quiet console output; explicitly
+$ give -interaction=batchmode
+
+$pdflatex = "pdflatex -file-line-error -shell-escape -interaction=batchmode %O %S";
+$xelatex = "xelatex -file-line-error -shell-escape -interaction=batchmode %O %S";
+
 
 # On an upgrade of 'biber', the .bcf file format changes, causing compilation
 # to fail unless existing files in the tree are deleted or overwritten. Force
