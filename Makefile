@@ -3,7 +3,8 @@ include common.mk
 
 # Subdirectories containing documents to compile
 SUBDIRS = 0_demo \
-	2020/09-10
+	2020/09-10 \
+	2021
 
 # Default target: all subdirectories
 all: output-dir subdirs
