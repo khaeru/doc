@@ -5,11 +5,12 @@
 \usepackage{minted}
 
 \title{Collaborative development of academic software}
-\institute{IIASA / ENE}
+\institute{IIASA Energy, Climate, and Environment program}
 
-% Earlier presentation
+% \date{MESSAGE workshop — Friday, 4 October 2019}
 % \date{MESSAGE workshop — Friday, 12 June 2020}
-\date{MESSAGE workshop — Thursday, 10 September 2020}
+% \date{MESSAGE workshop — Thursday, 10 September 2020}
+\date{Tutorial — Friday, 5 February 2021}
 
 \author{\texorpdfstring{Paul Natsuo Kishimoto \scriptsize\newline
   \href{mailto:paul.kishimoto@iiasa.ac.at}%
@@ -18,49 +19,27 @@
 
 \begin{document}
 
-% commented: these two frames were used in Behnam Zakeri's Session I
-%            presentation to preview the contents of this one.
-%
-% \begin{frame}{Session III (Friday) (1/2)}
-\begin{frame}{Session IV (Thursday) (1/2)}
-
-\begin{enumerate}
-  \item [C.] MESSAGE-GLOBIOM research.
-    \begin{enumerate}
-      \item [1.] \textbf{Validity \& reproducibility for modeling \& scenario research.} Internal vs.\ external validity. Models as knowledge objects vs.\ as software. Modeling practices to enable reproducibility.
-    \end{enumerate}
-
-  \item [D.] MESSAGEix development.
-    \begin{enumerate}
-      \item [2.] \textbf{Version control using git \& GitHub.} Version control in general. Git and concepts: commit, diff, branch, tag, repository, fetch/pull/push. GitHub: website and desktop clients.
-      \item [3.] \textbf{Collaborative development using GitHub.} issue, pull request, milestone, merge, rebase, resolving conflicts.
-      \item [4.] \textbf{Test-driven development.} Purpose re: pytest, unit test, integration test, coverage.
-      \item [5.] \textbf{Continuous integration.} Purpose. Stickler, GitHub Actions.
-    \end{enumerate}
-
-\end{enumerate}
-
-\end{frame}
-
-% \begin{frame}{Session III (Friday) (2/2)}
-\begin{frame}{Session IV (Thursday) (2/2)}
-
-\structure{Reporting}
-
-\begin{itemize}
-  \item Modeling vs. reporting, post-processing, analysis.
-  \item Graphs of calculations \& computations.
-  \item Quantities.
-  \item Performance optimization.
-  \item Tutorial: reporting Westeros.
-  \item Advanced reporting.
-\end{itemize}
-
-\end{frame}
-
 \maketitle
 
-\begin{frame}{Review}
+\begin{frame}{Colophon}
+
+These slides have been used for:
+\begin{itemize}
+  \item MESSAGEix training \& capacity-building workshops given by the IIASA Energy Program on \structure{2020-06-12} and \structure{2020-09-10}.
+
+  \item A tutorial on \structure{2021-02-05} with participants from the International Transport Forum at the OECD and IIASA/ECE.
+\end{itemize}
+
+\medskip
+A different subset of the slides was used on each occasion.
+
+\medskip
+LaTeX source, copyright, \& license available at \url{https://github.com/khaeru/doc/}.
+
+\end{frame}
+
+\begin{frame}<0>[noframenumbering]  % on 2021-02-05
+\frametitle{Review}
 
 Previously:
 \begin{description}
@@ -1033,17 +1012,19 @@ Example for all tools: \url{https://github.com/iiasa/message_ix/pull/286}
 
 \end{frame}
 
-% \begin{frame}{CI tools: Appveyor}
-%
-% {\Large Runs the entire test suite on Windows.}
-%
-% \bigskip
-% \begin{itemize}
-%   \item Travis support for Windows is experimental.
-%   \item Similar build process; different environment \& configuration.
-% \end{itemize}
-%
-% \end{frame}
+% Excluded: Appveyor is no longer used by IIASA/ECE
+\begin{frame}<0>[noframenumbering]
+\frametitle{CI tools: Appveyor}
+
+{\Large Runs the entire test suite on Windows.}
+
+\bigskip
+\begin{itemize}
+  \item Travis support for Windows is experimental.
+  \item Similar build process; different environment \& configuration.
+\end{itemize}
+
+\end{frame}
 
 \begin{frame}{CI tools: Read The Docs (RTD)}
 
@@ -1137,6 +1118,52 @@ What's \emph{not} said in any org.\ is as important as what \emph{is} emphasized
 \begin{frame}[plain]
 
 \centering \Huge \structure{\bfseries Thank you!}
+
+\end{frame}
+
+\appendix
+
+% These two frames were used in Behnam Zakeri's Session I presentation to preview the contents of this one.
+\begin{frame}<0>[noframenumbering] % on 2021-02-05
+\frametitle{
+  % Session III (Friday) (1/2)  % on 2020-06-12
+  Session IV (Thursday) (1/2)  % on 2020-09-10
+}
+
+\begin{enumerate}
+  \item [C.] MESSAGE-GLOBIOM research.
+    \begin{enumerate}
+      \item [1.] \textbf{Validity \& reproducibility for modeling \& scenario research.} Internal vs.\ external validity. Models as knowledge objects vs.\ as software. Modeling practices to enable reproducibility.
+    \end{enumerate}
+
+  \item [D.] MESSAGEix development.
+    \begin{enumerate}
+      \item [2.] \textbf{Version control using git \& GitHub.} Version control in general. Git and concepts: commit, diff, branch, tag, repository, fetch/pull/push. GitHub: website and desktop clients.
+      \item [3.] \textbf{Collaborative development using GitHub.} issue, pull request, milestone, merge, rebase, resolving conflicts.
+      \item [4.] \textbf{Test-driven development.} Purpose re: pytest, unit test, integration test, coverage.
+      \item [5.] \textbf{Continuous integration.} Purpose. Stickler, GitHub Actions.
+    \end{enumerate}
+
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}<0>[noframenumbering] % on 2021-02-05
+\frametitle{
+  % Session III (Friday) (2/2) % on 2020-06-12
+  Session IV (Thursday) (2/2) % on 2020-09-10
+}
+
+\structure{Reporting}
+
+\begin{itemize}
+  \item Modeling vs. reporting, post-processing, analysis.
+  \item Graphs of calculations \& computations.
+  \item Quantities.
+  \item Performance optimization.
+  \item Tutorial: reporting Westeros.
+  \item Advanced reporting.
+\end{itemize}
 
 \end{frame}
 
