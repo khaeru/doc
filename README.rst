@@ -24,7 +24,7 @@ Cite as: |doi|
 
 Organization:
 
-- ``article/``, ``page/``: content for https://paul.kishimoto.name, a `Pelican <>`_-based website.
+- ``article/``, ``page/``: content for https://paul.kishimoto.name, a `Pelican <https://docs.getpelican.com/en/latest/>`_-based website.
   Most of the site is in a separate, private repository; these are public pages.
 
   - ``requirements.txt``: associated Python requirements for building the above content.
