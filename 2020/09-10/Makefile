@@ -4,4 +4,4 @@ include ../../common.mk
 LATEXMK_OPTS += -xelatex -shell-escape
 
 all: slides.pdf
-	cp $< $(OUT_DIR)2020-09-10.pdf
+	cp $< $(OUT_DIR)2020-09-10.pdf || echo "::warning file=$(shell pwd)::Compile failed"
