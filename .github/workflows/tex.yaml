@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   compile:
     runs-on: ubuntu-20.04
-    container: mirisbowring/texlive_ctan_full:2019
+    container: texlive/texlive:latest
 
     steps:
     - name: Cancel previous runs that have not completed
