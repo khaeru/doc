@@ -1,0 +1,7 @@
+name: Update submodule for khaeru//paul.kishimoto.name
+
+on:
+  push:
+    branches: [main]
+
+jobs: {}
