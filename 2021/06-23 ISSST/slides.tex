@@ -51,8 +51,9 @@
 \institute{Energy, Climate, and Environment (ECE) Program \\
   International Institute for Applied Systems Analysis (IIASA)}
 
-\date{ISSST 2021 / §ESST6 Integrated assessment and energy system modeling\\
-  Wednesday, 23 June 2021}
+\date{\texorpdfstring{ISSST 2021 / §ESST6 Integrated assessment and energy system modeling\\
+  Wednesday, 23 June 2021 \hfill \href{https://paul.kishimoto.name/2021/06/issst}{paul.kishimoto.name/2021/06/issst}\ }%
+  {2021-06-23}}
 
 \author{\texorpdfstring{Dr. Paul Natsuo Kishimoto \scriptsize\newline
   \href{mailto:paul.kishimoto@iiasa.ac.at}%
@@ -195,7 +196,7 @@ Work to create and use models should spend resources efficiently.
 \structure{Recovery/disruption}
 \begin{itemize}
   \item If colleague C left tomorrow, could we continue our work?%
-  \footnote{aka. the \emph{bus factor} or \emph{truck number}.}
+  \footnote{aka. the bus factor or truck number.}
 \end{itemize}
 
 \end{frame}
@@ -286,7 +287,7 @@ Write (and read) documentation.
   \item The \#1 audience for this is \emph{you}, or your closest collaborators.
   \item Rubber duck \& pair program: explain to a duck what the code does.
   \item Use services like Read The Docs: automate build \& publish steps for every change to the code.%
-  \footnote{\href{https://readthedocs.com/projects/iiasa-energy-program-message-ix/}{readthedocs.com/projects/iiasa-energy-program-message-ix/}}
+  \footnote{\href{https://readthedocs.com/projects/iiasa-energy-program-message-ix/}{Recent builds of the MESSAGE\emph{ix} docs}.}
 \end{itemize}
 
 \end{frame}
@@ -306,7 +307,7 @@ Instead, and \structure{from the start}:
   \item Separate concerns: 1 task per code object; files group related tasks.
   \item DRY: don't repeat yourself. Write \& reuse functions and classes → fewer occasions for error.
   \item Smaller, atomic functions \& classes are easier to document, understand, and validate.%
-    \footnote{Often can be replaced entirely with high-quality, performant ones\\ \hspace{40mm} from popular libraries; read the docs!}
+    \footnote{Often can be discarded in favour of high-quality, performant ones\\ \hspace{25mm} from popular libraries; read the docs!}
   \item New data, methods, etc. can be easily swapped-in.
 \end{itemize}
 
@@ -329,7 +330,7 @@ def test_stock(dummy_data):
 \smallskip
 Code that implements core theory/methods can be tested for a variety of inputs $\equiv$ checks of internal validity.
 
-\medskip
+\bigskip
 MESSAGE\emph{ix}: 100s of tests from basic (data I/O) to complex functionality (LP constraint relaxation; dynamic penetration of new technologies…)
 
 → \href{https://github.com/iiasa/message_ix/tree/main/message_ix/tests}{github.com/iiasa/message\_ix/tree/main/message\_ix/tests}
@@ -373,7 +374,7 @@ Example: A \href{https://github.com/iiasa/message_ix/blob/main/tutorial/westeros
 \begin{frame}
 \frametitle{Separate model-building components}
 
-Separate code that prepares a “base” model from code that adds detail \& resolution related to a particular phenomenon or sector.
+Separate code that prepares a “base” model from code that adds/alters detail \& resolution related to a particular phenomenon or sector.
 
 \bigskip
 \begin{tikzpicture}
@@ -571,7 +572,9 @@ In contrast, free software—thus also \structure{open science}—succeeds when:
 \medskip
 \structure{Colophon}
 
-LaTeX source, copyright, \& license available at \href{https://github.com/khaeru/doc/}{github.com/khaeru/doc}.
+PDF and abstract: \href{http://paul.kishimoto.name/2021/06/issst}{paul.kishimoto.name/2021/06/issst}
+
+LaTeX source, copyright, \& license: \href{https://github.com/khaeru/doc/}{github.com/khaeru/doc}
 \medskip
 
 \end{frame}
