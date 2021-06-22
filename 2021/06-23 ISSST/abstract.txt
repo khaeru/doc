@@ -1,0 +1,69 @@
+Large-scale integrated assessment models (IAMs) have become critical knowledge objects and tools for global-scope simulation of energy, economic, engineering, and environmental systems.
+IAMs are widely used in assessment of climate change mitigation (for instance, within the IPCC) and other Sustainable Development Goals (SDGs). In order to sharpen the relevance of insights from large-scale modeling, researchers often link them into multi-model frameworks together with detailed sectoral (sub-)models of, for instance, transport and mobility; the building stock; critical materials; or water use—or with models of narrower scope (e.g. national or sub-national) but finer resolution.
+These links capture feedbacks and interactions that may strongly shape transitions to comprehensive sustainability.
+
+This presentation begins with current expectations that guide IAM-based research.
+In particular, it is no longer satisfactory that individual models and 1-to-1 frameworks can analyse, for instance, (a) possible recoveries from the COVID-19 pandemic; (b) the long-term evolution of transport and mobility; and (c) the energy and climate impacts of changing materials flows.
+Increasingly, stakeholders require assessments that are both integrated *and* highly detailed in multiple sectors/areas such as these.
+Teams are challenged to produce this knowledge while also progressing in openness, transparency, reproducibility, and validity of research.
+
+I argue that meeting these challenges requires systems researchers and modelers to acknowledge that they are engaged in processes of collaborative software development: models are, in an important sense, also complex, long-lived, and evolving pieces of software.
+This perspective motivates the use of strategies that are common in professional software development, yet woefully underutilized in academia and research: standardization, testing, modularity and reuse, an emphasis on documentation, and iterative workflows with short cycle times.
+
+Using the example of the MESSAGEix-GLOBIOM family of models developed by the IIASA Energy, Climate, and Environment (ECE) Program, I demonstrate how adopting best practices of development translates to better science that uses people and resources more efficiently.
+For instance, the practice of unit-testing code is also a scientific strategy for ensuring internal validity: when code implements research methods, then automated tests ensure that those methods are correct representations of the phenomena represented.
+This in turn avoids exhausting researchers' time in performing manual validity checks.
+Next, the practice of modularity entails clearly-defined interfaces: in multi-sectoral or cross-domain integrated assessment frameworks, this is achieved through clear definitions of the background concepts, measures, scales, and system boundaries.
+Making these items explicit helps researchers see quickly and precisely what translation is required to make (sub-)models interoperable with one another.
+
+Finally, sustainability requires the very research processes that support the transition to be equitable and inclusive.
+I explain how the practices of making software free and open source, writing complete documentation, and continuous development lower barriers to understanding and participating in IAM-based research, especially for those not privileged to work at the few institutions that have the resources to maintain large-scale models.
+As well, a broad user base translates to a flow of contributions, improved model quality, and ultimately improved perceptions of legitimacy for modeling work.
+
+Review feedback
+***************
+
+Review 1
+========
+
+Contribution of the Submission
+------------------------------
+This submission proposes methods for modular, multi-sector, and equitable development of models based on IAMs and more highly detailed multi-model frameworks, in order to ensure these models can properly evolve over time and incorporate information from a wide variety of stakeholders.  
+
+
+Evaluation of the Contribution
+------------------------------
+Quality of Content       (20%): 10
+Significance             (20%): 10
+Originality & Creativity (20%): 9
+Thematic Relevance       (20%): 10
+Overall Recommendation   (20%): 9
+Total points (out of 10)      : 9.6
+
+
+Comments for the Authors
+------------------------
+This submission well-motivates the need to develop collaborative and inclusive software development practices for multi-sectoral modeling. I would be curious to better understand what prior bodies of literature or practice this work draws upon (in addition to, seemingly, methods from modular software development and the open source community).
+
+
+Review 2
+========
+
+Contribution of the Submission
+------------------------------
+An argument supported by real-world case studies that scientific modeling should incorporate software engineering best practices.
+
+
+Evaluation of the Contribution
+------------------------------
+Quality of Content       (20%): 8
+Significance             (20%): 8
+Originality & Creativity (20%): 8
+Thematic Relevance       (20%): 8
+Overall Recommendation   (20%): 9
+Total points (out of 10)      : 8.2
+
+
+Comments for the Authors
+------------------------
+The argument made in this abstract is one that I only realized after years of working with and developing scientific models, so I'm excited to see this presentation at ISSST. Overall I have no significant suggestions for improvement. I do recommend that a substantial portion of the presentation time be spent on grounding the more "meta" conclusions in the real-world, using the example models cited.

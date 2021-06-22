@@ -9,7 +9,7 @@ ROOT := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
 OUT_DIR := $(ROOT)/output/
 
 # Add image/ and its subdirectories to TEXINPUTS
-export TEXINPUTS := $(TEXINPUTS):$(ROOT)/image//:
+export TEXINPUTS := $(TEXINPUTS):$(ROOT)/image//:$(ROOT)/slide//:
 
 # Options for latexmk, e.g.
 # -xelatex — for presentations using the metropolis theme.
