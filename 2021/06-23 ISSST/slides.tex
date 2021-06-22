@@ -92,11 +92,11 @@ My hope, by the time I finish, is that you will also see the importance of these
 
 \begin{itemize}
   \item Pursuit of climate change mitigation and other SDGs entails \structure{changes in systems}—complex, large, interconnected, open, sociotechnical.%
-  \footcite[or “CLIOS”, per]{mostashari-sussman-2009}
+  \footcite[or “CLIOS”, per][]{mostashari-sussman-2009}
   \item Quantitative computer models%
   \footnote{aka. analyses, workflows, tools, scripts.}
   are used to study these systems.
-  \item Change challenge boundaries between ‘sectors’ of human/economic activity:
+  \item Changes trouble the boundaries between ‘sectors’ of human/economic activity:
     \begin{itemize}
       \item Changes large enough that feedbacks from other sectors are non-negligible.
       \item New technologies establish new interactions, e.g. electric vehicle–grid interoperation.
@@ -122,9 +122,9 @@ Since the model is not the real world, implications drawn from modeling results 
 Specific threats, as forms of uncertainty:
 
 \begin{description}
-  \item [Structural.] Is the theory a correct description of the phenomena?
+  \item [Structural] Is the theory a correct description of the phenomena?
 
-    → Responses: alternate model formulations.
+    → Response: alternate model formulations.
 
   \item [Measurement] uncertainty of input data and parameters.
 
@@ -150,7 +150,7 @@ All require a \structure{quality} instrument that can be \structure{reused in an
 Are these true \emph{in principle} or \emph{in practice}?
 \begin{itemize}
   \item Easy to claim that others \structure{could, in principle}, re-use elements of a model-based research workflow.
-  \item Much harder: make this an \structure{actual practice}, i.e. feasible with resources possessed by ≥1 other.
+  \item Much harder: make this an \structure{actual practice}, i.e. feasible with resources ≥1 others have.
 \end{itemize}
 
 \medskip
@@ -176,7 +176,7 @@ I won't go on about this; I'll only say: If someone can or does reuse my tools, 
 \frametitle{Costs \& resources}
 
 We have finite resources (time etc.) with which to conduct research.
-Model creation \& use work should spend those resources efficiently.
+Work to create and use models should spend resources efficiently.
 
 \smallskip
 \structure{Search \& information}
@@ -206,7 +206,7 @@ Model creation \& use work should spend those resources efficiently.
 \framesubtitle{or, standing on the shoulders of giants}
 
 \begin{columns}[T]
-\column{0.35\paperwidth}
+\column{0.45\paperwidth}
 Reproducibility crisis in quantitative social sciences, e.g. psychology.
 
 \bigskip
@@ -215,14 +215,12 @@ Computing as fundamental to valid research: atmospheric \& climate sciences, eng
 \bigskip
 Most practices from software industries; minor adjustments.
 
-\column{0.55\paperwidth}
+\column{0.5\paperwidth}
 \centering
 \includegraphics[width=\columnwidth]{xkcd_1205.png}
 \url{https://xkcd.com/1205/}
 
 \end{columns}
-
-We'll return to this point!
 
 \end{frame}
 
@@ -252,17 +250,17 @@ Caveats:
 
 Start with organizational culture:
 \begin{itemize}
-  \item Discuss and identify in your team where resources are exhausted.
-  \item Study possible improvements in practice.
+  \item Discuss and identify in your team where resources are spent.
+  \item Look for possible improvements in practice.
   \item Agree that there is a positive return on investment.
 \end{itemize}
 
 \bigskip
 A collection of interlinked and mutually-reinforcing practices.
 \begin{itemize}
-  \item Can be adopted separately, incrementally.
-  \item Also a collection of skills → support skills development in your team.
   \item “A truly remarkable variety of practices, but these slides are too few to contain them.”
+  \item Can be adopted separately, incrementally.
+  \item Also corresponding skills → support skills development in your team.
 \end{itemize}
 
 \end{frame}
@@ -351,10 +349,10 @@ MESSAGE\emph{ix}: 100s of tests from basic (data I/O) to complex functionality (
 \end{itemize}
 
 \medskip
-When tests cover \emph{all core methods} in a model, then CI reduces work to guard against \structure{invalidity} when improving models (‘reggressions’).
+Tests cover \emph{all core methods} in a model → CI reduces work to guard against \structure{invalidity} when improving models (‘reggressions’).
 
 \medskip
-When code includes \emph{all the steps} in a model-based analysis, the CI system can \structure{continuous confirm reproducibility}.
+Code includes \emph{all steps} in a model-based analysis → CI system can \structure{continuous confirm reproducibility}.
 
 Example: A \href{https://github.com/iiasa/message_ix/blob/main/tutorial/westeros/westeros_baseline.ipynb}{tutorial notebook} from MESSAGE\emph{ix}.
 \begin{itemize}
@@ -492,7 +490,7 @@ These form another kind of \structure{interface} and help towards \structure{int
 
 \framebreak
 
-At each stage, (1) through (4), be precise about:
+At each interface (1) through (4) be precise about:
 \begin{itemize}
   \item Background vs. systematized concepts vs. specific measures.\footcite{adcock-collier-2001}
   \item Dimensions, and the specific codes%
@@ -505,12 +503,12 @@ At each stage, (1) through (4), be precise about:
 Treat all assumptions as input data → none in code.
 
 \medskip
-Don't invent new data formats for exchange.
+Don't invent new data formats:
 \begin{itemize}
   \item Reuse existing formats and protocols for exchange
 
-    e.g. SDMX (\href{https://sdmx.org}{1}, \href{https://sdmx1.readthedocs.io/en/latest}{2}), \href{https://www.unidata.ucar.edu/software/netcdf/}{NetCDF}, \href{https://zarr.readthedocs.io/en/stable/}{Zarr}, etc., .
-  \item Reuse existing (or shared) codes and labels
+    e.g. SDMX (\href{https://sdmx.org}{1}, \href{https://sdmx1.readthedocs.io/en/latest}{2}), \href{https://www.unidata.ucar.edu/software/netcdf/}{NetCDF}, \href{https://zarr.readthedocs.io/en/stable/}{Zarr}, etc.
+  \item Reuse existing (or shared) codes, categorizations, and labels
 
     e.g. \href{https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes}{ISO 3166-1}; \href{https://registry.sdmx.org/items/codelist.html}{SDMX global registry}.
 \end{itemize}
@@ -528,10 +526,11 @@ Some incentives that can affect us as model-builders and -users:
 \begin{itemize}
   \item Publish; only work that can be claimed ‘novel’, and only when final.
   \item Signal compliance with disciplinary norms with minimal effort.
-  \item Assist only collaborators / co-authors.
-  \item Undervalue process.
+  \item Assist only collaborators / co-authors; neglect others.
   \item Don't budget for maintenance and support.
-  \item ‘Impressive’ polish, GUIs, and ease of rudimentary use over ‘mundane’ validation and tools for advanced use.
+  \item Value ‘Impressive’ polish, GUIs, and ease of rudimentary use…
+
+    …over ‘mundane’ validation and reducing I \& R costs.
 \end{itemize}
 
 \framebreak
@@ -557,14 +556,13 @@ In contrast, free software—thus also \structure{open science}—succeeds when:
 \frametitle{References \& further reading}
 
 \nocite{huppmann-2020}
-% TODO cite Pauliuk et al.
 \printbibliography[heading=none]
 
 \begin{itemize}
   \small
-  \item L. Barba group @ GWU SEAS: \href{http://lorenabarba.com/blog/barbagroup-reproducibility-syllabus/}{r13y syllabus} w/readings on research group website; \href{http://science.sciencemag.org/content/354/6308/142}{``The Hard Road to Reproducibility''} in \emph{Science}.
+  \item L. Barba group @ GWU SEAS: \href{http://lorenabarba.com/blog/barbagroup-reproducibility-syllabus/}{r13y syllabus} w/readings on research group website; \citetitle{barba-2017}.
+  \item Other disciplines: \cite{irving-2016}, \cite{pauliuk-2019}.
   \item Max Planck Institute for Meteorology \href{http://mpimet.mpg.de/en/science/publications/good-scientific-practice.html}{``Good scientific practice''} policy, rules, forms.
-  \item Irving (2016), \href{http://journals.ametsoc.org/doi/abs/10.1175/BAMS-D-15-00010.1}{``A Minimum Standard for Publishing Computational Results in the Weather and Climate Sciences''} in \emph{Bulletin of the AMS}.
   \item Christensen \& Miguel (2016), \href{http:/dx.doi.org/10.3386/w22989}{``Transparency, Reproducibility, and the Credibility of Economics Research''} forthcoming in \emph{JEL} — UC Berkeley Econ.
   \item Nick Barnes: \href{https://www.nature.com/news/2010/101013/full/467753a.html}{``Publish your computer code: it is good enough''} in \emph{Nature News} — Climate Code Foundation.
   \item \href{http://ropensci.github.io/reproducibility-guide/sections/references/}{45+ more peer-reviewed articles} and other resources.
