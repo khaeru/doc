@@ -20,7 +20,7 @@ Copyright © 2019–2021 Paul Natsuo Kishimoto <mail@paul.kishimoto.name>.
 |cc| |by| |sa| Licensed `CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>`_, except where noted.
 
 Although the license does not require it, I would appreciate if you let me know if and when you make use of these materials!
-Cite as: |doi|
+Cite as |doi| or using files like ``citation.bib`` in each directory.
 
 Organization:
 
