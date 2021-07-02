@@ -4,7 +4,11 @@ Effective strategies for multi-sectoral research using large-scale models
 :slug: issst
 :tags: research
 
-A talk at the `2021 meeting of the International Symposium for Sustainble Systems and Technology <https://issst.net/issst-2021/>`_.
+A talk given at the `2021 meeting of the International Symposium for Sustainble Systems and Technology <https://issst.net/issst-2021/>`_.
+
+- `Slides <http://pure.iiasa.ac.at/id/eprint/17286/1/slides.pdf>`_ (PDF, 436 kB) at IIASA PURE
+- `Recording <https://www.youtube.com/watch?v=Osn1c3hQcmM>`_ on YouTube
+- `TeX source and BibTeX citation <https://github.com/khaeru/doc/tree/main/2021/06-23%20ISSST>`_ on GitHub
 
 Abstract
 ========
