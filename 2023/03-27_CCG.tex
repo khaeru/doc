@@ -1,0 +1,64 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme{iiasa}
+
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{notes}}{\jobname}}{%
+\setbeameroption{show only notes}%
+}{
+%
+}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+% Small font in bibliography
+\renewcommand*\bibfont{\small}
+\addbibresource{all.bib}
+
+\usepackage{minted}
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\title{Interoperable, reusable data and cross-domain, model-based transport research}
+\institute{Energy, Climate, and Environment (ECE) Program \\
+  International Institute for Applied Systems Analysis (IIASA)}
+
+\date{\texorpdfstring{Modelling Transport Demand in Different Geographical Contexts: Assumptions, Data, and Inclusion of Material Modelling\\
+  Monday, 27 March 2022}%
+  {2022-03-27}}
+
+\author{\texorpdfstring{Dr. Paul Natsuo Kishimoto \scriptsize\newline
+  \href{mailto:paul.kishimoto@iiasa.ac.at}%
+       {\ttfamily <paul.kishimoto@iiasa.ac.at>}}%
+  {Dr. Paul Natsuo Kishimoto <paul.kishimoto@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\end{document}
+
+% - Outline of model-based research and assessment
+%   - Theory, methodology, implementation; phenomena in systems of systems.
+%   - Scope: system boundaries vs. model boundaries.
+%   - Dimensions & resolution within models.
+% - Some challenges in current practice the transport domain:
+%   - Data: available data do not match data needs.
+%   - Data: nature of model outputs is unclear to potential users.
+%   - Models: undocumented and therefore unreproducible manual steps & assumptions.
+%   - Models: social & systemic incentives to complicate rather than validate.
+% - Consequences:
+%   - Limited interoperability and reusability (esp. in "data-poor" contexts).
+%   - Validation is costly because of conceptual ambiguity and lack of automation.
+%   - Barriers to entry, participation, application are unjustifiably high.
+% - Fixes:
+%   - Emphasize data flows in to/out of models, rather than model contents.
+%   - Clear, domain-agnostic declaration of dimensions, resolution, scope for inputs/outputs.
+%   - (Support work to) establish and apply standards for the above.
