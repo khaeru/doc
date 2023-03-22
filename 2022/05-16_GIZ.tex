@@ -1,0 +1,244 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme{iiasa}
+
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{notes}}{\jobname}}{%
+\setbeameroption{show only notes}%
+}{
+%
+}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+% Small font in bibliography
+\renewcommand*\bibfont{\small}
+\addbibresource{all.bib}
+
+\usepackage{minted}
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\title{The iTEM Open Data process}
+\subtitle{Goals, concepts, and experiences}
+\institute{$^1$ Energy, Climate, and Environment (ECE) Program, IIASA}
+
+\date{\texorpdfstring{GIZ workshop on transport emissions data\\
+  Monday, 16 May 2022 — Leipzig, DE}%
+  {2022-05-16}}
+
+\author{\texorpdfstring{Dr. Paul Natsuo Kishimoto \scriptsize\newline
+  \href{mailto:paul.kishimoto@iiasa.ac.at}%
+       {\ttfamily <paul.kishimoto@iiasa.ac.at>}\thanks{}}%
+  {Dr. Paul Natsuo Kishimoto <paul.kishimoto@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\section{Background info}
+
+\begin{frame}
+\frametitle{\href{https://transportenergy.org}{\bfseries transportenergy.org}}
+
+\framesubtitle{iTEM = International Transport Energy Modeling}
+
+\begin{itemize}
+  \item Informal group of \structure{modeling} practitioners: researchers in academia, NGOs, IGOs, staff, energy firms —producing quantitative projections to inform policy advocacy and decisions; other research.
+  \item Since 2014, functions as a meeting place / venue for talking shop, comparing notes.
+\end{itemize}
+
+\medskip
+Core organizing group/key instigators…
+
+\smallskip
+\begin{columns}[T]
+\column{0.47\textwidth}
+Sonia Yeh (Chalmers U.)
+
+Lew Fulton (ITS-Davis)
+
+David McCollum (IIASA → EPRI → U.S. DoE ORNL)
+
+\column{0.47\textwidth}
+G. Page Kyle (U.S. DoE PNNL)
+
+Josh Miller (ICCT)
+
+Paul Natsuo Kishimoto (MIT → IIASA)
+
+\end{columns}
+
+\smallskip
+…with many close friends, including at ITF-OECD and IEA and in this room.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Why iTEM Open Data?}
+
+Outputs of global- / national-scope transport-energy models (G-/NTEMs)%
+\footnote{includes broader-scope models in which transport is represented in\\\hspace{25mm} detail, e.g. integrated assessment models (IAMs).}
+is \structure{very difficult to compare}:
+\begin{enumerate}
+  \item Different methods → iTEM's original purpose.
+  \item Historical baselines/calibrations are not aligned for many basic transport measures.
+  \item Wide variety of input data sources/assumptions/pre-processing required to represent entire transport systems.
+\end{enumerate}
+\smallskip
+This confounds knowledge generation: “Are differences between Model A/B due to bad data, or genuine uncertainty about future outcomes?”
+
+\medskip
+In turn, why do (2) and (3) occur? → The \structure{work of data-gathering and preparation} is mostly done \textbf{individually} by modeling teams, in the course of model-building and use.
+
+\end{frame}
+
+\section{Concepts for open data}
+
+\begin{frame}
+\frametitle{Goals: processes, not products}
+
+Full description: \href{https://transportenergy.org/open-data\#goals}{\bfseries transportenergy.org/open-data\#goals}
+
+\bigskip
+Avoid an enormous amount of duplicated work / mistakes.
+\begin{itemize}
+  \item You \emph{could} gather, inspect, clean, harmonize all the data yourself
+  \item …but this is rarely the best use of your (staff's) time.
+\end{itemize}
+
+\bigskip
+Emulate best practices in other disciplines, e.g.
+\begin{description}
+  \item [Finance / econ] Exchange rates, stock and commodity prices.
+  \item [Earth science] Weather observations and forecasts; climate model input/output data.
+\end{description}
+
+\smallskip
+…that have unlocked more sophisticated modeling and analysis, and thus more useful knowledge.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Concepts for open data}
+
+Some high-level ideas that inform the iTEM Open Data approach:
+
+\bigskip
+\Large
+\begin{enumerate}
+  \item Open—warts and all
+  \item Common but decentralized
+  \item Automated
+  \item Flexible/configurable
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{1. Open—warts and all}
+
+A lot of research claims to be “open” but is actually not reproducible:
+\begin{enumerate}
+  \item “We use data sets X, Y, and Z” → good, if these are findable, accessible, open.
+  \item “We clean the data and prepare model inputs” …
+  \item “We our (open) model to produce these outputs.” → good.
+\end{enumerate}
+
+\medskip
+(2) is not a mere chore, but a core step in the research method!
+If this step is not clearly described, the overall process cannot be replicated, validated, etc. independently → not science.
+
+\bigskip
+iTEM Open Data uses established practices of free/scientific software development for data handling code: \href{https://github.com/transportenergy/database}{\bfseries github.com/transportenergy/database}
+\end{frame}
+
+\begin{frame}
+\frametitle{2. Common but decentralized}
+
+iTEM does not want to be \emph{the sole or authoritative source} for all users' data needs.
+\begin{itemize}
+  \item We can't; no one can; to claim otherwise is only marketing, and usually a misallocation of resources.
+  \item Data will always come from and be channeled to many places.
+\end{itemize}
+
+\bigskip
+What \emph{can} be pooled as a common good: \structure{knowledge \emph{about} the data}: its structure, meaning, errata, and proper usage.
+
+\begin{itemize}
+  \item iTEM Open Data focuses on providing infrastructure (common tools \& workflows) so that data cleaning \& harmonization methods can be collected, improved by the user community, and reused by anyone for any purpose.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{3. Automated}
+
+Remove manual labour from frequently repeated steps, e.g.:
+\begin{itemize}
+  \item Translate data from one format to another.
+  \item Replace or ‘map’ one set of labels/definitions to another.
+  \item (Dis)aggregate.
+\end{itemize}
+
+\bigskip
+The steps become nearly costless, can be repeated exactly, easily, and frequently.
+
+\begin{itemize}
+  \item E.g. one upstream data source receives small updates → regenerate the entire harmonized data set with the push of a button (or even automatically).
+  \item Corrections or changes to the harmonization methods → same.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{4. Flexible and configurable}
+
+Users (modelers, others) will legitimately want to use different data for the same measures:
+\begin{itemize}
+  \item Different upstream sources.
+  \item Different choices/assumptions in harmonization.
+\end{itemize}
+
+\bigskip
+…so, let them!
+\begin{itemize}
+  \item Provide a “standard offering” using default settings for the automated workflow.
+  \item Allow users to choose different settings and get the output they want.
+  \item These products become more easily traceable and communicable.
+    \begin{quote}
+      “We used the iTEM data code version X.Y, with this settings file: …”
+    \end{quote}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Experiences}
+
+\begin{description}
+  \item [Skill sets.] Building automated data pipelines etc. requires skills that are abundant in general, but not in our discipline.
+
+    → Recruit and support the right personnel (sitting wherever).
+
+  \item [Standards.] Look for them and use them before inventing something new.
+
+    → e.g. \href{https://sdmx.org/?page_id=2555/}{SDMX}, \href{https://en.wikipedia.org/wiki/ISO_3166-2}{ISO 3166-2}, \href{https://www.bipm.org/en/committees/jc/jcgm/publications}{VIM}, etc.
+
+  \item [Culture.] Community consensus around building \& using public goods, replacing a paradigm of individualism.
+
+    → This deck.
+
+  \item [Resources.] Still in search of sustainable sources for funding or time commitments for core infrastructure.
+\end{description}
+
+\end{frame}
+
+\end{document}
