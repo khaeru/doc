@@ -23,6 +23,12 @@ jobs:
         path: tex
         submodules: true
 
+    - name: Check out BibTeX database
+      uses: actions/checkout@v3
+      with:
+        repository: khaeru/bibliography
+        path: ref
+
     - name: Check out Google fonts
       uses: actions/checkout@v3
       with:
@@ -43,6 +49,7 @@ jobs:
       # env:
       #   TEXINPUTS: ".:${{ github.workspace }}/khaeru-tex//:"
       run: |
+        export BIBINPUTS=./reference:$BIBINPUTS
         export TEXINPUTS=.:$GITHUB_WORKSPACE/tex//:$TEXINPUTS
         export TEXFONTS=.:$GITHUB_WORKSPACE/fonts//:$TEXFONTS
         mktexlsr
