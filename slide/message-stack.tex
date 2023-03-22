@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  every node/.style = {
+    ultra thick,
+    draw = IIASAblue,
+    anchor = south,
+    rounded corners = 2 mm,
+    minimum width = 47 mm,
+    outer sep = 2 mm,
+  },
+]
+
+  \onslide<2-4>{
+    \node (ixmp) {\ttfamily ixmp};
+  }
+  \onslide<1>{
+    \node [ fill = IIASAteal ] (ixmp) {\ttfamily ixmp};
+  }
+
+  \onslide<1,3,4>{
+    \node (messageix) at (ixmp.north) {\ttfamily message\_ix};
+  }
+  \onslide<2>{
+    \node [ fill = IIASAteal ] (messageix) at (ixmp.north) {\ttfamily message\_ix};
+  }
+  \onslide<1,2,4>{
+    \node (message-ix-models) at (messageix.north) {\ttfamily message-ix-models};
+  }
+  \onslide<3>{
+    \node [ fill = IIASAteal ] (message-ix-models) at (messageix.north) {\ttfamily message-ix-models};
+  }
+  \onslide<1-3>{
+    \node at (message-ix-models.north) {\ttfamily User code};
+  }
+  \onslide<4>{
+    \node [ fill = IIASAteal ] at (message-ix-models.north) {\ttfamily User code};
+  }
+
+\end{tikzpicture}
