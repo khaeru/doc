@@ -2,29 +2,29 @@ name: Compile TeX documents
 
 on: [push, pull_request]
 
+# Cancel previous runs that have not completed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   compile:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container: texlive/texlive:latest
 
     steps:
-    - name: Cancel previous runs that have not completed
-      uses: styfle/cancel-workflow-action@0.7.0
-      with:
-        access_token: ${{ github.token }}
-
     - name: Check out source
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Check out personal TeX resources
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: khaeru/tex
         path: tex
         submodules: true
 
     - name: Check out Google fonts
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         repository: google/fonts
         path: fonts
@@ -49,7 +49,7 @@ jobs:
         make
 
     - name: Upload compiled documents as a build artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Documents
         path: output/*
