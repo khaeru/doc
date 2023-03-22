@@ -1,0 +1,341 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme{iiasa}
+
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{notes}}{\jobname}}{%
+\setbeameroption{show only notes}%
+}{
+%
+}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+% Small font in bibliography
+\renewcommand*\bibfont{\small}
+\addbibresource{all.bib}
+
+\usepackage{minted}
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\title{The MESSAGE\emph{ix} software ecosystem}
+\subtitle{A brief introduction}
+\institute{Energy, Climate, and Environment (ECE) Program \\
+  International Institute for Applied Systems Analysis (IIASA)}
+
+\date{\texorpdfstring{Message Community Meeting\\
+  Monday 09–10 May 2022}%
+  {2022-05-09–10}}
+
+\author{\texorpdfstring{Dr. Paul Natsuo Kishimoto \scriptsize\newline
+  \href{mailto:paul.kishimoto@iiasa.ac.at}%
+       {\ttfamily <paul.kishimoto@iiasa.ac.at>}}%
+  {Dr. Paul Natsuo Kishimoto <paul.kishimoto@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+\frametitle{Model-based research}
+
+…includes \structure{“modeling”} but also other activities: shaping research questions (RQs), literature review, writing, communicating results, etc.
+
+\bigskip
+“Modeling” itself can be broken down into many tasks:
+\begin{itemize}
+  \item Methodology: choose how to represent real-world phenomena in a (quantitative) model, to address RQs.
+  \item Identify data needs \& available data; collect \& prepare data.
+  \item Quantify common and alternate assumptions for scenarios.
+  \item Write code to implement the model; iterate on the representation.
+  \item Inspect results; produce tables, figures, calculate statistics, etc.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{MESSAGE\emph{ix} \& related software}
+\framesubtitle{Core goals of the MESSAGE\emph{ix} team within IIASA/ECE}
+
+Provide tools for energy systems and integrated assessment model (IAM)-based research that are:
+
+\medskip
+\begin{itemize}
+  \item ready to implement the latest research methods in these domains.
+  \item free, accessible, and \emph{genuinely} interoperable and reusable (\structure{FAIR}).
+  \item \structure{reliable}: stable, tested, valid; caveats handled transparently.
+  \item well-\structure{documented} and supported by learning materials and activities.
+  \item \structure{developed} through best practices and principles from professional/ open/Free software development.
+\end{itemize}
+
+\medskip
+…for use by ourselves \emph{and} a broader community of researchers— you!
+
+\end{frame}
+
+\begin{frame}
+\frametitle{A substantial \& ongoing investment}
+
+IIASA ECE's MESSAGE\emph{ix} team is $\sim 20$ people, most of whom spend $\sim 80\%$ time \emph{using} the software to do research.
+
+\begin{itemize}
+  \item New features developed as needed to enable/accelerate that research.
+  \begin{itemize}
+    \item Incremental improvement.
+    \item High standards for reliability; no sacrifices on validity or quality.
+  \end{itemize}
+  \item Support \& training materials used first by our team members; external capacity development externally where funded through projects \& NMOs.
+\end{itemize}
+
+\medskip
+Other research software has large teams of dedicated developers:
+\begin{itemize}
+  \item MATLAB — developer MathWorks has 5000 employees.
+  \item Tableau — 4000 employees.
+  \item pandas Python package — \href{https://pandas.pydata.org/docs/whatsnew/v1.4.0.html\#contributors}{100s of contributors}.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Why work towards openness?}
+
+Scientific knowledge and the means to produce it should be accessible.
+
+\medskip
+Climate change \& sustainability problems are urgent.
+\begin{itemize}
+  \item Barriers \& inclusion: make it easier, not harder, for a wider circle of experts to use high-quality tools to analyse energy systems and provide advice to their own communities.
+  \item Efficiency: avoid waste in re-implementing the same methods many times.%
+  \footnote{cf. the example of \href{https://en.wikipedia.org/wiki/Linux_kernel\#Estimated_cost_to_redevelop}{the Linux kernel}.}
+\end{itemize}
+
+\medskip
+Neighbouring research disciplines have already gone this route.
+\begin{itemize}
+  \item e.g. climate \& Earth system modeling; economics.
+  \item Unlocked more advanced \& useful research, better validity.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Key practices, in brief}
+
+\begin{description}
+  \item [Modularity:] group code into packages (modules, classes, functions) each with a simple, clear purpose (data storage, model framework, etc.) → reusable, interoperable with each other \& with ‘upstream’ software.
+  \item [Docs:] code comes with plain text explanation of how to use it.
+    Further examples, tutorials, etc. for beginners.
+  \item [Testing:] code is continuously tested to ensure expected, valid outputs.
+    Frequent adjustment to keep up with evolving “upstream” software; on multiple operating systems.
+  \item [Releases:] regular; every 6 months or less.
+    e.g. \texttt{ixmp} and \texttt{message\_ix} 3.5.0 on May 6.
+    Changes clearly described to help users migrate.
+\end{description}
+\note{
+Another way to think of this is that MathWorks' has, probably, an order of magnitude more people 100\% focused on support than the MESSAGE\emph{ix} has doing \emph{all} development.
+}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The MESSAGE\emph{ix} stack}
+
+\begin{columns}[T]
+\column{49mm}
+\input{../slide/message-stack.tex}
+
+\column{100mm}
+\only<1>{
+\structure{\ttfamily ixmp}: data storage and solver interface
+
+\smallskip
+Docs: \href{https://docs.messageix.org/ixmp}{docs.messageix.org/ixmp} \\
+Code: \href{https://github.com/iiasa/ixmp}{github.com/iiasa/ixmp}
+
+\smallskip
+\begin{itemize}
+  \item e.g. $Y = f(m, b; x)$
+  \item ixmp provides data handling for $N$-dimensional variables ($x$), parameters ($m, b$), models (any equations, e.g. $f(\ldots)$) implemented in e.g. GAMS; and invoking these to produce/store model outputs ($Y$).
+  \item Tools and utility code for \emph{general} modeling, e.g. post-processing.
+\end{itemize}
+}
+\only<2>{
+\structure{\ttfamily message\_ix}: the MESSAGE implementation
+
+\smallskip
+\href{https://docs.messageix.org/ixmp}{docs.messageix.org} \structure{\bfseries —always start here.}
+\href{https://github.com/iiasa/message_ix}{github.com/iiasa/message\_ix}
+
+\smallskip
+\begin{itemize}
+  \item $Y = a_{d_1,d_2} x_1 + b_{d_2,d_3} x_2 + c_{d_1,d_2,d_3}$
+  \item Specific equations (MESSAGE) in GAMS, but no fixed/provided values for parameters → a \emph{framework} for models, not a specific model.
+  \item Tools for \emph{energy system/IA modeling} related to the MESSAGE format, e.g. for sets of ‘vintage’ and ‘active’ periods for technology construction/use; to prepare data for $a$ or $b$, etc.
+\end{itemize}
+}
+\only<3>{
+\structure{\ttfamily message-ix-models}: tools/data for the MESSAGE\emph{ix}-GLOBIOM family
+
+\smallskip
+\href{https://docs.messageix.org/models}{docs.messageix.org/models}
+\href{https://github.com/iiasa/message-ix-models}{github.com/iiasa/message-ix-models}
+
+\smallskip
+\begin{itemize}
+  \item A \emph{family} of related global/single-country models.
+  \item Specific lists of e.g. regions, technologies, commodities that give these models a (mostly) common structure.
+  \item Handling code for some ‘upstream’/input data sources.
+  \item Tools for preparing specific model representations used by IIASA ECE.
+\end{itemize}
+}
+\only<4>{
+\structure{‘User’ code}: specific models, projects, \& research
+
+\smallskip
+\begin{itemize}
+  \item May be public, private (permanent, or temporarily).
+  \item e.g. models with new details; specific scenarios; model ‘variants’ like MESSAGE\emph{ix}-Buildings, -Materials, and -Transport.
+  \item Code can be contributed to \texttt{message-ix-models} at any point.
+\end{itemize}
+
+\smallskip
+\structure{\ttfamily message\_data}: IIASA ECE's internal/private repository for in-progress MESSAGE\emph{ix}-GLOBIOM work.
+}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Welcome—please dive in!}
+
+\structure{\bfseries Use} the software to do great research.
+
+\medskip
+As you do, we value feedback, tips, and input:
+
+\begin{itemize}
+  \item Join the discussion forum at \url{https://github.com/iiasa/message_ix/discussions};\\ exchange mutual support with other users.
+  \item Contribute your code, bug reports; help shape new features.
+  \item Give us feedback on the “Pre-requisite knowledge \& skills” list in the documentation: does this clearly advertise the learning curve for energy systems modeling?
+\end{itemize}
+
+\end{frame}
+
+\section{Feedback}
+
+\begin{frame}
+\frametitle{MESSAGE\emph{ix} user experience (UX)}
+
+Thanks to 16 participants who filled out the survey! More welcome.
+
+\bigskip
+Recap: limited \structure{resources (money \& staff time)} to divide across \emph{use} (IIASA ECE core research), \emph{development}, and \emph{support} activities.
+
+\bigskip
+To increase resources for support and development—multiple options:
+\begin{itemize}
+  \item IIASA staff: \structure{dedicated funding}, e.g. parts of project budgets.
+  \item \structure{In-kind}: staff hosted/paid/contracted by community orgs (not IIASA).
+  \item \structure{Ad-hoc}: Payment-for-service, support subscriptions, etc.
+\end{itemize}
+\hspace{20mm}…any others?
+
+\end{frame}
+
+\begin{frame}[plain]
+\frametitle{Your degree of experience with…}
+\includegraphics[height=0.8\textheight]{2022-05-10-messageix-users.png}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Specific responses}
+
+Questions we should ask about any wished-for enhancement, idea, or request:
+
+\bigskip
+Are they…
+\begin{itemize}
+  \item Incremental \& light-weight → easier, quick, most likely to implement.
+  \item Large time investment (days, weeks, months of staff time) → less likely / unlikely without a concrete resource commitment.
+\end{itemize}
+
+\bigskip
+Is the \texttt{message\_ix} software/docs the right place for these?
+
+\bigskip
+By whom and how will the resources be supplied?
+
+\framebreak
+
+\structure{Documentation}
+
+\medskip
+Suitable for needs?
+6 — yes; 7 — a little, 0 — not at all
+
+\medskip
+Suggested improvements?
+
+\begin{quote}
+  [The] TIMES Model [has] nicely \structure{explained each concept of energy modelling} and then provided the associated parameters. At many places the documentation on MESSAGEix does not explain the necessary parameter. It was really difficult to actually understand the underlying concept behind a parameter.
+\end{quote}
+
+\begin{quote}
+  Adding \structure{examples to each section} for specific indication towards use of a parameter.
+\end{quote}
+
+\framebreak
+
+\structure{What was your experience when you first started using MESSAGE\emph{ix}?}
+
+\begin{quote}
+  To build a real world energy system takes more extra time since both \structure{model structure and input data needs substantial work and time}.
+\end{quote}
+
+\begin{quote}
+  Comprehensive but complex.
+\end{quote}
+
+\begin{quote}
+  Knowledge of Python/GAMS/R/Conda restricts potential users. Need a better interface so that \structure{even a person with less programming knowledge} can use and understand the model.
+\end{quote}
+
+2 comments re: installation.
+
+\framebreak
+
+\structure{Contributing to development}
+
+\medskip
+Would you? 9 — yes; 3 — maybe; 4 — no.
+
+\medskip
+Features/support options of interest:
+
+\begin{quote}
+  Unit commitment simulation — Power procurement — Power sector-related features are missing.
+\end{quote}
+
+\begin{quote}
+  Video tutorials \& more technical docs — Video classes — Beginners' YouTube channel.
+\end{quote}
+
+\begin{quote}
+  Develop a tutorial where \structure{all} the parameters are utilized.
+\end{quote}
+
+\end{frame}
+
+\end{document}
