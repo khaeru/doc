@@ -1,0 +1,396 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme{iiasa}
+
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{notes}}{\jobname}}{%
+\setbeameroption{show only notes}%
+}{
+%
+}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+% Small font in bibliography
+\renewcommand*\bibfont{\small}
+\addbibresource{all.bib}
+
+\usepackage{minted}
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\title{Developing open energy models}
+\subtitle{Forum on practices and experiences}
+\institute{Energy, Climate, and Environment (ECE) Program \\
+  International Institute for Applied Systems Analysis (IIASA)}
+
+\date{\texorpdfstring{Openmod Workshop\\
+  Wednesday, 22 March 2023}%
+  {2023-03-22}}
+
+\author{\texorpdfstring{Dr. Paul Natsuo Kishimoto \scriptsize\newline
+  \href{mailto:paul.kishimoto@iiasa.ac.at}%
+       {\ttfamily <paul.kishimoto@iiasa.ac.at>}}%
+  {Dr. Paul Natsuo Kishimoto <paul.kishimoto@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+\frametitle{Outline}
+
+\tableofcontents
+
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}
+\frametitle{Introduction, session goals}
+
+A \structure{fully interactive} discussion on model-building practices.
+\begin{itemize}
+  \item Examples from MESSAGE\emph{ix} to prompt discussion on each topic.
+  \item Sharing from participants (please introduce yourself).
+\end{itemize}
+
+\bigskip
+Goals:
+\begin{itemize}
+  \item Learn from one another how to effectively use available tools…
+  \item …to efficiently create high-quality tools, models, research.
+  \item Identify topics for further study or bi-/multi-lateral exchange.
+\end{itemize}
+
+\end{frame}
+
+\subsection{General considerations \& session goals}
+
+\begin{frame}
+\frametitle{General considerations}
+
+We all engage in these activities:
+\begin{enumerate}
+  \item Develop (extend, maintain, …) modelling tools.
+  \item Use those tools to create specific models.
+  \item Use those specific models to conduct model-based research.
+    \begin{itemize}
+      \item Produce research products: documents, data, figures, …
+    \end{itemize}
+  \item Support others/a community in using the tools, models, or products.
+\end{enumerate}
+
+\medskip
+These compete for \structure{time and resources} and can lead to tension in priorities.
+This can lead to choices such as:
+\begin{itemize}
+  \item Increase complexity of a specific model \\
+    \structure{\bfseries or} improve validation of existing tools.
+  \item Write developer- or user-focused documentation \\
+    \structure{\bfseries or} polish research products for a scientific or policy audience.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{General considerations (cont'd)}
+
+Activities, goals, and resources (time, staff, skills) naturally vary across people \& organizations.
+
+\bigskip
+Thus, in your interventions:
+\begin{itemize}
+  \item Briefly state (or recap) your affiliation, context, and goals.
+  \item Say \emph{why} a particular practice has made sense in that context.
+\end{itemize}
+…this helps others understand if their context is similar enough to adopt your practices.
+
+\bigskip
+Info on what \structure{\bfseries has not} worked can be as or more instructive than success stories.
+
+\end{frame}
+
+\subsection{MESSAGE\emph{ix} development context}
+
+\begin{frame}
+\frametitle{MESSAGE\emph{ix} development context}
+
+Users:
+\begin{itemize}
+  \item Largest user category is in-house: about 20 in the team.
+  \item A spectrum from user/developer/maintainer to ‘pure’ user.
+  \item Most outside users are collaborators with in-house users → conduit for support.
+\end{itemize}
+
+\bigskip
+Key objectives:
+  \begin{itemize}
+    \item Publications in high-impact journals.
+    \item Contributions to integrated assessment modeling (IAM) community activities \& consortium research.
+    \item Advance IIASA's open science/outreach goals.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{MESSAGE\emph{ix} development context}
+
+\begin{description}
+  \item [Version control] Git.
+  \item [Collaboration] GitHub (\href{https://github.com/iiasa}{github.com/iiasa} org), Slack (paid).
+  \item [Language] Python, some R and Java.
+  \item [CI] GitHub Actions, ReadTheDocs (paid), Codecov.
+\end{description}
+
+\bigskip
+\begin{itemize}
+  \item Popular/common tools and platforms → greater chance that incoming colleagues have experience.
+\end{itemize}
+
+\end{frame}
+
+\section{Specific topics}
+
+\begin{frame}
+\frametitle{Specific topics}
+
+\tableofcontents[currentsection,hideothersubsections]
+
+\end{frame}
+
+\subsection{Modularize, separate concerns}
+\begin{frame}[allowframebreaks]
+\frametitle{Modularize, separate concerns}
+
+A “stack” of 5 packages:
+\begin{enumerate}
+  \item [0] \texttt{iiasa/ixmp\_source} (private) Java/Oracle backend for \texttt{ixmp}.
+  \item \href{https://github.com/iiasa/ixmp}{\ttfamily iiasa/ixmp} data model \& storage; GAMS interface for generic models.
+  \item \href{https://github.com/iiasa/message_ix}{\ttfamily iiasa/message\_ix} generic MESSAGE in GAMS; utilities.
+  \item \href{https://github.com/iiasa/message-ix-models}{\ttfamily iiasa/message-ix-models} data etc. for the MESSAGE\emph{ix}-GLOBIOM family of global \& single-country models.
+  \item \href{https://github.com/iiasa/message_data}{\ttfamily iiasa/message\_data} (private) unpublished/in-progress projects; tools for proprietary data.
+\end{enumerate}
+\medskip
+…plus
+\href{https://github.com/IAMConsortium/iam-units}{\ttfamily IAMConsortium/iam-units},
+\href{https://github.com/khaeru/genno}{\ttfamily khaeru/genno},
+\href{https://github.com/IAMConsortium/pyam}{\ttfamily IAMConsortium/pyam},
+\texttt{message\_single\_country} (private)
+others
+
+\framebreak
+Practices and their benefits:
+\begin{itemize}
+  \item Progression of stability/testing standards.
+  \item API changes in lower levels → clear signal to adjust higher levels.
+  \item Spot and avoid “stack violations”: low-level code being overloaded to meet needs of higher level code.
+  \item Genericize/improve case-specific functions and tools to general-purpose utilities.
+\end{itemize}
+
+\end{frame}
+
+\subsection{Split private/public code \& data}
+
+\begin{frame}
+\frametitle{Split private/public code \& data}
+
+\href{https://github.com/iiasa/message-ix-models}{\ttfamily iiasa/message-ix-models} vs.
+\href{https://github.com/iiasa/message_data}{\ttfamily iiasa/message\_data}.
+
+\medskip
+Legitimate reasons for non-public code:
+\begin{itemize}
+  \item Enhancements to models or project-specific innovations that must be embargoed until published.
+  \item Prototype/attic code, no resources to support outside users in a public package.
+  \item Data or code for handling proprietary input data.
+\end{itemize}
+
+\medskip
+Practices:
+\begin{itemize}
+  \item Contain code in specific Python modules:
+    \begin{itemize}
+      \item Model representation of certain energy systems phenomena.
+      \item Set-up of scenarios/analysis for specific projects.
+    \end{itemize}
+  \item Same code style, practices, etc.
+  \item Guides for moving code, data from private → public (e.g. \href{https://github.com/iiasa/message-ix-models/pull/89}{\#89}).
+\end{itemize}
+
+\end{frame}
+
+\subsection{Use continuous testing/integration}
+\begin{frame}
+\frametitle{Use continuous testing/integration}
+
+Cloud-based systems that automatically run jobs, composed of steps.
+\begin{itemize}
+  \item GitHub Actions and ReadTheDocs.
+  \item Use \structure{reusable workflows} (\href{https://docs.github.com/en/actions/using-workflows/reusing-workflows}{docs}): \\
+    \url{https://github.com/iiasa/actions/tree/main/.github/workflows}
+  \item Job examples: run tests; enforce code style.
+  \item Check that Python packages can be built without error.
+\end{itemize}
+
+\medskip
+Practices:
+\begin{itemize}
+  \item Run on several events:
+    \begin{itemize}
+      \item Pushes to pull request branches → check before merging code changes.
+      \item Schedule (e.g. nightly) → long-running (‘integration’) tests.
+    \end{itemize}
+  \item Outcomes monitored → immediately spot disturbances due to changes in ‘upstream’ code.
+  \item Relieve users from running tests locally.
+\end{itemize}
+
+\end{frame}
+
+\subsection{Test}
+\begin{frame}
+\frametitle{Test}
+
+Pytest suite in each stack level.
+\begin{itemize}
+  \item e.g. for \href{https://github.com/iiasa/message-ix-models/tree/main/message_ix_models/tests}{\ttfamily message-ix-models}
+\end{itemize}
+
+\bigskip
+Practices:
+\begin{itemize}
+  \item Create and use test \structure{fixtures}.
+    \begin{itemize}
+      \item Prepared objects, data, etc. that can be used by other tests.
+      \item Reduces boilerplate → tests are shorter and easier to read.
+    \end{itemize}
+  \item Tests operate on \structure{temporary} directories, databases.
+  \item Large number of atomic tests that run quickly (for fast CI feedback).
+  \item Always add tests on bugs/‘accidental’ breakage of downstream expectations.
+\end{itemize}
+
+\end{frame}
+
+\subsection{Adopt a code style}
+\begin{frame}
+\frametitle{Adopt a code style}
+
+\begin{itemize}
+  \item Described \href{https://docs.messageix.org/en/stable/contributing.html\#code-style}{in the documentation itself}.
+  \item For Python: \texttt{black}, \texttt{isort}, \texttt{mypy} (type checking), coverage (via Codecov.io).
+  \item Team support: plug-ins for different IDEs; education for newcomers about purpose/use of code quality tools.
+\end{itemize}
+
+\medskip
+Benefits:
+\begin{itemize}
+  \item “Transparent” and “idiomatic” code: easier to read, review, debug, extend.
+\end{itemize}
+
+\end{frame}
+
+\subsection{Document}
+
+\begin{frame}
+\frametitle{Document}
+
+\begin{itemize}
+  \item \href{https://docs.messageix.org}{docs.messageix.org}: entry point
+  \item Cross-link docs for other packages in the stack:
+    \begin{itemize}
+      \item \href{https://docs.messageix.org/ixmp}{docs.messageix.org/ixmp}
+      \item \href{https://docs.messageix.org/models}{docs.messageix.org/models}
+      \item \href{https://docs.messageix.org/models-internal}{docs.messageix.org/models-internal} (private, access-controlled)
+    \end{itemize}
+\end{itemize}
+
+\medskip
+Practices:
+\begin{itemize}
+  \item Documentation modified with changes to the code → PR requirement.
+  \item Rebuilt automatically, as soon as changes are merged.
+  \item Multiple versions available.
+  \item Consider user entry-points, way-finding.
+\end{itemize}
+
+\end{frame}
+
+\subsection{Manage user/community interaction}
+\begin{frame}
+\frametitle{Manage user/community interaction}
+
+\begin{itemize}
+  \item Inside: Slack.
+  \item Outside: \url{https://github.com/iiasa/message_ix/discussions}.
+  \item Google group (deprecated).
+\end{itemize}
+
+\medskip
+Practices:
+\begin{itemize}
+  \item Explicit statement of levels of available support.
+    \begin{itemize}
+      \item Useful both internally and externally.
+    \end{itemize}
+  \item Duty of responding to outside users distributed across team.
+  \item A docs page on \href{https://docs.messageix.org/en/stable/prereqs.html}{pre-requisite knowledge \& skills} → allow users to identify fitness-for-use.
+  \item Periodic events:
+    \begin{itemize}
+      \item MESSAGE\emph{ix} training workshops (next: -tbd- June 2023).
+      \item MESSAGE\emph{ix} Community Meeting (next: 24–25 May 2023).
+    \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\subsection{Track issues, projects \& work}
+\begin{frame}
+\frametitle{Track issues, projects \& work}
+
+\begin{itemize}
+  \item on GitHub, e.g. \href{https://github.com/iiasa/message_ix/issues}{for MESSAGE\emph{ix}}.
+  \item Projects features \url{https://github.com/orgs/iiasa/projects/10}.
+\end{itemize}
+
+\medskip
+Practices:
+\begin{itemize}
+  \item Move issues between repos.
+  \item Convert “not-really” issues to discussion items.
+  \item \structure{Not} a full “agile methodology” as practiced in software industry…
+    \begin{itemize}
+      \item …selective use of tactics and perspectives.
+    \end{itemize}
+  \item Explicitly identify who \structure{can} (skills + availability) review code.
+    \begin{itemize}
+      \item Sometimes pragmatically postpone or skip review \& requirements.
+    \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\subsection{Version, schedule releases, deprecate}
+\begin{frame}
+\frametitle{Version, schedule releases, deprecate}
+
+\medskip
+Practices:
+\begin{itemize}
+  \item Semantic versioning: \url{https://semver.org}
+  \item Deprecation policy: notify, wait, remove:
+    \begin{itemize}
+      \item Follow upstream examples—e.g. \href{https://pandas.pydata.org/docs/development/policies.html\#policies-version}{Pandas}, \href{https://numpy.org/neps/nep-0023-backwards-compatibility.html}{NumPy}—but lighter weight according to available resources.
+    \end{itemize}
+  \item Release milestones (e.g. \href{https://github.com/iiasa/message_ix/milestones?state=closed}{\ttfamily message\_ix}) for scheduling issues and PRs.
+\end{itemize}
+
+\end{frame}
+
+\end{document}
