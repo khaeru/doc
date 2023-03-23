@@ -67,7 +67,7 @@ jobs:
       # env:
       #   TEXINPUTS: ".:${{ github.workspace }}/khaeru-tex//:"
       run: |
-        export BIBINPUTS=./reference:$BIBINPUTS
+        export BIBINPUTS=.:$GITHUB_WORKSPACE/ref//:$BIBINPUTS
         export TEXINPUTS=.:$GITHUB_WORKSPACE/tex//:$TEXINPUTS
         export TEXFONTS=.:$GITHUB_WORKSPACE/fonts//:$TEXFONTS
         mktexlsr
