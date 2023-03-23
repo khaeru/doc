@@ -28,6 +28,7 @@ jobs:
       with:
         repository: khaeru/bibliography
         path: ref
+        token: ${{ secrets.GH_PAT_REFS }}
 
     - name: Check out Google fonts
       uses: actions/checkout@v3
