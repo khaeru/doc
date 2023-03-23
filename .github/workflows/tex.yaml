@@ -40,12 +40,25 @@ jobs:
         repository: google/fonts
         path: fonts
 
-    # NB can't do this, because the Docker image disables apt.
-    # - name: Scan Google fonts with fontconfig
-    #   run: |
-    #     sudo update && sudo apt-get install -y fontconfig
-    #     which fc-cache
-    #     fc-cache -v fonts
+    - name: Install packages
+      run: |
+        apt update
+        apt install -y cabextract
+
+    - name: Download Tahoma font
+      working-directory: fonts
+      # https://askubuntu.com/a/733405/141059
+      # https://sourceforge.net/projects/corefonts/files/OldFiles/IELPKTH.CAB
+      run: |
+        pwd
+        curl -O https://master.dl.sourceforge.net/project/corefonts/OldFiles/IELPKTH.CAB?viasf=1
+        cabextract -F 'tahoma*ttf' IELPKTH.CAB
+        ln -s tahoma.ttf Tahoma.ttf
+        ln -s tahomabd.ttf "Tahoma Bold.ttf"
+
+    - name: Scan fonts with fontconfig
+      working-directory: fonts
+      run: fc-cache -v .
 
     - name: Compile
       # Use personal TeX resources
