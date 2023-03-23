@@ -60,6 +60,9 @@ jobs:
       working-directory: fonts
       run: fc-cache -v .
 
+    - name: Check fonts available
+      run: fc-list | sort
+
     - name: Compile
       # Use personal TeX resources
       # Want to use 'env:', but the ${{ }} substitution seems to give an
