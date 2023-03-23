@@ -8,17 +8,16 @@ SUBDIRS = 0_demo \
 	"2021/06-23\ ISSST"
 
 # Default target: all subdirectories
-all: output-dir subdirs
-
-# Create the output directory
-output-dir:
-	mkdir -p $(OUT_DIR)
+all: subdirs
 
 # Recurse by calling make in each subdirectory
 subdirs: $(SUBDIRS)
 
-$(SUBDIRS):
+$(SUBDIRS): $(OUT_DIR)
 	$(MAKE) -C $@
 
+# Create the output directory
+$(OUT_DIR):
+	mkdir -p $@
 
-.PHONY: output-dir subdirs $(SUBDIRS)
+.PHONY: subdirs $(SUBDIRS)
