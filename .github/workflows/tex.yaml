@@ -1,6 +1,10 @@
 name: Compile TeX documents
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 # Cancel previous runs that have not completed
 concurrency:
