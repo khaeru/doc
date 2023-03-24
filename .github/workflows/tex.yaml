@@ -43,9 +43,10 @@ jobs:
     #     repository: google/fonts
     #     path: fonts
 
-    - name: Configure fontconfig
+    - name: Configure fontconfig, inkscape
       run: |
         apt update
+        apt install -y inkscape
 
         # Ensure XDG environment variables are set
         export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
