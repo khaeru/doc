@@ -1,5 +1,7 @@
-# These include all packages needed by embedded Python code in posts
+# Packages needed by embedded Python code in Pelican article/*, page/*
 iam-units
 pandas
 pycountry
 sdmx1[cache]
+# Packages need for TeX compilation
+bib @ git+https://github.com/khaeru/bib.git@main

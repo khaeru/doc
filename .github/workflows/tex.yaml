@@ -20,6 +20,18 @@ jobs:
     - uses: SimenB/github-actions-cpu-cores@v1
       id: cpu-cores
 
+    - name: Install Python in container
+      run: |
+        apt update
+        apt install -y python3-full
+
+        # Create a virtual environment
+        VENV="${{ github.workspace }}/venv"
+        python3 -m venv $VENV
+        $VENV/bin/python -m pip install --upgrade pip
+        echo "$VENV/bin"
+        echo "$VENV/bin" >>$GITHUB_PATH
+
     - name: Check out source
       uses: actions/checkout@v3
 
@@ -83,6 +95,11 @@ jobs:
       run: |
         fc-cache -v
         fc-list | sort
+
+    - name: Install "bib" tool
+      run: |
+        echo "$PATH"
+        pip install -r requirements.txt
 
     - name: Compile
       # Use personal TeX resources
