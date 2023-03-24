@@ -72,16 +72,15 @@ jobs:
       # https://askubuntu.com/a/733405/141059
       # https://sourceforge.net/projects/corefonts/files/OldFiles/IELPKTH.CAB
       run: |
-        curl -O https://master.dl.sourceforge.net/project/corefonts/OldFiles/IELPKTH.CAB?viasf=1
+        curl -o IELPKTH.CAB https://master.dl.sourceforge.net/project/corefonts/OldFiles/IELPKTH.CAB?viasf=1
         cabextract -F 'tahoma*ttf' IELPKTH.CAB
         ln -s tahoma.ttf Tahoma.ttf
         ln -s tahomabd.ttf "Tahoma Bold.ttf"
 
     - name: Scan fonts with fontconfig
-      run: fc-cache -v
-
-    - name: Check fonts available
-      run: fc-list | sort
+      run: |
+        fc-cache -v
+        fc-list | sort
 
     - name: Compile
       # Use personal TeX resources
