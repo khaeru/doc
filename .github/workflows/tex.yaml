@@ -17,6 +17,9 @@ jobs:
     container: texlive/texlive:latest
 
     steps:
+    - uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
     - name: Check out source
       uses: actions/checkout@v3
 
@@ -91,7 +94,7 @@ jobs:
         export TEXINPUTS=.:$GITHUB_WORKSPACE/tex//:$TEXINPUTS
         export TEXFONTS=.:$GITHUB_WORKSPACE/fonts//:$TEXFONTS
         mktexlsr
-        make
+        make --jobs=${{ steps.cpu-cores.outputs.count }}
 
     - name: Upload compiled documents as a build artifact
       uses: actions/upload-artifact@v3
