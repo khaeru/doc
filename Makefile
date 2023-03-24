@@ -10,7 +10,7 @@ SUBDIRS = 0_demo \
 	2023
 
 # Default target: all subdirectories
-all: subdirs
+all: image subdirs
 
 # Recurse by calling make in each subdirectory
 subdirs: $(SUBDIRS)
@@ -18,8 +18,11 @@ subdirs: $(SUBDIRS)
 $(SUBDIRS): $(OUT_DIR)
 	$(MAKE) -C $@
 
+image:
+	$(MAKE) -C $@
+
 # Create the output directory
 $(OUT_DIR):
 	mkdir -p $@
 
-.PHONY: subdirs $(SUBDIRS)
+.PHONY: image subdirs $(SUBDIRS)
