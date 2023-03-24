@@ -43,22 +43,39 @@ jobs:
     - name: Install packages
       run: |
         apt update
-        apt install -y cabextract
+
+        # Ensure XDG environment variables are set
+        export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+        echo "XDG_CACHE_HOME=$XDG_CACHE_HOME" >> $GITHUB_ENV
+        export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+        echo "XDG_CONFIG_HOME=$XDG_CONFIG_HOME" >> $GITHUB_ENV
+
+        # Create directories for fontconfig user config, cache
+        mkdir -p $XDG_CACHE_HOME/fontconfig
+        mkdir -p $XDG_CONFIG_HOME/fontconfig
+
+        # Create the directory fonts, if not created by a checkout above
+        mkdir -p fonts
+
+        # Write fontconfig user configuration
+        cat <<EOF >$XDG_CONFIG_HOME/fontconfig/fonts.conf
+        <?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+        <fontconfig><dir>$(pwd)/fonts</dir></fontconfig>
+        EOF
 
     - name: Download Tahoma font
       working-directory: fonts
       # https://askubuntu.com/a/733405/141059
       # https://sourceforge.net/projects/corefonts/files/OldFiles/IELPKTH.CAB
       run: |
-        pwd
         curl -O https://master.dl.sourceforge.net/project/corefonts/OldFiles/IELPKTH.CAB?viasf=1
         cabextract -F 'tahoma*ttf' IELPKTH.CAB
         ln -s tahoma.ttf Tahoma.ttf
         ln -s tahomabd.ttf "Tahoma Bold.ttf"
 
     - name: Scan fonts with fontconfig
-      working-directory: fonts
-      run: fc-cache -v .
+      run: fc-cache -v
 
     - name: Check fonts available
       run: fc-list | sort
