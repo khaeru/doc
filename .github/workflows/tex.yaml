@@ -37,11 +37,11 @@ jobs:
         path: ref
         token: ${{ secrets.GH_PAT_REFS }}
 
-    - name: Check out Google fonts
-      uses: actions/checkout@v3
-      with:
-        repository: google/fonts
-        path: fonts
+    # - name: Check out Google fonts
+    #   uses: actions/checkout@v3
+    #   with:
+    #     repository: google/fonts
+    #     path: fonts
 
     - name: Configure fontconfig
       run: |
