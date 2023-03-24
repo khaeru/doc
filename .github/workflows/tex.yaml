@@ -43,7 +43,7 @@ jobs:
         repository: google/fonts
         path: fonts
 
-    - name: Install packages
+    - name: Configure fontconfig
       run: |
         apt update
 
@@ -72,6 +72,7 @@ jobs:
       # https://askubuntu.com/a/733405/141059
       # https://sourceforge.net/projects/corefonts/files/OldFiles/IELPKTH.CAB
       run: |
+        apt install -y cabextract
         curl -o IELPKTH.CAB https://master.dl.sourceforge.net/project/corefonts/OldFiles/IELPKTH.CAB?viasf=1
         cabextract -F 'tahoma*ttf' IELPKTH.CAB
         ln -s tahoma.ttf Tahoma.ttf
