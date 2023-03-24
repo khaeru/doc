@@ -5,7 +5,9 @@ include common.mk
 SUBDIRS = 0_demo \
 	2020/09-10 \
 	2021 \
-	"2021/06-23\ ISSST"
+	"2021/06-23\ ISSST" \
+	2022 \
+	2023
 
 # Default target: all subdirectories
 all: subdirs
