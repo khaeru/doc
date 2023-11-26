@@ -198,7 +198,7 @@ We start by defining each of the distinct concepts that occur in our data:
 .. ipython:: python
 
     import sdmx
-    from sdmx import model
+    import sdmx.model.v21 as model
 
     emission = model.Concept(
         id="EMISSION",
@@ -273,7 +273,6 @@ Both dimensions refer to the same concept (species), but we give them different 
         dim = model.Dimension(
             concept_identity=species_concept,
             id=id,
-            name=name,
             order=order,
         )
         dsd.dimensions.append(dim)
