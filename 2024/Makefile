@@ -1,7 +1,8 @@
 include ../common.mk
 
-# Use XeLaTeX; provide shell-escape for the minted package
-LATEXMK_OPTS += -xelatex -shell-escape
+# - Use LuaLaTeX for emoji package.
+# - Provide shell-escape for the minted package.
+LATEXMK_OPTS += -lualatex -shell-escape
 
 all: 02-14_TIGER.pdf
 	for f in $^; do \
