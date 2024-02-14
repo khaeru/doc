@@ -1,0 +1,690 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+
+\usetheme{iiasa}
+
+\usepackage{xcolor}
+\usepackage{minted}
+\setminted{
+  fontsize=\footnotesize,
+}
+\renewcommand{\mod}[1]{\mintinline{python}{#1}}
+\newcommand{\func}[1]{\mintinline{python}{#1()}}
+\newcommand{\py}[1]{\mintinline{python}{#1}}
+
+\usepackage{emoji}
+
+\title{Test-wrItinG for rEproducible Research \emoji{tiger}}
+\institute{IIASA Energy, Climate, and Environment program}
+
+\date{Wednesday, 14 February 2024}
+
+\author{\texorpdfstring{Paul Natsuo Kishimoto \scriptsize\newline
+  \href{mailto:kishimot@iiasa.ac.at}%
+       {\ttfamily <kishimot@iiasa.ac.at>}}%
+  {Paul Natsuo Kishimoto <kishimot@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Motivation, goals, expectations}
+Motivation:
+
+\bigskip
+We would like to do \structure{\bfseries research that provides a valid, scientific basis} for other research or policy-making.
+\begin{itemize}
+  \item Models and analysis implemented in reproducible, reusable, extensible code.
+  \begin{itemize}
+    \item Code that behaves in well-defined ways, as documented and expected.
+    \begin{itemize}
+       \item Testing, continuous integration (CI), and other quality control (QC) practices.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\pause
+Reduce time costs of debugging pieces of code (→models→research) within overall workflows (even if those are not reproducible), including:
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\framebreak
+Expectations: Participants should…
+\begin{itemize}
+  \item know Python, pandas, the MESSAGEix stack, and basic usage of a command-line interface.
+  \item have desire and intent to learn.
+\end{itemize}
+
+\medskip
+Objectives: Participants will…
+\begin{itemize}
+  \item feel comfortable using pytest in daily development.
+  \item read and comprehend the MESSAGEix-stack test suites, \mod{.testing} modules, and documentation.
+  \item use extant tests as a guide to emulate in writing new tests.
+  \item communicate clearly and fluently about testing while developing new research code.
+\end{itemize}
+\end{frame}
+
+\section{Test-driven development with pytest: basics}
+% How to use pytest efficiently when developing: beginner/intermediate/advanced
+\begin{frame}[allowframebreaks,fragile]{Example: writing a new function}
+
+We begin with a textual \structure{description of what we want the code to do}.
+
+\medskip
+When writing new code, we \emph{always} have such a description, although sometimes it is only implicit (if so: speak it to your \emoji{baby-chick}).
+
+\medskip
+For example: Let's write a function that receives a pd.Series and returns a pd.DataFrame with both the original values, and the originals divided by two.
+
+\framebreak
+We start by writing \emph{only} the \structure{function signature}:
+\begin{minted}{python}
+import pandas as pd
+
+def orig_and_half(input: pd.Series) -> pd.DataFrame:
+    """Return `input` and half of `input` as two columns."""
+    raise NotImplementedError
+\end{minted}
+Already at this stage, \structure{type hints} can be exactly that: a hint to ourselves.
+If our IDE supports using a type checker like `mypy', we will get real-time feedback as we type out this function if we:
+\begin{enumerate}
+  \item Do things to \verb|input| that are not valid on a pd.Series.
+  \item Fail to return the expected pd.DataFrame.
+\end{enumerate}
+
+Even if we forgot to write the \structure{docstring}, the hints remind what the function should do.
+\end{frame}
+
+\begin{frame}[fragile]{Write a minimal test \textbf{first}}
+We \structure{immediately} create a matching file/submodule for tests.
+
+\medskip
+If our original code was in \verb|message_ix_models.tools.foo|, we create our test module at \verb|message_ix_models.tests.tools.test_foo|. This parallel name makes the tests easy to find from the code and vice versa.
+
+\medskip
+The parallelism continues in the name of the test function:
+\begin{minted}{python}
+from message_ix_models.tools.foo import orig_and_half
+
+def test_orig_and_half():
+    orig_and_half()
+\end{minted}
+
+\medskip
+Quiz: what will happen if we run this test?\pause
+
+→ \structure{TypeError}, because we call the function with no arguments when 1 is required.
+\end{frame}
+
+\begin{frame}[fragile]{Run the test}
+For this, we can use:
+\begin{itemize}
+    \item \href{watchexec}{https://watchexec.github.io}, a handy tool that re-runs a command on any change to certain files.
+    \item The \href{https://docs.pytest.org/en/stable/reference/reference.html\#command-line-flags}{\texttt{pytest -k} command-line option}.
+\end{itemize}
+
+\begin{verbatim}
+watchexec -e py -- "pytest -k 'orig_and_half' -rA -vv"
+\end{verbatim}
+This command:
+\begin{itemize}
+  \item Re-runs automatically on changes to files with the "py" extension.
+  \item Runs only tests that have \verb|orig_and_half| in the name.
+  \item Reports "A"ll output—even for passing tests—and is "v"ery "v"erbose.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks,fragile]{Complete the test}
+We can do this incrementally.
+Each time we save the file with changes, \verb|watchexec| and \verb|pytest| show us how we're doing.
+
+\medskip
+First, give the function some input:
+\begin{minted}{python}
+import pandas as pd
+
+def test_orig_and_half():
+    # Create input data
+    input = pd.Series([1, 2, 4])
+    
+    # Function runs
+    orig_and_half(input)
+\end{minted}
+
+\framebreak
+Next, store and check its output:
+\begin{minted}{python}
+import pandas as pd
+
+def test_orig_and_half():
+    # Create input data
+    input = pd.Series([1, 2, 4])
+    # Expected corresponding output
+    exp = pd.DataFrame([[1, 0.5], [2, 1.0], [4, 2.0]])
+    
+    # Function runs
+    result = orig_and_half(input)
+
+    # Result is as expected
+    assert exp == result
+\end{minted}
+
+\framebreak
+And improve by using \structure{test utilities}, in this case from \href{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.testing.assert_frame_equal.html}{pandas.testing}.
+
+\begin{minted}{python}
+...
+import pandas.testing as pdt
+
+def test_orig_and_half():
+    ...
+    
+    # Function runs
+    result = orig_and_half(input)
+
+    # Result is as expected
+    pdt.assert_frame_equal(exp, result)
+\end{minted}
+\end{frame}
+
+\begin{frame}{Write code!}
+Now we can dive in on actually writing our function \mintinline{python}{orig_and_half()}.
+
+\medskip
+At some point, we will notice that our test is passing, and find that we have completed the function.
+
+\smallskip
+Exercise: Do this yourself.
+
+\medskip
+As we expand the function's features (what we expect it to do), we can:
+\begin{itemize}
+  \item Add or change the inputs and expected outputs in the test function.
+  \item Adjust the function signature and the way it is called in the test.
+  \item Parametrize the test function or add additional test functions to test different combinations of arguments.
+\end{itemize}
+\pause\smallskip
+Exercise: Compare with your neighbour. Are your functions the same? What test assertions could you add to check that behaviour is identical?
+\end{frame}
+
+\section{Good practices 1: intermediate}
+\subsection{Reduce complexity → easier to test}
+\begin{frame}[fragile]{A note on complexity}
+We've talked before about cyclomatic (McCabe) complexity:
+\begin{minted}{python}
+def myfunc(input, option_a: bool, option_b: bool):
+    if option_a:
+        return input * 1
+    else:
+        if option_b:
+            return input ** 2
+        else:
+            return input % 3
+\end{minted}
+\begin{itemize}
+    \item What is the complexity of this code?
+    \item How many tests (or cases) are required to ensure that the function works as intended?
+\end{itemize}
+
+\medskip
+Instead of struggling to write many tests for complex code, first \structure{make the code less complex} (for instance, break pieces out into separate functions).
+
+\hspace{14mm}Then: test the less-complex pieces, which will be easier.
+\end{frame}
+
+\subsection{Use fixtures and utilities}
+\begin{frame}[fragile]{Use fixtures and utilities}
+The \href{https://docs.pytest.org/en/stable/how-to/fixtures.html}{pytest fixture HOWTO} is great.
+Read, bookmark, and re-read it!
+
+\medskip
+\begin{columns}[T]
+\column{0.45\paperwidth}
+A test often has this structure:
+
+\medskip
+\begin{minted}{python}
+def test_orig_and_half():
+    # A: Set up inputs and outputs
+    ...  
+    # B: Function runs
+    result = orig_and_half(input)
+    # C: Assertions about `result`
+    ...
+\end{minted}
+
+\column{0.45\paperwidth}
+If “A" and “C" are dozens of lines, then the test is not a clear expression of what \mintinline{python}{orig_and_half()} should do.
+
+\medskip
+Instead, split "A" to 1 or more fixtures, or \structure{search for/build on} an existing one.
+This is useful even if the fixture is used only in 1 test.
+\end{columns}
+
+\medskip
+Split "C" to test utility functions, or \structure{search for/build on} an existing one.
+
+\medskip
+Example: \href{https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.testing.assert_frame_equal.html}{\mintinline{python}{pandas.testing.assert_frame_equal()}} (click "[source]") is ~200 lines itself—but only 1 line in your test.
+\end{frame}
+
+\subsection{Group and name tests}
+\begin{frame}[fragile]{Group and name tests}
+Pytest follows \href{https://docs.pytest.org/en/7.1.x/explanation/goodpractices.html\#conventions-for-python-test-discovery}{a simple, well-documented scheme} for naming tests.
+
+\begin{columns}[T]
+\column{0.45\paperwidth}
+Using this scheme and keeping code and tests \structure{sorted alphabetically} makes it easy to find, modify, and run tests.
+
+\medskip
+In \mod{message_ix.tools.foo}:
+\begin{minted}{python}
+class Foo:
+    def __init__(self): ...
+    def bar(self, input): ...
+    def baz(self, **kwargs): ...
+\end{minted}
+
+\column{0.45\paperwidth}
+In \mod{message_ix.test.tools.test_foo}:
+\begin{minted}{python}
+class TestFoo:
+    @pytest.fixture
+    def obj(self):
+        """An instance of Foo."""
+        return Foo()
+
+    def test_init(self): ...
+    def test_bar(self, obj): ...
+    def test_baz0(self, obj): ...
+    def test_baz1(self, obj): ...
+\end{minted}
+\end{columns}
+\begin{description}
+  \item [\mintinline{shell}{pytest -k Foo}] → match “TestFoo" → all tests of the class.
+  \item [\mintinline{shell}{pytest -k _baz}] → match tests of \func{.baz} methods of any class.
+  \item [\mintinline{shell}{pytest -k 'Foo and _b'}] → match tests of 2+ Foo methods.
+\end{description}
+\end{frame}
+
+\section{The MESSAGEix stack: test suites and tools for testing}
+\begin{frame}[fragile]{General concepts}
+Within one Python package:
+\begin{itemize}
+  \item Functions, classes in \mod{ixmp} are tested in \mod{ixmp.tests}.
+  \item \mod{ixmp.testing} provides things needed for \mod{ixmp.tests}:
+  \begin{itemize}
+    \item Pytest configuration and hooks.
+    \item Fixtures specific to \mod{ixmp}.
+    \item Functions (assertions, test data setup, etc.) specific to \mod{ixmp}.
+  \end{itemize}
+\end{itemize}
+
+\medskip
+Across packages:
+\begin{itemize}
+  \item \mod{message_ix} depends on \mod{ixmp}, \structure{\bfseries therefore:}
+  \item Same relationships to \mod{message_ix.tests} and \mod{message_ix.testing}.
+  \item \mod{message_ix.tests} can use fixtures and utilities from \mod{ixmp.tests}, \mod{ixmp.testing}. (But not vice versa.)
+  \item \mod{message_ix.testing} can extend utilities from \mod{ixmp.testing}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Quiz}
+Apply this same logic to understand the relationships of:
+
+\begin{itemize}
+  \item \mod{message_data} to \mod{message-ix-models}.
+  \item \mod{message-ix-models} to \mod{pandas}.
+  \item \mod{ixmp} to \mod{genno}.
+\end{itemize}  
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Valid and robust vs. experimental}
+Code in \mod{message_data} and other project-specific repos is often:
+\begin{itemize}
+  \item Experimental, incomplete,
+  \item Only known to work (if at all):
+  \begin{itemize}
+      \item in a certain person's environment and system; including with specific versions of dependencies.
+      \item as integrated within certain workflow(s).
+      \item on certain input data file(s).
+      \item at a certain point in time (months or years ago).
+  \end{itemize}
+  \item Undocumented as to expected behaviour and the above intended use.
+\end{itemize}
+
+\framebreak
+As we go \structure{lower} in the stack \textbf{or} make stronger claims that our code is \structure{scientifically valid} and \structure{FAIR}, it is increasingly critical that our code:
+\begin{itemize}
+    \item works with all declared supported operating systems, Pythons, and versions of dependencies.
+    \item works (or errors in a clear, informative way) on all conceivable input data.
+    \item is fully documented as to behaviour and any limitations (=methods).
+\end{itemize}
+
+\bigskip
+Testing helps us move code from the former condition to the latter.
+
+\medskip
+Our internal standard for thoroughness of testing varies.
+It depends on where along this spectrum we intend that code should be.
+\end{frame}
+
+\begin{frame}[plain]
+
+% \hspace{-10mm}
+\includegraphics[height=\paperheight]{Flying\_machine\_patent.jpg}
+
+\end{frame}
+
+\begin{frame}[plain]
+
+% \hspace{-10mm}
+\includegraphics[height=\paperheight]{CMS\_at\_CERN\_2\_(40461224333).jpg}
+
+\end{frame}
+
+\begin{frame}{\ttfamily genno}
+\framesubtitle{\href{https://genno.readthedocs.io/en/latest/api.html\#module-genno.testing}{\ttfamily genno.testing}}
+
+Fixtures:
+\begin{description}
+  \item [\py{test_data_path}] path to genno's test data. Construct \emph{sub-}paths only in tests.
+\end{description}
+
+\medskip
+Assertions:
+\begin{description}
+  \item [\func{assert_qty_{allclose,equal}}] analogous to \func{pandas.testing.assert_series_*}
+  \item [\func{assert_units}] ensure that model-building or reporting computations yield units with correct dimensionality.
+  \item [\func{assert_logs}] a\structure{context manager} (\py{with assert_logs(...): ...}: code in the block runs but emits certain log messages.
+  \item [\func{raises_or_warns}] another context manager.
+\end{description}
+
+\end{frame}
+
+\begin{frame}{\ttfamily ixmp}
+\framesubtitle{
+\href{https://docs.messageix.org/projects/ixmp/en/stable/api.html\#module-ixmp.testing}{\ttfamily ixmp.testing}}
+
+Fixtures:
+\begin{description}
+  \item [\py{tmp_env}] modify \textbf{IXMP\_DATA} test I/O and config happens in a temp directory → isn't affected by user's config/files.
+  \item [\py{test_mp}] empty platform connected to an in-memory (only) database → fast.
+\end{description}
+
+\medskip
+Utilities:
+\begin{description}
+  \item [\py{make_dantzig(mp) -> ixmp.Scenario}] set up a plain-\mod{ixmp} (non-MESSAGE) version of the classic Dantzig cannery/transportation LP
+  \item [\func{run_notebook}] execute a Jupyter notebook (IPython, IR, or any other kernel) and make assertions about certain cells' outputs.
+\end{description}
+
+\medskip
+Quiz: How could you use \mod{test_mp} and \func{make_dantzig} together?
+
+\hspace{12mm} What would this provide for your test function?
+\end{frame}
+
+\begin{frame}{\ttfamily message\_ix}
+\framesubtitle{
+\href{https://docs.messageix.org/en/latest/api.html\#module-message_ix.testing}{\ttfamily message\_ix.testing}}
+
+Fixtures:
+Few global fixtures; but heavy use of fixtures from \mod{ixmp.testing}.
+\begin{description}
+  \item [\py{message_ix_cli}] uses the \py{click.CliRunner} test utility in a temporary environment.
+  Allows to invoke the \ttfamily{message-ix} command-line interface (for instance, \ttfamily{message-ix show-versions}), capture result and exit code, and make assertions about these.
+\end{description}
+
+\medskip
+Utilities:
+\begin{description}
+  \item [\py{make_{austria,dantzig,westeros}() -> message_ix.Scenario}] make and optionally solve these well-defined scenarios.
+\end{description}
+
+\medskip
+Examples:
+\begin{enumerate}
+  \item \href{https://github.com/iiasa/message_ix/blob/a488b8a/message_ix/tests/test_report.py\#L103-L146}{\func{message_ix.tests.test_report.test_reporter_from_westeros}}
+  \item \href{https://github.com/iiasa/message_ix/blob/a488b8a87ac34162da05577b0edd5f1012a33d1a/message_ix/tests/test_cli.py\#L11-L50}{\func{message_ix.tests.test_cli.test_copy_model}}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{\ttfamily message-ix-models}
+\framesubtitle{\href{https://docs.messageix.org/projects/models/en/latest/api/testing.html}{\ttfamily message\_ix\_models.testing}}
+
+Fixtures:
+\begin{description}
+  \item [\py{test_context}] a temporary instance of the \href{https://docs.messageix.org/projects/models/en/latest/api/util.html\#message_ix_models.util.context.Context}{\py{Context}} class; scoped to an individual test function.
+  \item [\py{mix_models_cli}] another CliRunner. Since all \mod{message_data} CLI groups and commands are attached to message-ix-models, this can also be used there.
+\end{description}
+
+\medskip
+Utilities
+\begin{description}
+  \item [\py{bare_res(request, context, ...) -> message_ix.Scenario}] a scenario with \emph{all of the structure} of a MESSAGEix-GLOBIOM scenario (according to \py{context}), but empty of data.
+\end{description}
+\end{frame}
+
+\begin{frame}{\ttfamily message\_data}
+
+\structure{\bfseries No \mod{.testing} module}.
+\begin{itemize}
+  \item The \emph{scope and role} of \mod{message_data} is the same as \mod{message-ix-models}; the only difference is the former contains code/data that is not yet (or can never be) made public.
+  \item Therefore, anything generalizable across all of \mod{message_data} is also generalizable across all of \mod{message-ix-models}, and should go in \mod{message-ix-models.testing}.
+\end{itemize}
+
+\bigskip
+Code for specific model variants and projects may contain testing submodules.
+Example: \href{https://docs.messageix.org/projects/models-internal/en/latest/reference/model/_autosummary/message_data.model.transport.testing.html}{\mod{message_data.model.transport.testing}}
+
+\bigskip
+When these modules are later migrated to \mod{message-ix-models}, the testing submodule is carried along.
+\end{frame}
+
+\section{Good practices 2: intermediate/advanced}
+\subsection{Parametrize}
+\begin{frame}{Parametrize}
+\framesubtitle{\mintinline{python}{@pytest.mark.parametrize()}}
+
+\begin{itemize}
+  \item Give 1 or more arguments to a test function, from a Python sequence.
+  \item These can be \structure{inputs or outputs} for the target function.
+  \item Ask: “What are all the ways we might use this function?”
+  \item “What mistakes might I make in using this function?”
+\end{itemize}
+
+\medskip
+Examples:
+\begin{enumerate}
+  \item tests of
+\href{https://github.com/iiasa/message_ix/blob/a488b8a/message_ix/tests/test_core.py\#L112-L205}{\func{message_ix.Scenario.add_horizon}}
+  \item \href{https://github.com/iiasa/message-ix-models/blob/d985e5d/message_ix_models/tests/project/test_ssp.py\#L134-L158}{\func{message_ix_models.….TestSSPUpdate.test_prepare_computer}} —use parametrize 2+ times → Cartesian product.
+\end{enumerate}
+
+\end{frame}
+
+\subsection{Use xfail and other marks}
+\begin{frame}{Use xfail and other marks}
+\framesubtitle{\mintinline{python}{@pytest.mark.xfail(raises=ValueError, reason="Incomplete")}}
+
+\begin{itemize}
+  \item Also \mintinline{python}{@pytest.mark.skipif()}, others.
+  \item Again, great docs: \url{https://docs.pytest.org/en/stable/how-to/mark.html}
+  \item Write a test that will not pass yet—e.g. an integration test of 2+ functions, when you have not written either.
+  \item Temporarily \& explicitly confirm certain tests will fail while code is refactored.
+  \item Group tests to be (de)selected with the \textbf{pytest -m} command-line option.
+\end{itemize}
+
+\bigskip
+Examples:
+\begin{enumerate}
+\item \href{https://github.com/iiasa/message_ix/blob/a488b8a/message_ix/tests/test_core.py\#L112-L186}{\func{message_ix.tests.test_core.test_add_horizon}} —combine parametrization and marks.
+\end{enumerate}
+\end{frame}
+
+\subsection{Isolate/avoid leakage}
+\begin{frame}[fragile]{Isolate/avoid leakage}
+\begin{columns}[T]
+\column{0.45\paperwidth}
+\begin{minted}{python}
+from pathlib import Path
+
+def test_a():
+    p = Path("file.txt")
+    assert not p.exists()
+    p.write_text("Hello, world!")
+    t = p.read_text()
+    assert t.endswith("!")
+\end{minted}
+
+\column{0.45\paperwidth}
+\begin{minted}{python}
+from pathlib import Path
+
+def test_b():
+    p = Path("file.txt")
+    assert not p.exists()
+    p.write_text("How are you?")
+    t = p.read_text()
+    assert t.endswith("?")
+\end{minted}
+\end{columns}
+
+\medskip
+How can these tests be troublesome?\pause
+\begin{itemize}
+  \item If run in sequence, one test will find the file made by the other and fail.
+  \item If run in parallel (using \href{https://pytest-xdist.readthedocs.io/en/latest/}{pytest-xdist} as we do) one test could have "file.txt" open for writing at the time the other tries to open/write it.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Isolate/avoid leakage II}
+As a general rule: tests should not alter anything external to them—the user's file system, environment variables, global settings, etc.
+
+\medskip
+Many ways to avoid this, mainly by using fixtures: from pytest, third-party packages, ours, or your own.
+\begin{columns}[T]
+\column{0.45\paperwidth}
+\begin{minted}{python}
+from pathlib import Path
+
+def test_a(tmp_path):
+    # File in a per-test
+    # temporary directory
+    p = tmp_path.joinpath("file.txt")
+    assert not p.exists()
+    p.write_text("Hello, world!")
+    t = p.read_text()
+    assert t.endswith("!")
+\end{minted}
+
+\column{0.45\paperwidth}
+\begin{itemize}
+  \item \href{https://docs.pytest.org/en/stable/reference/reference.html\#pytest.FixtureRequest.node}{\ttfamily request} fixture and \mintinline{python}{request.node.name} to get a unique string like "test\_foo.py::test\_bar[case1]".
+  \item \href{https://docs.pytest.org/en/stable/how-to/monkeypatch.html\#monkeypatching}{\ttfamily monkeypatch} to modify attributes or elements of global objects—then restore the original values, regardless of whether a test passes or fails.
+\end{itemize}
+
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Isolation example}
+\framesubtitle{\href{https://github.com/iiasa/ixmp/blob/049689a/ixmp/tests/core/test_scenario.py\#L22-L30}{\mod{ixmp.tests.core.test_scenario.scen_empty} fixture}}
+
+\py{request} is a Pytest built-in fixture. \py{request.node.name} identifies 'node'—the particular test function \emph{and} parametrization of it—as a string, for instance:
+\begin{minted}{text}
+ixmp/tests/backend/test_jdbc.py::TestJDBCBackend::test_init_item[COST_NODAL_NET-idx_sets2]
+ixmp/tests/backend/test_jdbc.py::TestJDBCBackend::test_init_item[DEMAND-idx_sets3]
+\end{minted}
+
+\medskip
+The node name is guaranteed unique for the entire package.
+
+\medskip
+\mintinline{python}{ixmp.Scenario(..., model=request.node.name, ...)} this will \emph{never} be generated by another request for this \py{scen_empty} fixture.
+\end{frame}
+
+\subsection{Move toward fuzzing}
+\begin{frame}{Move toward ‘fuzzing’}
+Formally, \href{https://en.wikipedia.org/wiki/Fuzzing}{‘fuzzing’} includes a range of practices such as giving “aggressively incorrect” inputs to code to ensure it is robust against malicious use.
+
+\medskip
+For our purposes, most useful to consider a hierarchy of quality:
+\begin{enumerate}
+    \item Code works when run on certain input data, in a specific workflow that you run in your environment (“experimental”).
+    \item Code works when run by a colleague (outside of your environment).
+    \item Code works \structure{within a test/test suite} (outside of the workflow).
+    \item Code works when run on \structure{different input data} (not the data from your workflow) ($N=2$).
+    \item Code works when run on \structure{generated input data} ($N \gg 2$).
+    \item Code works when run on  \structure{\textbf{‘fuzzed’} (random) input data} ($N \rightarrow \infty$).
+\end{enumerate}
+
+\medskip
+\hspace{14mm}→ Moving from (1–2) to (3–6) makes methods genuinely reusable.
+\end{frame}
+
+\subsection{Split unit and integration tests}
+\begin{frame}{Split unit and integration tests}
+
+Previous slide (1), if written down, is a kind of \emph{\textbf{manual} integration test}: “run such-and-such command or script, get a result with such-and-such characteristics”.
+
+\smallskip
+A test (in pytest, or a continuous integration/GitHub Actions workflow) that \emph{automates} this is an automated integration test.
+
+\medskip
+\begin{itemize}
+  \item Any one tests is \structure{either an \textbf{integration} or \textbf{unit}} test.
+  \item Code that has only one kind \structure{does not have} the other.
+  \item Code \structure{should have both} kinds of tests.
+\end{itemize}
+
+\medskip
+If integrated systems are large and complex, \structure{intermediate-scope} integration tests are also useful.
+More thorough (e.g. fuzzed) testing of smaller code units also supports generalizing the larger system.
+\end{frame}
+
+\section{Hands-on: write or improve a test}
+\begin{frame}[fragile]{Hands-on: write/improve a test}
+
+\begin{enumerate}
+  \item Choose a piece of code you wrote or use—perhaps one where the behaviour has been perplexing.
+  \item Locate existing tests of that code (if any).
+  \item Improve the tests:
+  \begin{itemize}
+    \item Add missing tests.
+    \item Add parametrized cases to an existing test.
+    \item Simplify overly long/complicated tests.
+    \item Collect duplicated code in a fixture or utility function.
+  \end{itemize}
+\end{enumerate}
+
+\medskip
+We will stop at $3N+5$ minutes to the hour (N is the number of participants).
+Each can show a \verb@git diff@ of their improvements.
+
+\smallskip
+Please ask questions and discuss with your neighbours.
+\end{frame}
+
+\section*{Thank you!}
+
+\begin{frame}{Credits}
+
+Fridolin Glatter —comments and feedback
+
+\medskip
+Images:
+\begin{itemize}
+  \item \href{https://commons.wikimedia.org/wiki/File:CMS_at_CERN_2_(40461224333).jpg}{CMS\_at\_CERN\_2\_(40461224333).jpg} —Ryan Bodenstein via Wikimedia Commons.
+  \item \href{https://commons.wikimedia.org/wiki/File:Flying_machine_patent.jpg}{Flying\_machine\_patent.jpg} —public domain, via Wikimedia Commons.
+\end{itemize}
+\end{frame}
+
+\end{document}
