@@ -33,17 +33,17 @@ jobs:
         echo "$VENV/bin" >>$GITHUB_PATH
 
     - name: Check out source
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Check out personal TeX resources
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: khaeru/tex
         path: tex
         submodules: true
 
     - name: Check out BibTeX database
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: khaeru/bibliography
         path: ref
@@ -115,7 +115,7 @@ jobs:
         make --jobs=${{ steps.cpu-cores.outputs.count }}
 
     - name: Upload compiled documents as a build artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Documents
         path: output/*
