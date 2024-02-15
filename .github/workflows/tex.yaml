@@ -17,7 +17,7 @@ jobs:
     container: texlive/texlive:latest
 
     steps:
-    - uses: SimenB/github-actions-cpu-cores@v1
+    - uses: SimenB/github-actions-cpu-cores@v2
       id: cpu-cores
 
     - name: Install Python in container
