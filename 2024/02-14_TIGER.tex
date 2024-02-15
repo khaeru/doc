@@ -50,7 +50,7 @@ We would like to do \structure{\bfseries research that provides a valid, scienti
 \pause
 Reduce time costs of debugging pieces of code (→models→research) within overall workflows (even if those are not reproducible), including:
 \begin{itemize}
-    \item 
+    \item
 \end{itemize}
 
 \framebreak
@@ -152,7 +152,7 @@ import pandas as pd
 def test_orig_and_half():
     # Create input data
     input = pd.Series([1, 2, 4])
-    
+
     # Function runs
     orig_and_half(input)
 \end{minted}
@@ -167,7 +167,7 @@ def test_orig_and_half():
     input = pd.Series([1, 2, 4])
     # Expected corresponding output
     exp = pd.DataFrame([[1, 0.5], [2, 1.0], [4, 2.0]])
-    
+
     # Function runs
     result = orig_and_half(input)
 
@@ -184,7 +184,7 @@ import pandas.testing as pdt
 
 def test_orig_and_half():
     ...
-    
+
     # Function runs
     result = orig_and_half(input)
 
@@ -252,7 +252,7 @@ A test often has this structure:
 \begin{minted}{python}
 def test_orig_and_half():
     # A: Set up inputs and outputs
-    ...  
+    ...
     # B: Function runs
     result = orig_and_half(input)
     # C: Assertions about `result`
@@ -343,7 +343,7 @@ Apply this same logic to understand the relationships of:
   \item \mod{message_data} to \mod{message-ix-models}.
   \item \mod{message-ix-models} to \mod{pandas}.
   \item \mod{ixmp} to \mod{genno}.
-\end{itemize}  
+\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Valid and robust vs. experimental}
