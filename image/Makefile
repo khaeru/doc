@@ -1,7 +1,7 @@
 include ../common.mk
 
 # PDF images to be generated from SVG; rule is in common.mk
-IMAGES = data-stages.pdf
+IMAGES = data-gap.pdf data-stages.pdf
 
 all: convert curl ignore
 
