@@ -31,7 +31,6 @@ LATEXMK = latexmk -r $(ROOT)/latexmkrc $(LATEXMK_OPTS)
 
 # Compile PDF from SVG using Inkscape
 %.pdf: %.svg
-	inkscape $< --export-pdf=$@
+	inkscape $< --export-filename=$@
 
-
-.PHONY: FORCE_LATEXMK
+.PHONY: clean-latex FORCE_LATEXMK
