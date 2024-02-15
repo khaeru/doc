@@ -217,21 +217,22 @@ Extending this notion from two to many, we can understand that “data quality�
 Data quality criteria can be informal, or highly systematized:
 
 - A data consumer says, “I've had trouble with other data from that Source X in the past; I expect this data is of low quality.”
-- A scientific method, calculations, etc. are applied to some data to produce a **metric**: another, quantitative data point, or points.
-  These are be compared to reference values to indicate whether the data quality is low, or high.
+- A scientific method, calculations, etc. are applied to some data to produce a (quantitative) **metric**: another data point, or points.
+  These are then compared to reference or threshold values to indicate whether the data quality is low, or high, or passes the criterion.
 
 Each of these may be valid and important in different circumstances, for different stakeholders.
 
 There are thus two broad categories of (meta)data operations:
 
 Apply one (atomic) data quality criterion
-   Example:
+   Examples:
+
    - Compute a metric and compare it to a reference value.
    - Check the identity of the data provider against a list of approved data providers.
    - Check the date of data collection against a target date.
 
 Combine criteria
-   Example: all observations that meet every one from specific list of *N* criteria are marked with an attribute or annotation like QUALITY=PASS; others are marked FAIL.
+   Example: all observations that meet every one from a specific list of *N* criteria are marked with an attribute or annotation like QUALITY=PASS; others are marked FAIL.
 
    This creates new metadata that can then be used by a `select`_ operation.
 
