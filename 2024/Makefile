@@ -3,7 +3,7 @@ include ../common.mk
 # Use LuaLaTeX for the "emoji" package
 LATEXMK_OPTS += -lualatex
 
-all: 02-14_TIGER.pdf
+all: 02-14_TIGER.pdf 05-29_MCM.pdf
 	for f in $^; do \
 	  cp $$f "$(OUT_DIR)2024-$$f" || echo "::warning file=$$(shell pwd)/$$f::Compile failed" \
 	; done
