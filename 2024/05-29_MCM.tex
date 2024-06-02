@@ -20,6 +20,7 @@
 \renewcommand*\bibfont{\small}
 \addbibresource{all.bib}
 
+\usepackage[export]{adjustbox}
 \usepackage{minted}
 \usepackage{pdfpages}
 
@@ -47,10 +48,10 @@
 \begin{frame}
 \frametitle{Outline}
 
-Briefly introduce MESSAGE\emph{ix}-Transport (MT).
+Briefly introduce MESSAGE\emph{ix}-Transport (MT) and its applications.
 
 \bigskip
-Challenges common to other IAMs and models:
+\structure{Three challenges} common to other IAMs and models:
 \begin{enumerate}
   \item Applicable for $\gg 1$ project; \structure{reusable} for many research questions.
   \item Integrates with other models/work conducted by a larger team.
@@ -58,7 +59,7 @@ Challenges common to other IAMs and models:
 \end{enumerate}
 
 \bigskip
-\structure{Two strategies} used for MT, also usable in similar cases:
+\structure{Two strategies} used for MT, also usable in those similar cases:
 \begin{enumerate}
   \item Modularity.
   \item Repeatable workflows.
@@ -66,10 +67,10 @@ Challenges common to other IAMs and models:
 
 \end{frame}
 
-\begin{frame}
-  \frametitle{Contents}
-  \tableofcontents
-\end{frame}
+% \begin{frame}
+%   \frametitle{Contents}
+%   \tableofcontents
+% \end{frame}
 
 \section{MESSAGEix-Transport — goals and structure}
 
@@ -78,14 +79,14 @@ Challenges common to other IAMs and models:
 
 A \structure{“variant”} of the MESSAGEix-GLOBIOM (M-G) model \structure{family}:
 \begin{itemize}
-  \item Not an entirely different model, but a ‘base’ M-G model with substantial modifications.
+  \item Not an entirely different model or a single model, but a set of modifications made to a ‘base’ M-G model.
   \item Transport systems represented \structure{in greater detail} than base M-G.
   \item Other parts—energy supply, land use, trade, etc.—unmodified.
   \item Evolved from the earlier (ca. 2017) model of \textcite{mccollum-2017}.
   \begin{itemize}
     \item Now called “MESSAGE (V)-Transport” to disambiguate.
 
-    “-ix”indicates use of the new MESSAGE\emph{ix} framework.%
+    “-ix” indicates use of the new MESSAGE\emph{ix} framework.%
     \footnote{\url{https://docs.messageix.org}}
   \end{itemize}
   \item Capable of representing a wide range of current \& future transport modes, technologies, policies, and other phenomena (next slide).
@@ -99,7 +100,7 @@ A \structure{“variant”} of the MESSAGEix-GLOBIOM (M-G) model \structure{fami
 \includegraphics[height=0.8\textheight]{de-weck-roos-magee-f3.1.png}
 
 \column{0.25\textwidth}
-M-T is \structure{less abstracted} than base M-G, but does not model, e.g. components of individual transport vehicles, or individual people.
+M-T is \structure{less abstracted} than base M-G, but does not model, for instance, components of individual transport vehicles, or individual people.
 
 \bigskip
 de Weck, Roos, \& Magee (2011), Fig 3.1, p.47.
@@ -107,7 +108,7 @@ de Weck, Roos, \& Magee (2011), Fig 3.1, p.47.
 \end{frame}
 
 \begin{frame}
-\frametitle{Some intended applications}
+\frametitle{Some current applications}
 \begin{description}
   \item [NAVIGATE project] Contrast different approaches (shift/reduce activity; electrify; improve technologies) to decarbonize sectors including ‘demand’ (transport, residential) and industry.
   \item [SSP 2024 update] Implement distinct narratives for each of the 5 SSPs, with close calibration to recent (2020 and later) data, and supply parametrization for the M-G base model.
@@ -124,15 +125,16 @@ de Weck, Roos, \& Magee (2011), Fig 3.1, p.47.
 \frametitle{Challenge 1: Many research questions}
 These applications entail research questions (RQs) like:
 \begin{itemize}
-  \item How will lifestyle changes influence energy demand from transport?
-  \item How do transport-sector demands for low-carbon energy carriers (electricity, biofuels, synfuels, ‘green’ hydrogen) compete with demands in other sectors under deep decarbonization?
+  \item How might behaviour changes affect travel activity and so transport energy use?
+  \item Under deep decarbonization, how does transport-sector use of low-carbon energy carriers (electricity, biofuels, synfuels, hydrogen) compete with demands in other sectors?
+  \item How different might transport energy use be across the SSPs?
 \end{itemize}
 
 \bigskip
 Models built from scratch for each of these RQs separately might look very different…but \structure{building new models is expensive} (in time, which $\approx$ money).
 
 \bigskip
-We'd rather have \emph{one} tool that is \structure{easily reusable} or extensible for all such applications—yet without being too complicated or unwieldy.
+We'd rather have \emph{one} tool that is \structure{easily reusable} or extensible for each such application—yet without the less-relevant pieces being too unwieldy.
 \end{frame}
 
 \begin{frame}
@@ -185,16 +187,23 @@ This is costly, and model results may reflect little besides our assumptions.
 
   → Allows to respond differently to data limitations in different parts of the transport system/existing sources.
   \item [Repeatable workflows] including tools (an “easy button” to build and solve the model) and practices (push the button often).
+
+  → Allows to flexibly accommodate and update different applications.
 \end{description}
+
+\medskip
+\hspace{15mm} Let's look at each in detail.
 \end{frame}
 
-\section{Modularity}
+\section{1: Modularity}
 
 \begin{frame}
 \frametitle{Modularity}
 
 Break methods (algorithms, steps, processes) down into \structure{atomic steps}.
-Methods for:
+
+\bigskip
+That includes methods for:
 \begin{itemize}
   \item Handling \structure{input data}—read files, clean, adjust, (dis)aggregate, harmonize, fill, extrapolate, etc.
   \item \structure{Implementing settings or assumptions} for specific scenarios or configuration (e.g. R12 nodes vs. ISR nodes).
@@ -212,8 +221,10 @@ Imagine these as a graph (tree, network) of nodes and edges.
 \column{0.48\textwidth}
 Example 1:
 
-\medskip
-{\LARGE $C = A + B$}
+\bigskip
+{\LARGE $A + B = C$}
+
+\bigskip
 \includegraphics[width=\columnwidth]{genno-ABC.pdf}
 
 \column{0.48\textwidth}
@@ -240,184 +251,316 @@ Instead of “a script” or “a notebook” of 100s or 1000s of lines of code,
 \end{itemize}
 
 \medskip
-Can be implemented using \texttt{genno}, based on \texttt{dask}.
+Implemented using \texttt{genno}, based on \texttt{dask}.
 \begin{itemize}
-  \item Tracks (very) long chains of calculations.
+  \item Same framework developed for ‘reporting’ in \texttt{message\_ix} \& co.
+  \item Tracks chains of calculations, arbitrarily long.
   \item Same functions/methods can be used \structure{regardless of dimensions, resolution, and units}.
   \item Easy to \structure{graft} different trees on to the graph to swap out methods.
-  \item Same framework used for reporting calculations in \texttt{message\_ix} \& co.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Dimension \& resolution agnostic}
-Recall: $A + B = C$
+Suppose: $A + B = C_{xyz} = [ c_{xyz} ], \quad c_{xyz} \in \mathbb{R} \, \forall \, x, y, z$
 
 \bigskip
-Dimensionality.
+\structure{Dimensionality.}
 \begin{itemize}
-  \item Suppose $A_{xyz} = [ a_{xyz} \in \mathbb{R} ] \quad \forall \quad x, y, z$.
-  \item If we choose—say, early in model-building—$B$ can be a scalar $b$.
-  \item Later on, we can choose (if we have data, or time to construct detailed assumptions based on a scenario narrative), $B$ can have dimensions like $\{x, z\}$: $B_{xz} = [ b_{xz} ]$.
-  \item \structure{Either way}, the code will align with $A$ to produce $C_{xyz}$ with the desired dimensions.
+  \item Suppose $A_{xyz} = [ a_{xyz} ]$, a 3-dimensional quantity.
+  \item If we choose (say, early in model-building), $B$ can be a scalar $b$.
+  \item Later on, we can choose (if we have data, or time to construct detailed assumptions based on a scenario narrative) that $B$ has dimensions like $\{x, z\}$: $B_{xz} = [ b_{xz} ]$.
+  \item \structure{Either way}, the code will align with $A$ to produce $C_{xyz}$ with the desired dimensions, with \structure{no adjustment required}.
   \item Further calculations on $C$ are independent of whether $B$ was scalar or a matrix.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Dimension \& resolution agnostic}
-Recall: $A + B = C$
+Suppose: $A + B = C_{xyz} = [ c_{xyz} ], \quad c_{xyz} \in \mathbb{R} \, \forall \, x, y, z$
 
 \bigskip
-Resolution.
+\structure{Resolution.}
 \begin{itemize}
   \item Suppose we change the labels on dimension $z$.
-  For instance: $z$ might be the MESSAGEix ‘node’, or ‘year’ dimension.
-  \item The code/methods need \structure{no adjustment}—so long as there is consistency with the rest of the input data (like $A_{xyz}$).
-  \item We can also automate steps to transform data to ensure this consistency: for instance, aggregate country-resolution GDP/capita to R12, R14, or to a different target list of codes.
+
+  For example: $z$ might be the MESSAGEix ‘node’ or ‘year’ dimension.
+  \item The methods (code, operators) need \structure{no adjustment}—so long as there is consistency with the rest of the input data (like $A_{xyz}$).
+  \item We can also automate steps to transform data to ensure this consistency: for instance, aggregate country-resolution GDP/capita from certain source labels to R12, R14, or to a different target list.
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{‘Graft’ on new methods}
 
-Examples:
 \begin{enumerate}
-  \item MESSAGEix-IL-Transport: replace the calculation method for ‘disutility’ (fixed behavioural factor affecting technology choice for LDVs) from base M-T with data computed from files specific to MESSAGEix-IL. (Presentation follows.)
-  \item ‘Demand’ logic: replace top-down calculation (per Schaeffer et al. 2010) of PDT per capita, the total, and the values for each transport mode with a bottom-up calculation based on trip rates, distances, etc.
+  \item [Ex. 1] MESSAGEix-IL-Transport: \structure{replace} the calculation method for ‘disutility’ (fixed behavioural factor affecting technology choice for LDVs) from base M-T
+
+  \structure{…with} data computed from files specific to MESSAGEix-IL. (See following talk by A. Davidovitch.)
+  \item [Ex. 2] ‘Demand’ logic: \structure{replace} top-down calculation (per Schaeffer et al. 2010) of PDT per capita, the total, and the values for each transport mode
+
+  \structure{…with} a bottom-up calculation based on trip rates, distances, etc.
 \end{enumerate}
 
-\midskip
-In each case, \texttt{genno} will feed the right
+\bigskip
+Requires only to tell \texttt{genno} that, for instance, “intermediate quantity \texttt{<pdt:n-t-y:total>} is given by running \emph{this} atomic function on \emph{these} inputs.”
+Flow of data in to and out of this step is automatically adjusted.
+\end{frame}
+
+\section{2: Reproducible workflows}
+
+\begin{frame}
+\frametitle{Reproducible workflows}
+
+Nearly every workflow for \structure{model-based research} can be broken down into the following steps:
+
+\bigskip
+\begin{enumerate}
+  \item Identify \structure{what is to be represented} and desired representation.
+  \item Identify a \structure{base scenario}: empty, or with some data from prior work.
+  \item \structure{Build} the target scenario from the base scenario.
+
+  May include running entire other models (“soft-linking”).
+  \item \structure{Solve} the built scenario.
+  \item \structure{Report} the scenario: any N-dimensional quantities, plots, or other outputs.
+  \item Inspect the direct (4) and reporting (5) outputs for validity, according to some criteria.
+  \item Cycle back to (1).
+\end{enumerate}
 
 \end{frame}
 
-\section{Reproducible workflows}
+\begin{frame}
+  \frametitle{Data flow in steps (3–5)}
+  \hspace*{-10mm}\includegraphics[width=\paperwidth]{data-stages.pdf}
+\end{frame}
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
+\frametitle{Reproducible workflows}
+\framesubtitle{Some observations (1 of 2)}
+
+\begin{columns}[T]
+\column{0.2\textwidth}
+\begin{enumerate}
+  \item \structure{Design}.
+  \item \structure{Base scenario}.
+  \item \structure{Build}.
+  \item \structure{Solve}.
+  \item \structure{Report}.
+  \item \structure{Validate}.
+  \item Cycle.
+\end{enumerate}
+
+\column{0.8\textwidth}
 \begin{itemize}
-  \item Now a different set of nodes/edges.
-  \item In our overall modeling workflow we generally have build / solve / report stages.
-  \item Sub-steps within these.
-  \item Additional steps like "add a carbon tax" —generic, not specific to M-T.
-  \item Every manual intervention in such a multi-step workflow increases cost of repeating the workflow.
+  \item All of these \emph{may} be done manually, but automation can help greatly.
+  \item Manual steps may not be repeatable w/o clear documentation.
+  \item Cost of manual steps scales if $\geq 2$ scenarios are run.
+  \item (4) might be skipped—\emph{ex ante} vs. \emph{ex post} validation.
+  \item Criteria (6) often vary greatly according to the intended application/RQs.
+  \item Shorter cycle time → more cycles → more refined outcomes and methods (e.g. sensitivity analyses) possible.
+  \item (3–5) may have sub-steps.
+\end{itemize}
+
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Reproducible workflows}
+\framesubtitle{Further observations (2 of 2)}
+
+\begin{columns}[T]
+\column{0.2\textwidth}
+\begin{enumerate}
+  \item \structure{Design}.
+  \item \structure{Base scenario}.
+  \item \structure{Build}.
+  \item \structure{Solve}.
+  \item \structure{Report}.
+  \item \structure{Validate}.
+  \item Cycle.
+\end{enumerate}
+
+\column{0.8\textwidth}
+Often we want to \structure{chain}, \structure{nest}, or \structure{merge} workflows.
+
+\smallskip
+Ex. 1: combine ‘build’ substeps from MESSAGEix-Transport and a workflow that sets up a specific (but generic) climate policy.
+
+\smallskip
+Ex. 2: combine ‘build’ substeps from the MESSAGEix-Transport, -Buildings, and -Materials workflows to produce a "B-M-T" target scenario.
+
+\smallskip
+Ex. 3: combine ‘report’ substeps for MESSAGEix-Transport and the base M-G model.
+
+\smallskip
+Ex. 4: ‘build’ the policy parametrization of one scenario based on the ‘solved’ or ‘reported’ outcome of another.
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Repeatable → reproducible}
+
+Again use the concepts of a chain of nodes (scenarios) and edges (workflow steps)—this time, at a higher level of abstraction.
+
+\bigskip
+Tooling: implemented in the \texttt{message-ix-models} Python package.
+
+See docs on \href{https://docs.messageix.org/projects/models/en/latest/api/workflow.html}{“Multi-scenario workflows”}.
+
+\bigskip
+Define atomic workflow steps → compose workflows using these.
+
+\bigskip
+Provide a \structure{command-line interface} to run entire workflows or portions; other tools to visualize, log, diagnose.
+\end{frame}
+
+\begin{frame}
+\frametitle{Example: MESSAGEix-IL-Transport}
+
+\begin{columns}
+\column{0.45\paperwidth}
+% \includegraphics[height=0.9\textheight, valign=top]{il-transport-workflow-1.png}
+
+See attached \structure{il-transport-workflow.svg} and \structure{….png}.
+Detail →
+
+\bigskip
+Workflow visualization shows:
+\begin{itemize}
+  \item Steps with function names (tied to implementation in Python code).
+  \item Names/labels of stages, e.g. “built” = the scenario resulting from the build step(s).
+  \item Config and context info (e.g. spatial/temporal scope and resolution) available to each step.
+\end{itemize}
+\column{0.45\paperwidth}
+\includegraphics[height=0.9\textheight, valign=top]{il-transport-workflow-2.png}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Practices based on the tools}
+
+\begin{quote}
+  Build an “easy button” and press it often.
+\end{quote}
+
+\bigskip
+Growing collection of atomic workflow steps \emph{and} composed full workflows for NAVIGATE, NGFS, MESSAGEix-IL, SSP, and other projects.
+
+\bigskip
+Fully-automated/hands-free end-to-end “continuous integration” on daily schedule/other triggers, using GitHub and the same CLI tool and commands used manually.
+\begin{itemize}
+  \item Build- and report-stage data files, plots, etc. generated on incremental changes to model input data and assumptions.
+  \item Enables rapid feedback and efficient use of researchers' time.
 \end{itemize}
 
 \end{frame}
 
-\begin{frame}
-\frametitle{Model workflow \& data flow}
-\hspace*{-10mm}\includegraphics[width=\paperwidth]{data-stages.pdf}
-\end{frame}
-
-\section{(older slides)}
-
-\includepdf[pages={10-12}]{../2021/12-01_IAMC.pdf}
-
-\section{Planned improvements}
-
-\subsection{Initial public release}
+\section*{Wrap-up}
 
 \begin{frame}
-  \frametitle{Initial public release}
+\frametitle{Tools + examples for other modelers}
 
-  Work beginning 2023-Q3, completing 2023-Q4.
+Current activity: SSP 2024 implementation → parameter data for base M-G.
 
-  \bigskip
-  Target:
-  \begin{itemize}
-    \item \texttt{message\_ix\_models.model.transport} —i.e. a module in the public MESSAGEix modeling tools repository, next to \texttt{.water} and others.
-    \item Complete documentation \& test suite.
-    \item Data prepped for R12 nodes, with clear declaration of data needs for application to other geographies.
-  \end{itemize}
+(See following talk by A. Javaid.)
+
+\bigskip
+Following immediately: release of \texttt{message\_ix\_models.model.transport}
+
+—a module in the public MESSAGEix modeling tools repository.
+\begin{itemize}
+  \item Parallel to \texttt{.water}, \texttt{.material} and others, and using the same processes.
+  \item Complete documentation \& test suite, and model description paper.
+  \item Data prepped for R12 nodes, with clear declaration of data needs for application to other geographies.
+\end{itemize}
+
+\bigskip
+In the meanwhile, \structure{please reach out}—we are happy to help others apply the same strategies in their modeling workflows and reap the same benefits.
 \end{frame}
-
-\subsection{Shared \& autonomous LDV techs}
-\subsection{Operational concept of ‘activity’}
-
-% Planned improvements
-\includepdf[pages={31-32}]{../2021/12-01_IAMC.pdf}
-
-\section{Energy services in general}
-
-\begin{frame}
-  \frametitle{Energy services in general}
-
-  \tableofcontents[currentsection]
-
-\end{frame}
-
-\subsection{MESSAGE/LP techniques for demand-side sectors}
-
-\begin{frame}[allowframebreaks]
-  \frametitle{LP techniques for demand-side sectors}
-
-  \bigskip
-  Original/natural mapping of the MESSAGEix \texttt{commodity}, and \texttt{technology} concepts:
-  \begin{itemize}
-    \item A measurable quantity of a physical object, e.g. \texttt{coal}.
-    \item A artifact/machine that performs a physical process, e.g. \texttt{coal\_ppl}.
-  \end{itemize}
-
-  \bigskip
-  \emph{Energy services} are often conceived as intangible (“health”, “access”), socio-cultural concepts measured as constructed quantities (“disability-adjusted life-year (DALY)” vs. “kg of coal”).
-
-  \framebreak
-  \structure{“Pseudo”}-technologies and commodities.
-  \begin{itemize}
-    \item Represent a quantity that is \emph{measurable} but perhaps not \emph{physical} as a “\texttt{commodity}”.
-    \item Express MESSAGEix \texttt{demand} in these commodities.
-    \item Represent a socio-technical process or relationship between two commodities (in the above sense) as a “\texttt{technology}”.
-  \end{itemize}
-
-  \bigskip
-  MESSAGEix-Transport example:
-  \begin{itemize}
-    \item Transport activity various measures (distance traveled by a vehicle; distance traveled by a person; trips) → \texttt{commodity}
-    \item “Usage” and “occupancy” of vehicles by people to obtain the energy service of passenger-distance traveled → \texttt{technology}.
-  \end{itemize}
-
-\end{frame}
-
-\subsection{Systems theory for global modeling}
-
-\begin{frame}[allowframebreaks]
-  \frametitle{Systems theory for global modeling}
-
-  In general, IAMs are always dependent on data and other models that treat the real-world phenomena in much greater detail, with domain-specific theory \& methods.
-
-  \bigskip
-  For example, in transport:
-  \begin{itemize}
-    \item Short-distance passenger: agent-based microsimulation of daily activity particular cities or model cities.
-    \item Interaction of land-use, built environment, and mobility: “ILUTE”.
-    \item Choice of vehicle technology or new modes (sharing, etc.):
-    \item Aviation: models of airport expansion, new aircraft technologies.
-    \item International freight: gravity models connecting ports.
-  \end{itemize}
-
-  \bigskip
-  How do we preserve the information/validity of these while connecting or emulating them in IAMs?
-
-  \bigskip
-  → Recall and apply engineering systems theory.
-\end{frame}
-
-% Systems slides
-\includepdf[pages={35-44}]{../2021/12-01_IAMC.pdf}
 
 \begin{frame}[plain]
-
   \centering \Huge \structure{\bfseries Thank you!}
-
 \end{frame}
 
-\begin{frame}
-  \frametitle{Contents}
-  \tableofcontents
+\appendix
+
+\begin{frame}{References}
+  \printbibliography[heading=none]
 \end{frame}
 
-% References
-\includepdf[pages={28}]{../2021/12-01_IAMC.pdf}
+% \section*{Older slides}
+
+% \includepdf[pages={10}]{../2021/12-01_IAMC.pdf}
+
+% % Planned improvements
+% \includepdf[pages={31-32}]{../2021/12-01_IAMC.pdf}
+
+% \section{Energy services in general}
+
+% \begin{frame}
+%   \frametitle{Energy services in general}
+
+%   \tableofcontents[currentsection]
+
+% \end{frame}
+
+% \subsection{MESSAGE/LP techniques for demand-side sectors}
+
+% \begin{frame}[allowframebreaks]
+%   \frametitle{LP techniques for demand-side sectors}
+
+%   \bigskip
+%   Original/natural mapping of the MESSAGEix \texttt{commodity}, and \texttt{technology} concepts:
+%   \begin{itemize}
+%     \item A measurable quantity of a physical object, e.g. \texttt{coal}.
+%     \item A artifact/machine that performs a physical process, e.g. \texttt{coal\_ppl}.
+%   \end{itemize}
+
+%   \bigskip
+%   \emph{Energy services} are often conceived as intangible (“health”, “access”), socio-cultural concepts measured as constructed quantities (“disability-adjusted life-year (DALY)” vs. “kg of coal”).
+
+%   \framebreak
+%   \structure{“Pseudo”}-technologies and commodities.
+%   \begin{itemize}
+%     \item Represent a quantity that is \emph{measurable} but perhaps not \emph{physical} as a “\texttt{commodity}”.
+%     \item Express MESSAGEix \texttt{demand} in these commodities.
+%     \item Represent a socio-technical process or relationship between two commodities (in the above sense) as a “\texttt{technology}”.
+%   \end{itemize}
+
+%   \bigskip
+%   MESSAGEix-Transport example:
+%   \begin{itemize}
+%     \item Transport activity various measures (distance traveled by a vehicle; distance traveled by a person; trips) → \texttt{commodity}
+%     \item “Usage” and “occupancy” of vehicles by people to obtain the energy service of passenger-distance traveled → \texttt{technology}.
+%   \end{itemize}
+
+% \end{frame}
+
+% \subsection{Systems theory for global modeling}
+
+% \begin{frame}[allowframebreaks]
+%   \frametitle{Systems theory for global modeling}
+
+%   In general, IAMs are always dependent on data and other models that treat the real-world phenomena in much greater detail, with domain-specific theory \& methods.
+
+%   \bigskip
+%   For example, in transport:
+%   \begin{itemize}
+%     \item Short-distance passenger: agent-based microsimulation of daily activity particular cities or model cities.
+%     \item Interaction of land-use, built environment, and mobility: “ILUTE”.
+%     \item Choice of vehicle technology or new modes (sharing, etc.):
+%     \item Aviation: models of airport expansion, new aircraft technologies.
+%     \item International freight: gravity models connecting ports.
+%   \end{itemize}
+
+%   \bigskip
+%   How do we preserve the information/validity of these while connecting or emulating them in IAMs?
+
+%   \bigskip
+%   → Recall and apply engineering systems theory.
+% \end{frame}
+
+% % Systems slides
+% \includepdf[pages={35-44}]{../2021/12-01_IAMC.pdf}
 
 \end{document}
