@@ -1,0 +1,190 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme{iiasa}
+
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{notes}}{\jobname}}{%
+\setbeameroption{show only notes}%
+}{
+%
+}
+
+\usepackage{minted}
+
+\title{Reporting in MESSAGEix}
+\subtitle{Motivation and basic example}
+\institute{Energy, Climate, and Environment (ECE) Program \\
+  International Institute for Applied Systems Analysis (IIASA)}
+
+\date{
+  \texorpdfstring{MESSAGE Capacity Building Workshop — Tuesday, 11 June 2024}%
+  {2024-06-11}}
+
+\author{\texorpdfstring{Paul Natsuo Kishimoto\scriptsize\newline
+  \href{mailto:paul.kishimoto@iiasa.ac.at}%
+       {\ttfamily <paul.kishimoto@iiasa.ac.at>}}%
+  {Paul Natsuo Kishimoto <paul.kishimoto@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+\frametitle{Context}
+
+These slides complement the \texttt{westeros\_baseline.ipynb} notebook included in the \href{https://docs.messageix.org/en/latest/tutorials.html}{MESSAGEix tutorials collection}.
+
+\bigskip
+They expand on the “Introduction” section of the notebook, with a simple example to motivate the need for and purpose of reporting tools and workflows.
+\end{frame}
+
+\begin{frame}
+\frametitle{Intended outcomes}
+
+At the end of this workshop session, learners should:
+
+\begin{description}
+  \item [understand] what ‘reporting’ includes in a MESSAGE/modeling workflow.
+  \item [describe] how units of measurement for MESSAGE variables and parameters are handled.
+  \item [recognize] …
+    \begin{itemize}
+      \item scientific computing concepts of \emph{broadcasting} and \emph{alignment},
+      \item \emph{graph} data structure, and
+      \item \texttt{genno} (Python) classes Quantity, Key, Computer; and the \texttt{message\_ix} class Reporter.
+    \end{itemize}
+  \item [know] where to look for further information and examples.
+\end{description}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Review: $output_{chh^Dlmn^Dn^Lty^Ay^V}$}
+
+\begin{itemize}
+  \item What does this represent, precisely?
+
+  \onslide<2->{→ \structure{Output intensity} of commodity $c$ per unit of activity of technology $t$—that is, the amount produced \emph{per unit of activity}.}
+  \item Is this a MESSAGE/GAMS \emph{parameter} or \emph{variable}?
+
+  \onslide<3->{→ A \structure{parameter}—exogenous, set by the modeler.}
+  \item Which \emph{dimensions} does it have? How many in total?
+
+  \onslide<4->{→ \structure{Ten}; commodity ($c$), technology ($t$), and others. We can check: \mintinline{python}|make_df("output")| and omit "value" and "unit" (not dimensions).}
+  \item What are the units of its values?
+
+  \onslide<5>{→ \texttt{ixmp} \emph{allows} that they can be \structure{different for every key} $(c, h, h^D, l, m, n^D, n^L, t, y^A, y^V)$; but this workshop has advised to use consistent values (at least, for each $c$) throughout any model.}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Review: $ACT_{hmn^Lty^Ay^V}$}
+\begin{itemize}
+  \item What does this represent, precisely?
+
+  \onslide<2->{→ Activity of technology $t$ in period $y^A$, etc.}
+  \item Is this a MESSAGE/GAMS \emph{parameter} or \emph{variable}?
+
+  \onslide<3->{→ A \structure{variable}—the GAMS/CPLEX solver chooses the optimal value (‘endogenous’).}
+  \item How many \emph{dimensions} does it have?
+
+  \onslide<4->{→ \structure{Six}; technology ($t$) and others. We can check in the documentation.}
+  \item What are the units of its values?
+
+  \onslide<5->{→ \structure{None.} GAMS and \texttt{ixmp}/\texttt{message\_ix} \emph{do not track} units for variables: neither for individual elements (like parameters) or overall.}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example}
+
+When we \structure{solve} a MESSAGE model, the optimal value for every element of $ACT$ (and every other variable) is computed.
+(Many will be zero.)
+
+\medskip
+If we pick some specific indices:
+\begin{itemize}
+  \item $h$ (\texttt{time}) = "year" (model with no sub-annual resolution).
+  \item $m$ (\texttt{mode} of operation) = "normal".
+  \item $n^L$ (\texttt{node\_loc}) = "IIASA".
+  \item $t$ (\texttt{technology}) = "coffee machine".
+  \item $y^A$ (\texttt{year\_act}) = 2024.
+  \item $y^V$ (\texttt{year\_vtg}) = 2023.
+\end{itemize}
+
+\medskip
+These \emph{uniquely identify} one element of $\text{ACT}$.
+
+Let's say the value of this element is \structure{$43$}. (Again: no units!)
+\end{frame}
+
+\begin{frame}
+\frametitle{Example (cont'd)}
+
+Suppose we want to answer a specific, quantitative question about our optimal model solution:
+
+\bigskip
+{\Huge \structure{How many millilitres of coffee were produced in 2024?}}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example (cont'd)}
+
+Earlier, when building our model, we already did some things: xx
+\begin{itemize}
+  \item \structure{Chose} and \structure{recorded} for ourselves the (implicit) units of $ACT$ for each $t$.
+  For instance, “runs”: “1 run” = coffee machine is run once.
+  \item \structure{Entered parameter data}. For example, at the same indices $(h, m, n^L, t, y^A, y^V)$ above, we entered values including:
+  \begin{itemize}
+    \item $output_{\ldots, c = \text{"espresso"}, h^D = \text{"year"}, l = \text{"researcher"}, n^D = \text{"iiasa"}} = 2.0 \text{ cup}$
+  \end{itemize}
+\end{itemize}
+
+\bigskip
+So now, naively, we can compute: \structure{$43 \times 2.0 \text{ cup} = 86 \text{ cup}$}
+
+\bigskip
+Note this is the same as: $43 \text { run} \times 2.0 \text{ cup/run} = 86 \text{ cup}$ \\
+—if we explicitly write the implicit units of $ACT$.
+
+\smallskip
+Without values, we can write/check: $\text{run} \times \frac{\text{cup}}{\text{run}} \,[ = ]\, 1 \times \text{cup} \,[ = ]\, \text{cup}$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Example (\emph{fin})}
+However: \structure{“86 cups” is \emph{not} the answer to our question!}
+
+\bigskip
+This is very often the case: we don't want to think about $ACT$ or $output$ directly, but \emph{something they represent}.
+To bring the model solution back to the real world—the thing we are modeling—\structure{we need to make further calculations} (or tables, plots, etc).
+
+\bigskip
+For example, we might know that a typical espresso is $25 \text{ mL/cup}$.
+
+\smallskip
+Then we can compute: \structure{$43 \text { run} \times 2.0 \text{ cup/run} \times 25 \text{ mL/cup} = 2150 \text{ mL}$}
+
+\bigskip
+This is \structure{post-processing}: it follows and does not affect the model solution.
+We usually want to do this every time we solve the model.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Wrapping up}
+
+With this, we see the complete motivation for \structure{reporting} features in the MESSAGEix ‘stack’ of packages:
+
+\begin{itemize}
+  \item Handle the \structure{multi-dimensional core quantities} (parameters \& variables) in the MESSAGE mathematical formulation.
+  \item Re-introduce \structure{units} that are only implicit in GAMS/\texttt{ixmp}; carry these and ensure consistency over further calculations.
+  \item \structure{Automate} post-processing calculations and steps, so they are as easy and repeatable as calling \mintinline{python}|Scenario.solve(...)|.
+  \item Let us \structure{clearly express} our scientific methods for interpreting model outcomes.
+\end{itemize}
+
+\end{frame}
+
+\end{document}

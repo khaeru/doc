@@ -280,5 +280,8 @@ TSWLatexianTemp*
 
 ################################################################################
 
+# BibLaTeX errors
+*.b*-SAVE-ERROR
+
 # Local symlinks outside the git-controlled directory
 2021/figure
