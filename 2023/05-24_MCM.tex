@@ -1,0 +1,190 @@
+% NB title page only; attached to the 2021-12-01 slide deck mentioned
+
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme{iiasa}
+
+% % Align with source slides
+% % Imitate the 'metropolis' theme
+% \setsansfont[
+%   Extension = .ttf,%
+%   UprightFont = FiraSans-Regular,%
+%   ItalicFont = FiraSans-Italic,%
+%   BoldFont = FiraSans-Bold,%
+%   BoldItalicFont = FiraSans-BoldItalic,%
+%   ]{FiraSans}%
+% \setmonofont[
+%   Extension = .ttf,%
+%   UprightFont = FiraMono-Regular,%
+%   BoldFont = FiraMono-Medium]%
+%   {FiraMono}%
+% \setsansfont{FiraSans}
+%
+% % Since the default weight is light, make titles bold
+% \setbeamerfont{title}{size=\Huge, series=\bfseries}
+% \setbeamerfont{frametitle}{size=\LARGE, series=\bfseries}
+% \setbeamerfont{section title}{size=\Huge, series=\bfseries}
+
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{notes}}{\jobname}}{%
+\setbeameroption{show only notes}%
+}{
+%
+}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+% Small font in bibliography
+\renewcommand*\bibfont{\small}
+\addbibresource{all.bib}
+
+\usepackage{minted}
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\title{MESSAGE\emph{ix}-Transport}
+\subtitle{Introduction and overview}
+\institute{Energy, Climate, and Environment (ECE) Program \\
+  International Institute for Applied Systems Analysis (IIASA)}
+
+\date{\texorpdfstring{Message Community Meeting — Wednesday, 24 May 2023
+  {\scriptsize \\ \emph{incl. material from} 14th IAMC Annual Meeting, 2021-12-01 \emph{w/} Lovat, van Ruijven, Krey, Riahi}}%
+  {2023-05-24}}
+
+\author{\texorpdfstring{Dr. Paul Natsuo Kishimoto \scriptsize\newline
+  \href{mailto:paul.kishimoto@iiasa.ac.at}%
+       {\ttfamily <paul.kishimoto@iiasa.ac.at>}}%
+  {Dr. Paul Natsuo Kishimoto <paul.kishimoto@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+  \frametitle{Contents}
+  \tableofcontents
+\end{frame}
+
+\section{MESSAGEix-Transport}
+
+\subsection{Introduction, goals}
+\subsection{Model structure, data flows}
+\subsection{Core methods}
+\subsection{Input data, methods for preparation}
+
+\includepdf[pages={4-17}]{../2021/12-01_IAMC.pdf}
+
+\section{Planned improvements}
+
+\subsection{Initial public release}
+
+\begin{frame}
+  \frametitle{Initial public release}
+
+  Work beginning 2023-Q3, completing 2023-Q4.
+
+  \bigskip
+  Target:
+  \begin{itemize}
+    \item \texttt{message\_ix\_models.model.transport} —i.e. a module in the public MESSAGEix modeling tools repository, next to \texttt{.water} and others.
+    \item Complete documentation \& test suite.
+    \item Data prepped for R12 nodes, with clear declaration of data needs for application to other geographies.
+  \end{itemize}
+\end{frame}
+
+\subsection{Shared \& autonomous LDV techs}
+\subsection{Operational concept of ‘activity’}
+
+% Planned improvements
+\includepdf[pages={31-32}]{../2021/12-01_IAMC.pdf}
+
+\section{Energy services in general}
+
+\begin{frame}
+  \frametitle{Energy services in general}
+
+  \tableofcontents[currentsection]
+
+\end{frame}
+
+\subsection{MESSAGE/LP techniques for demand-side sectors}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{LP techniques for demand-side sectors}
+
+  \bigskip
+  Original/natural mapping of the MESSAGEix \texttt{commodity}, and \texttt{technology} concepts:
+  \begin{itemize}
+    \item A measurable quantity of a physical object, e.g. \texttt{coal}.
+    \item A artifact/machine that performs a physical process, e.g. \texttt{coal\_ppl}.
+  \end{itemize}
+
+  \bigskip
+  \emph{Energy services} are often conceived as intangible (“health”, “access”), socio-cultural concepts measured as constructed quantities (“disability-adjusted life-year (DALY)” vs. “kg of coal”).
+
+  \framebreak
+  \structure{“Pseudo”}-technologies and commodities.
+  \begin{itemize}
+    \item Represent a quantity that is \emph{measurable} but perhaps not \emph{physical} as a “\texttt{commodity}”.
+    \item Express MESSAGEix \texttt{demand} in these commodities.
+    \item Represent a socio-technical process or relationship between two commodities (in the above sense) as a “\texttt{technology}”.
+  \end{itemize}
+
+  \bigskip
+  MESSAGEix-Transport example:
+  \begin{itemize}
+    \item Transport activity various measures (distance traveled by a vehicle; distance traveled by a person; trips) → \texttt{commodity}
+    \item “Usage” and “occupancy” of vehicles by people to obtain the energy service of passenger-distance traveled → \texttt{technology}.
+  \end{itemize}
+
+\end{frame}
+
+\subsection{Systems theory for global modeling}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Systems theory for global modeling}
+
+  In general, IAMs are always dependent on data and other models that treat the real-world phenomena in much greater detail, with domain-specific theory \& methods.
+
+  \bigskip
+  For example, in transport:
+  \begin{itemize}
+    \item Short-distance passenger: agent-based microsimulation of daily activity particular cities or model cities.
+    \item Interaction of land-use, built environment, and mobility: “ILUTE”.
+    \item Choice of vehicle technology or new modes (sharing, etc.):
+    \item Aviation: models of airport expansion, new aircraft technologies.
+    \item International freight: gravity models connecting ports.
+  \end{itemize}
+
+  \bigskip
+  How do we preserve the information/validity of these while connecting or emulating them in IAMs?
+
+  \bigskip
+  → Recall and apply engineering systems theory.
+\end{frame}
+
+% Systems slides
+\includepdf[pages={35-44}]{../2021/12-01_IAMC.pdf}
+
+\begin{frame}[plain]
+
+  \centering \Huge \structure{\bfseries Thank you!}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contents}
+  \tableofcontents
+\end{frame}
+
+% References
+\includepdf[pages={28}]{../2021/12-01_IAMC.pdf}
+
+\end{document}

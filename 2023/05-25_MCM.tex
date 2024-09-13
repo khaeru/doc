@@ -1,0 +1,123 @@
+\documentclass[14pt,aspectratio=169]{beamer}
+\usetheme{iiasa}
+
+\usepackage{ifthen}
+\ifthenelse{\equal{\detokenize{notes}}{\jobname}}{%
+\setbeameroption{show only notes}%
+}{
+%
+}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+% Small font in bibliography
+\renewcommand*\bibfont{\small}
+\addbibresource{all.bib}
+
+\usepackage{minted}
+\usepackage{pdfpages}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\title{Data for modeling}
+\subtitle{User roundtable}
+\institute{Energy, Climate, and Environment (ECE) Program \\
+  International Institute for Applied Systems Analysis (IIASA)}
+
+\date{\texorpdfstring{Message Community Meeting\\
+  2023-05-25}%
+  {2023-05-25}}
+
+\author{\texorpdfstring{Dr. Paul Natsuo Kishimoto \scriptsize\newline
+  \href{mailto:paul.kishimoto@iiasa.ac.at}%
+       {\ttfamily <paul.kishimoto@iiasa.ac.at>}}%
+  {Dr. Paul Natsuo Kishimoto <paul.kishimoto@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+  \frametitle{Roundtable, interactive discussion}
+
+  Each of us works with model data:
+
+  \begin{itemize}
+    \item Preparing input data to build models:
+          \begin{itemize}
+            \item Parameter values.
+            \item Reference for calibration.
+          \end{itemize}
+    \item Reporting model results.
+    \item General research/analysis based on model results \emph{combined with} other data.
+  \end{itemize}
+
+  \bigskip
+  \structure{\bfseries Task:} think about a particular kind of data or data work that you do in your own research.
+  Make some notes on your laptop, mobile, or paper.
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Data work can be costly}
+
+  Costs: our (colleagues') time, money, direct monetary cost.
+
+  \bigskip
+  Some data-related work that can take a long time:
+
+  \begin{columns}
+    \column[t]{0.5\textwidth}
+    \begin{itemize}
+      \item Find sources for particular measures.
+      \item Check quality (many criteria) of source data.
+      \item Relabel data.
+      \item Add/remove dimensions.
+    \end{itemize}
+
+    \column[t]{0.5\textwidth}
+    \begin{itemize}
+      \item (Dis)aggregate along 1 or more dimensions.
+      \item Transform or derive a related measure.
+      \item Check processed data.
+      \item Visualize the data.
+      \item Document the steps taken.
+    \end{itemize}
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Share with colleagues}
+  \framesubtitle{Alternate in-room and on-line participants}
+
+  What is the particular data work that has been costly for you?
+
+  Examples:
+  \begin{itemize}
+    \item Work with input data from a specific source.
+    \item Prepare model output data for a specific purpose.
+  \end{itemize}
+
+  \pause
+  \bigskip
+  What tasks or steps in working with these data were difficult?
+
+  Why?
+
+  \pause
+  \bigskip
+  What tools or techniques have you tried to help reduce these costs?
+
+  Did they help? How, or why not?
+\end{frame}
+
+\end{document}
