@@ -1,11 +1,14 @@
 \documentclass[12pt,aspectratio=169]{beamer}
 
-\title{TDCI and iTEM}
-\subtitle{Data standards and cooperation}
+\usetheme{tdc}
+
+\title{TDCI data standards}
+\subtitle{Status, roadmap, and how to get involved}
 
 \date{
-  \texorpdfstring{7th International Transport Energy Modeling workshop (iTEM7) ×\\
-  Transport Data Commons Initiative (TDCI) Fall 2024 Global Meeting\\
+  \texorpdfstring{Joint meeting of \\
+  International Transport Energy Modeling (iTEM)\\
+  \& Transport Data Commons Initiative (TDCI) \\
   Wed, 18 September 2024}%
   {2024-09-18}}
 
@@ -23,6 +26,10 @@
   ]{biblatex}
 \addbibresource{all.bib}
 
+\usepackage[table]{xcolor}
+
+\newcommand\checkcell{\cellcolor{tdcyellow0} \checkmark}
+
 \begin{document}
 
 \maketitle
@@ -34,12 +41,333 @@
 
 \end{frame}
 
-\appendix
+\section{Why do we need standardization?}
 
 \begin{frame}
-\frametitle{References}
-\printbibliography
+\frametitle{Why do we need standardization?}
+\framesubtitle{Data from large institutions}
+
+The following slides show Excel-based data file formats from 3 large organizations.
+
+\medskip
+Note \emph{where} and \emph{how} each presents (or \emph{does not} present)…
+\begin{enumerate}
+  \item The \structure{measure} and \structure{units of measure} —i.e. what the numbers represent.
+  \item The number, order, and labels of \structure{dimensions} of the data.
+  \item The \structure{key values} or labels \emph{along} each of those dimensions.
+  \item The \structure{spatial} dimension or scope, including labels for spatial units.
+  \item Missing values.
+  \item Information about where the data is from, who produced it, when, etc.
+\end{enumerate}
+
 \end{frame}
 
+\begin{frame}[plain]
+\hspace*{-10mm}
+\includegraphics[width=\paperwidth]{2024-09-16_screenshot_jrc-idees-2015.png}
+\end{frame}
+\begin{frame}[plain]
+\hspace*{-10mm}
+\includegraphics[width=\paperwidth]{2024-09-16_screenshot_iea-eei.png}
+\end{frame}
+\begin{frame}[plain]
+\hspace*{-10mm}
+\includegraphics[width=\paperwidth]{2024-09-16_screenshot_adb-ato.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Why do we need standardization?}
+\framesubtitle{Data from large institutions}
+
+Each of (1)–(6) is represented \structure{differently} in these 3 file formats!
+
+\bigskip
+To be clear:
+\begin{itemize}
+  \item People worked hard on these data files.
+  \item The representations are the result of deliberate decisions.
+  Effort was made to put the data in these formats.
+  \item The values may have been carefully checked or adjusted for quality.
+\end{itemize}
+
+\bigskip
+…yet these data are still \structure{not interoperable}.
+Where parts of (1)–(6) are \emph{not shown at all}, they are \structure{not reusable} without additional effort to reach a complete description of the data.
+\end{frame}
+
+\begin{frame}
+\frametitle{Why do we need standardization?}
+\framesubtitle{Data from researchers' work}
+
+Researchers also have a bad habit of \structure{inventing new data formats}.
+\begin{itemize}
+  \item Input, output and intermediate data is often transformed with ‘scripts’.
+  \item Output from the first version that ‘works’ is used; attention moves on to other model-building tasks.
+\end{itemize}
+
+\medskip
+Even when researchers later follow best practice by making data used in/generated from research Findable and Accessible, it is usually not Interoperable or Reusable (“FA” but not “FAIR”).
+\begin{itemize}
+  \item This increases the time cost if/when the same or other researchers want to, potentially, re-use the data.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Why do we need standardization?}
+\framesubtitle{Data for and from G-/NTEMs%
+\footnote{Global- or national transport-energy models.}}
+
+G-/NTEMs are \structure{data hungry}: they need values for many, varied, multi-dimensional parameters.
+At the same time, they are \structure{under-} \structure{determined}: there is less data accessible than parameter values to be set.
+
+\bigskip
+Handling input and output data takes up an \structure{unjustifiable share of time} for researchers who build and apply G-/NTEMs.
+\begin{itemize}
+  \item It \emph{is} good to carefully consider the \emph{validity} and \emph{meaning/ implications} of data.
+  \item It \emph{is not} a good use of time to hunt for, struggle to understand, and discover \& fix issues in data—especially if this repeats others' work.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Why do we need standardization?}
+
+This is \structure{not} an inevitable, necessary, or justifiable state of practice.\\
+We can and must do better.
+
+\medskip
+By learning to use data standards, we will save time in order to:
+\begin{itemize}
+  \item Produce higher-quality models \& research: improve methods, refine scenarios, compare/analyse results more precisely.
+  \item Allow more people to join in and advance the work.
+  \item Communicate research results to stakeholders and help them understand policy implications.
+\end{itemize}
+
+\medskip
+These benefits of standardization are visible when looking at research disciplines (e.g. Earth sciences, genetics) that have recognized its importance.
+\end{frame}
+
+\section{What do the TDC standards comprise?}
+\begin{frame}
+\frametitle{What do the TDC standards comprise?}
+
+The standards can be boiled down to one instruction:
+
+\medskip
+\begin{quote}
+  \usebeamercolor{structure} \large Express your data and metadata using SDMX.
+\end{quote}
+
+\bigskip
+Everything else is details, and can be found at \url{https://docs.transport-data.org/en/latest/standards.html}
+
+\end{frame}
+
+\subsection{Statistical Data and Metadata eXchange (SDMX)}
+
+\begin{frame}
+\frametitle{Statistical Data and Metadata eXchange (SDMX)}
+\framesubtitle{What is it?}
+
+\begin{itemize}
+  \item An ISO standard (ISO 17369:2013) actively developed since 2005 by a group including the World Bank, IMF, UN, Eurostat, European Central Bank, and others.
+  \item Adopted by 30+ national statistical agencies and many more organizations.
+  \item Per the name:
+    \begin{itemize}
+      \item Focused on \structure{exchange} (=interoperability and reusability) via data file formats (XML, JSON, CSV) and web APIs.
+      \item Inclusive both of \structure{data} (actual values) and \structure{metadata} (information \emph{about} data: its structure \emph{and} provenance).
+    \end{itemize}
+  \item \structure{Generalized} and \structure{non-domain-specific} via an \structure{information model} that is inclusive of many kinds of (meta)data.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+\frametitle{Example usage: IAEG-SDGs}
+\framesubtitle{Inter-agency and Expert Group on Sustainable Development Goal (SDG) Indicators}
+
+This group produced metadata to be used with SDG-related data:
+
+→ \href{https://unstats.un.org/sdgs/iaeg-sdgs/sdmx-working-group/}{unstats.un.org/sdgs/iaeg-sdgs/sdmx-working-group}
+
+\bigskip
+Based on their work one can say, for instance:
+
+\medskip
+“\emph{My} data has a \structure{dimension} \verb@SERIES@ that is enumerated by the \structure{code list} \verb@IAEG-SDGs:CL_SERIES(1.18)@.”
+\begin{itemize}
+  \item This unambiguously identifies the maintainer, ID, and version.
+  \item Even if new versions of this code list are released, we know which codes are used in the described data.
+\end{itemize}
+
+\framebreak
+\medskip
+“The key for a value ‘12.3’ includes (…, \verb@SERIES=SI_COV_BENEFITS@, …).”
+\begin{itemize}
+  \item This ID is short and easily manipulated by data-handling code.
+  \item Because the data has a defined structure + is associated with a code list, we can retrieve detailed, structured metadata to support proper use of the values:
+  \begin{itemize}
+    \item Description: Proportion of population covered by at least one social protection benefit [1.3.1]
+    \item IndicatorTitle: Proportion of population covered by social protection floors/systems, by sex, distinguishing children, unemployed persons, older persons, persons with disabilities, pregnant women…
+  \end{itemize}
+\end{itemize}
+…the same applies to all other concepts and dimensions in SDG-related data.
+\end{frame}
+
+\begin{frame}
+\frametitle{Example usage: Eurostat Data Browser}
+\framesubtitle{Presentation adapts to \textbf{any} structure, via SDMX metadata}
+\includegraphics[width=\textwidth]{2024-09-16_screenshot_eurostat.png}
+\end{frame}
+
+\subsection{“TDC standards” = a common way of using SDMX}
+\begin{frame}
+\frametitle{“TDC standards” = a common way of using SDMX}
+
+The labels “public data”, “community data”, “TDC formatted/ compatible”, and “TDC Harmonized” directly give the degree to which (meta)data have been made accessible and interoperable \& quality standards applied.
+
+\medskip
+\begin{tabular}{l|c|c|c|c}
+Characteristic of (meta)data
+  & \cellcolor{tdcgreen0}\includegraphics{tdc/globe.pdf}
+  & \cellcolor{tdcgreen0}\includegraphics{tdc/database.pdf}
+  & \cellcolor{tdcgreen0}\includegraphics{tdc/check-circle.pdf}
+  & \cellcolor{tdcgreen0}\includegraphics{tdc/check-shield.pdf} \\
+\hline
+Metadata exist                            & ?? & \checkcell & \checkcell & \checkcell \\
+Metadata for TDC attributes (in SDMX)     & —  & \checkcell & \checkcell & \checkcell \\
+Data in SDMX formats (possibly others)    & —  & —          & \checkcell & \checkcell \\
+Uses shared concepts, structures, and IDs & —  & —          & —          & \checkcell \\
+TDC quality checks \& adjustments applied & —  & —          & —          & \checkcell \\
+Freely accessible                         & ?? & \checkcell & ??         & \checkcell \\
+\hline
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}[fragile,allowframebreaks]
+\frametitle{Clarifying points}
+
+\structure{TDCI only does coordination.}
+\begin{itemize}
+  \item Initial standards—like “Such-and-such concept/dimension \textbf{should} have the ID ‘\verb@VEHICLE_TYPE@’,”—are merely an \structure{observation of common practice}.
+  \item TDCI convenes members/stakeholders so \emph{they} can discuss the most useful sets of labels, metadata attributes, etc.
+  \item iTEM participants are a major, important subset of this community.
+  \item After the community decides, TDCI helps with:
+    \begin{itemize}
+      \item Tools that help apply/use the agreed standards.
+      \item Documentation, resources, and a focal point for more users to discover them (and potentially also join the community to contribute).
+    \end{itemize}
+\end{itemize}
+
+\framebreak
+\structure{No one is obliged to use, or do, anything.}
+\begin{itemize}
+  \item TDC will handle metadata for “public data” and “community data”, and serve as a repository for community data \emph{files} —these will simply be handled as black boxes/blobs.
+  \item “TDC compatible” (meta)data can be shared without using shared concepts and code lists.
+
+  \item Often it is \emph{better} to \structure{describe original data \emph{as they are}}.
+
+  If Data Set A uses a label “mutatu”, and Data Set B “tuk tuk”, this conveys what people think is important, accurate, and meaningful. This is more informative than an outsider's choice to lump these under e.g. “other”.
+  \item Researchers may use new labels and categories that in developing \structure{new methods and empirical findings}—also good. TDC metadata can express how these relate to existing codes.
+\end{itemize}
+
+\framebreak
+\structure{No one is prohibited from doing anything.}
+\begin{itemize}
+  \item If researchers/modelers/others have tools that work with idiosyncratic input/output formats—they can continue to use those.
+  \item Models/tools can I/O SDMX directly \emph{or} SDMX can be converted to/from specific other formats.
+  \item These data handling workflows will be \emph{easier to develop} and maintain, and \emph{more likely to be reusable} because they will be N:1 / 1:N, rather than many-to-many.
+\end{itemize}
+
+\end{frame}
+
+\section{Standardization is a process}
+
+\begin{frame}
+\frametitle{Standardization is a process}
+
+The process includes:
+\begin{description}
+  \item [Learning] what the standards are.
+  \item [Applying] them to an increasing degree and extent.
+  \item [Gaining skill] and facility in applying standards—including through building assistive tools.
+  \item [Developing] standards to ensure they continue to provide benefits.
+\end{description}
+
+\bigskip
+\begin{itemize}
+  \item Each individual/team can \structure{take steps incrementally}, as their resources and interests allow.
+  \item As they do, they will experience \structure{progressively greater benefit} (time savings, etc.) \emph{and} provide an improved resource to the community (network effects).
+\end{itemize}
+
+\end{frame}
+
+\subsection{How to get involved—roles and activities}
+
+\begin{frame}
+\frametitle{How to get involved with standardization}
+
+Both iTEM and TDCI \structure{as organizations/groups} and their \structure{individual members/participants} have many options:
+
+\smallskip
+\begin{tabular}{l|cc|cc}
+ & \multicolumn{2}{c|}{TDCI} & \multicolumn{2}{c}{iTEM} \\
+Activity & Mem & Org & Mem & Org \\
+\hline
+Use TDC-formatted (meta)data      & \checkcell &            & \checkcell &            \\
+Produce TDC-formatted (meta)data  & \checkcell & \checkcell & \checkcell & \checkcell \\
+Improve tools for the above       & \checkcell & \checkcell & \checkcell & \checkcell \\
+\hline
+Propose additions/improvements    & \checkcell &            & \checkcell &            \\
+Convene discussions of standards  &            & \checkcell &            & \checkcell \\
+\hline
+Set general quality criteria      & \checkcell &            & \checkcell &            \\
+Set scientific quality criteria   &            &            & \checkcell &            \\
+\hline
+Encourage adoption in research    &            &            & \checkcell & \checkcell \\
+Encourage adoption by *GOs        &            & \checkcell &            &            \\
+\hline
+\end{tabular}
+
+\end{frame}
+
+\subsection{Next steps and vision}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Next steps and vision}
+
+\structure{2024–2025}
+\begin{itemize}
+  \item iTEM Open Data is refreshed using TDC tools.
+  \item Transparent, repeatable quality checks and fixes developed by iTEM support first examples of TDC Harmonized.
+\end{itemize}
+
+\bigskip
+\structure{2025} at iTEM8:
+\begin{itemize}
+  \item iTEM modelers' outputs (a subset) are compared via data and structures shared on TDC.
+  \item Some modelers are using TDC-formatted data directly for aligned inputs, or expressing inputs to allow adjusted comparison of outputs.
+  \item TDC standards are updated to be inclusive of all input/output concepts, dimensions, measures used by iTEM modelers.
+\end{itemize}
+
+\framebreak
+\structure{2027–2028} as part of the Working Group III contribution to IPCC AR7:
+\begin{itemize}
+  \item A richer set of measures (indicators) from a wider range of models is available and comparable via standardized (meta)data.
+  \item This process begins early and in public, allowing better science through iteration and broad participation.
+  \item The current and future mobility of people in low- and middle-income countries can be assessed using an expanded evidence base, using data coming directly from practice.
+\end{itemize}
+
+\end{frame}
+
+\section*{Thank you!}
+
+% \appendix
+
+% \begin{frame}
+% \frametitle{References}
+% \printbibliography
+% \end{frame}
 
 \end{document}
