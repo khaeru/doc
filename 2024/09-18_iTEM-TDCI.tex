@@ -9,7 +9,7 @@
   \texorpdfstring{Joint meeting of \\
   International Transport Energy Modeling (iTEM)\\
   \& Transport Data Commons Initiative (TDCI) \\
-  Wed, 18 September 2024}%
+  Wednesday, 18 September 2024}%
   {2024-09-18}}
 
 \author{\texorpdfstring{Paul Natsuo Kishimoto\scriptsize\newline
@@ -95,6 +95,14 @@ To be clear:
 Where parts of (1)–(6) are \emph{not shown at all}, they are \structure{not reusable} without additional effort to reach a complete description of the data.
 \end{frame}
 
+\begin{frame}[plain]
+\hspace*{-10mm}
+\centering
+\includegraphics[width=0.8\paperwidth]{xkcd-927.png}
+
+\href{https://xkcd.com/927}{XKCD comic} from \textbf{2011}-07-20.
+\end{frame}
+
 \begin{frame}
 \frametitle{Why do we need standardization?}
 \framesubtitle{Data from researchers' work}
@@ -137,7 +145,7 @@ This is \structure{not} an inevitable, necessary, or justifiable state of practi
 We can and must do better.
 
 \medskip
-By learning to use data standards, we will save time in order to:
+By learning to use data standards, we (iTEM) will save time in order to:
 \begin{itemize}
   \item Produce higher-quality models \& research: improve methods, refine scenarios, compare/analyse results more precisely.
   \item Allow more people to join in and advance the work.
@@ -215,15 +223,26 @@ Based on their work one can say, for instance:
 \end{frame}
 
 \begin{frame}
-\frametitle{Example usage: Eurostat Data Browser}
+\frametitle{Example usage: Eurostat Data Browser (\href{https://ec.europa.eu/eurostat/databrowser/product/view/avia_if_typ?lang=en}{link})}
 \framesubtitle{Presentation adapts to \textbf{any} structure, via SDMX metadata}
 \includegraphics[width=\textwidth]{2024-09-16_screenshot_eurostat.png}
 \end{frame}
 
 \subsection{“TDC standards” = a common way of using SDMX}
-\begin{frame}
+\begin{frame}[allowframebreaks]
 \frametitle{“TDC standards” = a common way of using SDMX}
 
+Expressed as:
+\begin{itemize}
+  \item text (specific statements with \textbf{must}, \textbf{should}, \textbf{may} keywords),
+  \item code that implements the standards as-written,
+  \item examples and specimens.
+\end{itemize}
+
+\medskip
+Not static: evolved through open, community processes with clear communication of additions, changes.
+
+\framebreak
 The labels “public data”, “community data”, “TDC formatted/ compatible”, and “TDC Harmonized” directly give the degree to which (meta)data have been made accessible and interoperable \& quality standards applied.
 
 \medskip
@@ -263,12 +282,12 @@ Freely accessible                         & ?? & \checkcell & ??         & \chec
 \framebreak
 \structure{No one is obliged to use, or do, anything.}
 \begin{itemize}
-  \item TDC will handle metadata for “public data” and “community data”, and serve as a repository for community data \emph{files} —these will simply be handled as black boxes/blobs.
+  \item TDC will handle metadata about “public data” and “community data”, and serve as a repository for community data \emph{files} —these will simply be handled as black boxes/blobs.
   \item “TDC compatible” (meta)data can be shared without using shared concepts and code lists.
-
   \item Often it is \emph{better} to \structure{describe original data \emph{as they are}}.
 
-  If Data Set A uses a label “mutatu”, and Data Set B “tuk tuk”, this conveys what people think is important, accurate, and meaningful. This is more informative than an outsider's choice to lump these under e.g. “other”.
+  {\footnotesize If Data Set A uses a label “mutatu”, and Data Set B “tro tro”, this conveys what people think is important, accurate, and meaningful.
+  This is more informative than an outsider's choice to lump these under e.g. “other”.}
   \item Researchers may use new labels and categories that in developing \structure{new methods and empirical findings}—also good. TDC metadata can express how these relate to existing codes.
 \end{itemize}
 
@@ -361,13 +380,13 @@ Encourage adoption by *GOs        &            & \checkcell &            &      
 
 \end{frame}
 
-\section*{Thank you!}
+\begin{frame}[plain,c]
 
-% \appendix
+\begin{beamercolorbox}[rounded=true]{palette quaternary}
+  \, \\
+  \color{white} \Huge Thank you!
+\end{beamercolorbox}
 
-% \begin{frame}
-% \frametitle{References}
-% \printbibliography
-% \end{frame}
+\end{frame}
 
 \end{document}
