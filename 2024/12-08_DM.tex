@@ -1,0 +1,216 @@
+\documentclass[a5paper,11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+  \setlist{nosep}
+  \setlist[itemize]{label=---}
+\usepackage[hmargin=10mm,vmargin=15mm]{geometry}
+\usepackage{graphviz}
+\usepackage[colorlinks]{hyperref}
+
+\title{Quantifying decent mobility: \\
+  Concepts, methdology, and proposals}
+
+\author{P.N. Kishimoto for the EDITS Decent Mobility FT2024}
+
+\setcounter{secnumdepth}{0}
+
+\newcommand{\DLS}{\text{DLS}}
+\newcommand{\DM}{\text{DM}}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section {0: Simplest case}
+
+We ask every individual ($i$) in the entire population of the world ($I$), some question like “Are you well? Do you have wellbeing?” and encode their answers as \textbf{data} $x^0_i$.
+In the simplest possible case, these are \emph{boolean} values: ‘no’/‘false’/0 or ‘yes’/‘true’/1.
+
+The \textbf{metric} for \emph{overall\footnote{Some nuance on this later.} wellbeing} $W^0$ is expressed as a particular function that can be computed on the data.
+The simplest possible case is \emph{logical conjunction} (‘and’/ $\land$) of all $x^0$.
+This takes the value of 1/‘true’/‘yes’ iff all $x^0_i$ have that value.
+In other words, overall or universal wellbeing exists if—and only if—person 1 has wellbeing \emph{and} person 2 has wellbeing \emph{and} so on.%
+\footnote{Although this may seem simple and reductive, it actually corresponds to real policy discourse.
+For instance, the phrase “No one is safe until everyone is safe” (used for instance \href{https://www.unicef.org/press-releases/no-one-safe-until-everyone-safe-why-we-need-global-response-covid-19}{here}, by UNICEF) has about the same meaning as this metric: if $x^0_i=0$ for any $i$, then $W^0(x^0) = 0$.}
+
+\begin{align}
+      i & \in I = \{i_1, i_2, \ldots\} \\
+    |I| & = 8,000,000,000 \\
+  x^0_i & \in \mathbb{B} = \{0, 1\} \\
+    W^0(x^0) & = \bigwedge_{i \in I}{x^0_i} \in \mathbb{B} \label{eq:w0}
+\end{align}
+
+All of the following cases are distinguished by different data, $x^{\cdots}$, or functions, $W^{\cdots}$.
+(A right superscript like $\cdots^0$ is an index.
+$x^1$ is a different measurable quantity than $x^0$,
+$W^1$ is a different function or metric than $W^0$, etc.)
+
+\section{1: Thresholds; same data \& different metric}
+
+Define a different metric, $W^1$: the fraction of all individuals that have wellbeing.
+With a metric like this one could say, “Overall wellbeing is obtained if $W^1$ is greater than some \textbf{threshold value}, $W^{\ast 1}$”:
+
+\begin{align}
+  W^1(x^0) & = \frac{\sum_{i \in I}{x^0_i}}{|I|} \\
+  W^1 & \geq W^{\ast 1} = 0.8
+\end{align}
+
+This case shows it is possible that $W^1(x^0) \geq W^{\ast 1}$ while at the same time $W^0(x^0) = 0$.
+That is: with \emph{the same data}, different metrics give a different verdict on whether collective wellbeing is achieved.
+The word ‘universal’ would seem to imply something more like $W^0$, but often words like ‘overall’, ‘universal’ etc. are used describe things that are more like $W^1$.
+
+\section{2: Derived data; same metric \& different data}
+
+In practice, we can't go and ask everyone on the planet “Are you well?”
+Suppose we could instead \emph{observe} something \emph{about} every individual $i$—for example their income $x^1_i$—and choose to use this data.%
+\footnote{Of course it is also not practical to observe any thing about every individual.}
+Then we can \emph{derive} further or intermediate data \eqref{eq:x2} and compute \emph{the same metric} as above \eqref{eq:w0} on these different data:%
+\footnote{We use the term \textbf{functions} to refer to both metrics and functions used to compute intermediate data.}
+
+\begin{align}
+  x^1_{i}         & \geq 0 \text{ dollars / day} & \in \mathbb{R} \\
+  x^2_{i}(x^1_i)  & = \begin{cases}
+                        0 & x^1_i < x^{\ast 1} = 2 \\
+                        1 & x^1_i \geq x^{\ast 1}
+                      \end{cases}
+                  & \in \mathbb{B} \label{eq:x2} \\
+  W^0(x^2)        & = \bigwedge_{i \in I}{x^2_i}
+\end{align}
+
+Similar to the above case, it is possible that $W^0(x^2) = 1$ while $W^0(x^0) = 0$.
+If there is 1 individual among the 8 billion in $I$ whose income is more than 2 dollars per day, but answers (or would answer) the question “Are you well?” with ‘no’, then this will be the outcome.
+
+Some further points from this case:
+\begin{itemize}
+  \item The threshold here $x^{\ast 1}$ pertains to the data, or individual observations, in contrast to Case 1 where $W^{\ast 1}$ was a threshold for the metric.
+  \item In both cases the threshold is a single, scalar value.
+    In practice, different thresholds are often used for different $i$.
+  \item The function $x^2_i(x^1_i)$ is a very simple example of what economists call a \emph{utility function} or we might call a \emph{model}.
+    We are in effect saying: “We \emph{model} (suppose, judge) that if we know individual $i$ has income more than 2 dollars per day, they would say ‘Yes, I am well.’”
+
+    This makes clear that $x^2_i$, or any other kind of modeled, derived, or imputed wellbeing, is not the same as $x^0_i$.
+    The latter is (would be) actual data from an individual; the former is what we think their answer could or should be.
+\end{itemize}
+
+\section{3: Representative agents; sub-populations}
+Methodologically, ‘representativeness’ means to use data like $\bar{x}^{\cdots}$ that are some statistic (the over-bar denotes the arithmetic mean, but others such as medians etc. are also used) computed on data $x^{\cdots}$ for entire populations $I$ or sub-populations.
+These are used together with functions that yield values that are estimates ($\hat{\cdots}$) of statistics across entire populations.
+
+\begin{align}
+                   \bar{x}^{\cdots} & = \frac{\sum_{i \in I}{x^{\cdots}_i}}{|I|} \\
+                   \bar{W}^3 & = \frac{\sum_{i \in I}{W^3(x^{\cdots}_i)}}{|I|} \\
+  \hat{W}^3 = W^3(\bar{x}^{\cdots}) & \sim \bar{W}^3
+\end{align}
+
+For models and analyses that split the world into geographic areas or regions $r \in R = \{r_1, r_2, \ldots\}$, there is often one sub-population $I_r$ for each area.
+Using a “representative agent” for each area means to compute the same intermediate data functions or metrics on data which are the mean of values for each individual the sub-population:
+\begin{align}
+                       \bar{x}^{\cdots}_r & = \frac{\sum_{i \in I_r}{x^{\cdots}_i}}{|I_r|} \\
+  \hat{W}^3_r = W^3(\bar{x}^{\cdots}_r) & \sim \bar{W}^3_r
+\end{align}
+
+The outcomes are similarly estimates for that sub-population.
+To re-obtain $\hat{W}^A$—that is, the estimate of a statistic for the total population $I$—it is necessary to \emph{aggregate} $\hat{W}^A_r$ by an appropriate calculation such as summation or (weighted) average.
+
+In \emph{agent based modeling (ABM)}, a total population is segmented not (or not only) by geographic area or location, but according to some methods or other data.%
+\footnote{For instance, the total population of each region might be split two sub-populations of “people who commute” and “people who do not commute”; or using clustering methods that operate on other data.}
+These can either be represented hierarchically as some sub-populations or groups $g \in G_r$, or not in which case the groups $G$ also separate individuals according to geography.
+In the former case, \emph{intermediate aggregates} are often computed or used.
+
+\section {4: Decent mobility vs. wellbeing}
+The simplest relationship between these two concepts—and one consistent with our grounding in the theory of needs and satisfiers—is that decent mobility is necessary but not sufficient for wellbeing.
+Thus:
+\begin{itemize}
+  \item If an individual has decent mobility, they \emph{may} have wellbeing.
+  \item If an individual does not have decent mobility, they also do not have wellbeing.
+  \item If an individual has wellbeing, they \emph{must} have decent mobility.
+  \item If an individual does not have wellbeing, it is indeterminate whether they have decent mobility, or not.
+\end{itemize}
+
+Mathematically:
+\begin{align}
+  \hat{x}^0_i & = f(x^{\DM}, \cdots) \label{eq:xDM}
+\end{align}
+
+\section {Goals}
+
+In the original DLS work:
+\begin{itemize}
+  \item $x^{\DLS}$ was expressed as “travel distance in a year by all modes of motorized transport.”
+  \item A threhold of 10,000 km was used for $x^{\ast\DLS}$.
+  \item $W^{\DLS}$ seems to have been one of:
+    \begin{align}
+      \hat{W}^{\DLS} = W^{\DLS}(\bar{x}^{\DLS}) & = \begin{cases}
+        0 & \bar{x}^{\DLS} < x^{\ast\DLS} \\
+        1 & \bar{x}^{\DLS} \geq x^{\ast\DLS}
+      \end{cases} \\
+      \hat{W}^{\DLS} = W^{\DLS}(\bar{x}^{\DLS}) & = \begin{cases}
+        0 & f(\bar{x}^{\DLS}, \cdots) < x^{\ast\DLS} \\
+        1 & f(\bar{x}^{\DLS}, \cdots) \geq x^{\ast\DLS}
+      \end{cases}
+    \end{align}
+    …for instance $f(x, \cdots)$ being computed with Gini or other additional data.
+\end{itemize}
+
+\noindent Our goals with this project:
+\begin{enumerate}
+  \item Choose some \emph{measurable quantities} $x^{\DM0}$, $x^{\DM1}$, etc.
+  \item Possibly choose or define thresholds ($\cdots^\ast$) for these.
+  \item Choose some \emph{derived measures} $x^{\DM2}$, $x^{\DM3}$, etc.
+  \item Possibly choose or define thresholds for these.
+  \item Choose or define metric(s) ($W^{\DM}$).
+  \item Possibly choose or define thresholds for these.
+\end{enumerate}
+
+\section {Proposals}
+
+\begin{enumerate}[label=P\arabic*]
+  \item We define “(universal) decent mobility” using data and a metric similar to \eqref{eq:w0}:
+    \begin{align}
+      x^{\DM0}_i       & = \begin{cases}
+                             0 & \text{individual } i \text{ does not have decent mobility} \\
+                             1 & \text{individual } i \text{ has decent mobility}
+                           \end{cases} \\
+      W^{\DM}(x^\DM_i) & = \bigwedge_{i \in I}{x^{\DM0}_i} \in \mathbb{B} \label{eq:wDM}
+    \end{align}
+    This has several strengths:
+    \begin{itemize}
+      \item It makes clear that the wellbeing/decent mobility \emph{of individuals} is fundamental.
+        Work (including ours) that does not deal directly with individuals—for instance, using statistics that make possible that some individuals may not have decent mobility—must acknowledge and defend these departures.
+      \item The relationships \eqref{eq:xDM} and $W^0 = f(W^{\DM}, \cdots)$ are simple, direct, clear.
+    \end{itemize}
+  \item We frame our quantitative work as attempts to \emph{estimate} these quantities, or various intermediate sub-aggregations.
+  \item We define additional metrics that help quantify \emph{decent mobility gaps}, or the extent to which decent mobility is \emph{not} achieved.
+    For example:
+    \begin{align}
+      W^{gap 1}(x^{\DM0}) & = 1 - \frac{\sum_{i \in I}{x^{\DM}_i}}{|I|} \\
+      W^{gap 2}(x^{\DM \cdots}) & \sum_{i \in I, k \in \{1, 2, \ldots\}}{\min(x^{\DM k}_i - x^{\ast \DM k}, 0)}
+    \end{align}
+  \item We identify \textbf{base data} $x^{\DM \cdots}$ including:
+    \begin{itemize}
+      \item Measures of the local context faced by an individual.
+      \item Measures of individuals' attributes.
+      \item Measures of trips that are (a) possibly in the individual's context, and (b) accessible to the individual in particular.
+    \end{itemize}
+    …these measures can include things like distance, duration, cost, energy use, etc. of trips, trip segments, tours, travel plans, etc.
+  \item We express the various \emph{constraints} in our conceptual framework as \textbf{intermediate/derived data} and accompanying \textbf{thresholds}.
+    For example: we define $x^{\text{TT}}_i$ as “total travel time [hours] for an individual's accessible trips in one day” and set a maximum threshold $x^{\ast \text{TT}} = 1.2$.
+    Then:
+    \begin{align}
+      \hat{x}^{\DM0}_i =
+    \left( x^{\text{TT}}_i \leq x^{\ast \text{TT}} \right) \land \cdots
+    \end{align}
+    …in other words, the given intermediate data being below the given threshold is \emph{one necessary condition} for the individual to be estimated to have decent mobility.
+  \item We clarify that our \textbf{personas} are representative agents, but for particular sub-populations that are likely to not have universal decent mobility.
+  Thus they do not represent entire populations in certain areas; nor do we give a large set of personas that \emph{collectively} represent all the population of a given area.
+  We also distinguish ourselves from the ABM approach of choosing the \emph{fewest} representative agents that represent the \emph{largest} or \emph{highest-consuming} portions of a total population.
+\end{enumerate}
+
+% \digraph{abc}{
+%   rankdir=LR;
+%   a -> b -> c;
+% }
+
+\end{document}
