@@ -4,4 +4,4 @@ pandas
 pycountry
 sdmx1[cache]
 # Packages need for TeX compilation
-bib @ git+https://github.com/khaeru/bib.git@main
+bib @ git+https://codeberg.org/khaeru/bib.git
