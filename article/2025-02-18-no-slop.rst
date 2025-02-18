@@ -1,0 +1,140 @@
+Please don't feed me slop
+*************************
+
+:slug: no-slop
+
+A parable
+=========
+
+Imagine you make a new acquaintance through friends, and through a brief conversation learn that the other person shares your love of food and cooking.
+They invite you to come over one evening for a “home cooked meal,” and you gladly accept!
+
+.. image:: https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Spam_Treet_and_Great_Value_Luncheon_Meat.jpg/800px-Spam_Treet_and_Great_Value_Luncheon_Meat.jpg
+   :align: right
+   :width: 50%
+   :alt: Side by side comparison of Spam (L), Treet (C), and Walmart Great Value Luncheon Meat (R). Image from Wikimedia Commons.
+   :target: https://commons.wikimedia.org/wiki/File:Spam_Treet_and_Great_Value_Luncheon_Meat.jpg
+
+Once you arrive and sit down for dinner, they hand you a plate with some…shapes on it.
+These shapes *look* like food, more or less: one seems potato-shaped, another is shaped like a chicken wing.
+
+“Er, thanks,” you stammer. “You, um, made this?”
+
+“Yes!” your host beams.
+
+Too polite to say anything else, you take a few bites.
+The ‘food’—well, it seems to be food, it's kind of hard to say what it tastes like, but at least nothing bad—has a sort of strange texture that's more or less the same for the ‘potato’ and the ‘chicken wing’, and again hard to place.
+
+Your host is eating with gusto, but increasingly you feel uneasy about *what*, exactly, you're eating.
+Finally you ask, “Sorry, but I'm a little curious—*how* did you make this?”
+
+“Oh, I used this amazing new ‘generative cooking’ service that just popped up in this neighbourhood.
+It's free and easy to use: you just put some ingredients into it—and I shop at a high-end grocer, so I've got only the finest produce, meat, spices, and such in my fridge—and out pops a cooked and plated meal!”
+
+“…”
+
+“Sometimes there are bones or it tastes a little off, but you just feed it back into the hopper a few times and eventually it gets it right—mostly.
+It's such a life-saver; I was so busy today and thought I wouldn't have time to prepare the meal, yet here we are!”
+
+----
+
+What exactly has happened here?
+You took time to visit someone's home based on what you believed was a shared understanding of what “home cooked” food (per their verbal invitation) was.
+Instead, you were fed some kind of slop or spam.
+
+Your host didn't ‘prepare’ it in the sense of cooking a meal themself, but rather used some machine—new and unknown to you, created or operated by some other person that you don't know—to extrude something that only superficially resembles food that might be prepared by a real person.
+
+They didn't tell you that they would or did do this, but allowed you to believe it was their “cooking,” in the end forcing *you* to raise the topic and discover the truth.
+
+Why?
+====
+
+I'm writing this because, with increasing frequency, I encounter people and try to interact with them as if they were fellow scholars, researchers, or scientists.
+But, instead, I am sent slop that has been extruded by “generative artificial intelligence (genAI)” tools [#genAI]_ —often without mention that this is what the other person has done.
+Other times, I begin to work with someone and invest my effort on my parts of the work, then later realize that one or more of my collaborators have been pasting genAI output into a shared document, instead of their own writing.
+
+I recognize that this is a contested area.
+For a contrasting example, consider the long-established norms on plagiarism and citation in academic work.
+These norms may not be *uniform*, or universally and consistently obeyed, but nonetheless they cohere and can be explained and learned.
+Most importantly, when we encounter other scholars, we can reasonably expect that they've learned and adhere to *some* kind of norms against plagiarism, or for citation.
+We may have to fish a little to understand precisely what they believe; if they are a student, they may need some coaching and reminders on what passes for normal behaviour in our shared fields.
+
+Because ‘genAI’ is new, none of this is the case; norms are still being formed.
+So this post is not an attempt to speak for anyone beyond myself.
+It is slightly normative in that I do *hope* that other researchers, especially those I work with, will find this a valid and compelling perspective and approach.
+But I have only limited ability to affect that; so this is mostly descriptive of what **I**, myself, will and won't do, and why.
+
+.. [#genAI] usually based on large language models (LLMs) or other types of machine learning (ML).
+
+`tl;dr <https://en.wiktionary.org/wiki/tl;dr>`_
+===============================================
+
+Even if you don't read the rest of this post, here are a few simple rules:
+
+1. Please, if you *send* me something—text of any kind, code, data, images, etc.—prepared using ‘AI’, tell me *up-front* (a) that you've done this and (b) precisely how.
+2. If you *plan* to do #1 in the course of a research project, collaboration, editorial process, etc., warn me in advance.
+3. Understand and respect that it is my prerogative to not engage or work with you because you have (or have not) done #1 or #2, or because of *how* you've done them.
+
+The title of this post may be easier to remember: **please don't feed me slop.**
+
+A few more points
+=================
+
+There's a lot to be said about ‘genAI’ and the people creating and promoting it—too much to write here.
+
+Thinking together
+-----------------
+
+To me, the core issue is the one illustrated by the parable above.
+I became and remain a researcher because I enjoy thinking (about certain topics, in certain ways).
+Research collaboration is enjoyable because the other humans whom I prefer to work with have interesting thoughts.
+It's exciting and helpful for me to think together with them: I enjoy when I can make them understand an idea I've had, or when they show me a new way of thinking about a problem or phenomenon, a new way of doing something, etc.
+
+When I'm handed slop, I am deprived of the chance to do these things.
+Eating slop means I am spending my time, instead, looking at a sequence of words or pixels that, although they may statistically resemble text written by a person, *do not capture any thinking on the far side*.
+My thoughts and ideas are not being stimulated by someone's genuine effort to communicate their ideas to me, but by the mental equivalent of junk food.
+Eating slop also means I have to grapple with the awareness that the person who has sent the slop does not respect me enough to do the work of sharing their thoughts with me: that they think I'm not worth that effort.
+This makes it impossible to build the kind of collegial relationship that, in the best case, exists between fellow researchers: why should I invest in trusting someone whose actions communicate that they don't trust me?
+
+Again, I understand that this is a novel area for many people.
+A person may not *intend to* or *be aware that* sending me slop communicates a lack of trust. [2]_
+But the impact is what matters, not the intent.
+
+Systemic discrimination and exclusion
+-------------------------------------
+
+I have worked with and know many excellent researchers from non-English backgrounds.
+I know that it is a difficult language to learn and master (especially academic English); this is an obstacle unjustly faced by some researchers and not others merely by accident of where they were born.
+Even after immense and hard work they may invest to learn a second/third/etc. language, people still face unfair discrimination for ‘non-native’ proficiency, or ignorance/lack of appreciation of that investment.
+
+However, using genAI tools to ‘fake’ such proficiency is not and can never be a real solution to these forms of systemic discrimination and disadvantage.
+Systemic problems need systemic reform.
+Worse: it actively gets in the way of the practice and effort necessary to improve one's own real skills.
+It does not reclaim power for the disempowered, but rather transfers it (and much wealth) to the people who make and promote the use of ‘AI’ tools.
+
+The analogy of plagiarism to doping in sport has been made many times, but fits even better the use of ‘AI’: if scholarship and academic systems reward and select for people who can exploit ‘AI’ best, not only will actual research skills be devalued, but people who already have power, wealth, and other social advantages will find it easier to dope and to get away with doping.
+
+Mentorship and training
+-----------------------
+
+I choose to spend some of my time mentoring students so that those students can learn and develop their own skills.
+I am especially excited if I can help them learn certain kinds of research thinking that I enjoy and believe should be more widely practiced, or help them to overcome discrimination based on gender, language, race, and other characteristics.
+For this reason, I think I would be a poor mentor if I encouraged or permitted students to use ‘genAI’ tools—except in narrow, deliberative ways.
+
+For instance, there is a particular skill to closely read many papers from the literature, deeply understand what the authors are trying to say, and write a concise review/synthesis.
+A student who only uses ‘genAI’ tools to produce ‘summaries’ is missing an important opportunity to learn and refine this skill.
+In turn, that undermines *all* the other academic skills built on top of it.
+A mentor who permits or encourages a student to do this is sending the signal that what matters is the ‘content’, output, or text—when in fact what matters is the student's ability to do the *thinking* that precedes any text.
+
+What do *you* think?
+--------------------
+
+This is written off-the-cuff and to avoid repeating the same arguments in more e-mails.
+I may come back to expand this text or add citations to more in-depth work and writing by others.
+But—what do *you* think?
+Are you aware of other good examples (or counter-examples) of stated practice in research and scholarly behaviour that I can learn from?
+If so, please do get in touch to share.
+
+.. [2] In particular, some people view research not as I describe here, but as a process of producing products—articles, reports, data sets, etc.
+   In this view, it doesn't matter whether the products are *good* in any sense—for instance whether they contain ideas or express thinking that are sound an interesting—only that they *appear to*.
+   This is in tension with my view of scholarship-as-thinking; it depresses me that people think this way, and if they do I would rather not work with them.
