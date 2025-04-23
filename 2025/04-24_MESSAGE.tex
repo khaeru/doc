@@ -1,0 +1,459 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme[version=2024]{iiasa}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+
+\setcounter{secnumdepth}{3}
+
+% Disable section title pages from 'iiasa' theme
+\AtBeginSection{}
+
+\title{MESSAGE development/research and ‘AI’ coding tools}
+
+\date{
+  \texorpdfstring{2025-04-24 MESSAGE team meeting}%
+  {2025-04-24}}
+
+\author{\texorpdfstring{Paul Natsuo Kishimoto\\
+  \href{mailto:kishimot@iiasa.ac.at}{\ttfamily \scriptsize <kishimot@iiasa.ac.at>}%
+  }{Paul Natsuo Kishimoto <kishimot@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}
+\frametitle{These slides}
+
+\bigskip
+According to some prognosticators, “Artificial General Intelligence” will take over all research in 2–5 years;
+we will all be unemployed;
+AGI will solve climate change on its own;
+and there's nothing we can do to stop this.
+
+\smallskip
+According to others, “AI slop” will pollute the Internet,
+most code,
+research products,
+and data to the extent that these are largely useless.
+Most people will lose the capability to independently discern truth,
+and so research performed by the remaining few will be even more valuable than today.
+
+\bigskip
+This deck is not about either of those scenarios.
+
+\medskip
+It's focused on our day-to-day work, and tries to frame a pragmatic discussion about whether and how we want to (or should) use ‘AI’ coding tools in our work.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{What are we trying to do with MESSAGE \& co.?}
+
+Research that is of \structure{high quality} and is \structure{scientific}:
+\begin{itemize}
+  \item Valid.
+  \item Defensible and explainable.
+  \item Useful and impactful.
+  \item Often ‘novel' in some sense.
+\end{itemize}
+
+\bigskip
+It may not always \emph{feel} this way:
+under the pressure of deadlines,
+we may feel that we trying to
+\structure{‘just’ produce some output—anything}.
+
+But this guiding purpose should frame our decisions.
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Validity and quality}
+In order to achieve these,
+we need to ensure the following are all consistent:
+\begin{enumerate}
+  \item Actual phenomena in the real world.
+  \item Our abstract understanding of (1).
+  \item Mathematical or symbolic models of (2).
+  \item Specific quantifications of (3).
+  \item Code to implements (4).
+  \item Descriptions of the code (5)
+    —tests, docs, oral remarks, etc.
+\end{enumerate}
+
+\medskip
+At every link in this chain there is the possibility for error.
+
+These errors are what undermine validity/quality.
+
+Errors are more likely if we seek ‘novelty’ at any stage.
+\end{frame}
+\note{
+Often,
+because we aim for 'novelty',
+(2) and (3) are entirely new.
+There's always the possibility to make errors when doing something new,
+and we all have the experience of thinking carefully and slowly about something
+before putting it to, for instance, peer review or a thesis defense.
+
+Other times novelty is not in (2–3) but in (4–5).
+The same applies.
+}
+
+\begin{frame}
+\frametitle{Our context}
+
+\begin{itemize}
+  \item Team of 20+ with \structure{turnover}
+    (people join and leave).
+  \item Many \structure{simultaneous projects} ongoing.
+  \item Usually each project involves writing new code
+    and/or using “the model” (in fact, many scenarios with critical differences) in new ways.
+  \item Reuse of/iteration on ‘capabilities' from older projects.
+  \item Varied amount of technical training of each colleague.
+
+    (More on this later.)
+  \item Loose/informal time tracking, if any.
+
+    Time spent by 2+ team members on shared tasks is not accounted or analyzed.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Our day-to-day work}
+
+One way to frame our individual and collective activities
+is as time spent answering various questions:
+
+\begin{enumerate}
+  \item What parameter(s) should we use to implement Scenario X?
+  \item What data is available?
+    How can/should we transform it to meet our needs?
+  \item Do we already have code that implements Method Y?
+  \item Where is it? How does it work?
+  \item Will it work for \emph{my} application?
+  \item The results seem unexpected.
+
+    How do I understand whether and why they are correct?
+  \item What was the original thought-process/intent behind this code?
+  \item \structure{Who} wrote this code/prepared this data?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Questions → communication → answers}
+
+Often we answer the \emph{last} question (“Who?”) \emph{first},
+and then go talk to the person(s) responsible.
+
+\bigskip
+It's nice to talk to people, but as a primary approach this has risks and costs:
+
+\begin{itemize}
+  \item The person may no longer be around.
+  \item They may be fully preoccupied with other tasks,
+    unable to make time for us (a) now or soon,
+    or (b) sufficient to answer all our questions.
+  \item They may not know our project context.
+  \item It may be a long time since they worked on the code/data,
+    so answers are no longer fresh in mind.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Asynchronous/passive modes of communication}
+
+These are very often%
+\footnote{Of course, not always}%
+more \structure{efficient} and \structure{effective}.
+
+\bigskip
+They include modes like:
+\begin{itemize}
+  \item Threads on Slack/Teams.
+  \item Documentation.
+  \item Things in the code itself: comments, tests.
+  \item Git history and ‘blame’.
+  \item GitHub issue and PR discussions.
+  \item Presentation materials: papers, slides, tutorials.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{How to think about ‘efficiency’}
+
+Compare \structure{Scenario A}:
+\begin{itemize}
+  \item Information is in the head of Person A.
+  \item Persons B, C, D, and E each need that info
+    —at different times separated by weeks or months.
+  \item Person A must take 30+ minutes to explain each time.
+  \item 4 convos × 2 people × 0.5 h = 4 person-hours spent.
+\end{itemize}
+
+\medskip
+…with \structure{Scenario B}:
+\begin{itemize}
+  \item Person A spends 60 minutes writing a careful, clear, complete description.
+  \item Persons B, C, D, and E each spend 20 minutes reading it.
+  \item 1 + 4 × (1/3) = 2.3 person-hours spent,
+
+    including half as much total time from Person A.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{More context: we operate at or near capacity}
+
+Very often we run into situations where:
+\begin{itemize}
+  \item The person who created code is not available
+    (because departed or too busy) to answer Qs about it.
+  \item We aren't even aware that code has already been created for task X.
+
+    We end up spending time on a 2nd or 3rd implementation.
+  \item We can't tell if existing code can be applied to a new use.
+  \item Scrutiny (eg. peer review) prompts us to carefully inspect,
+    reconsider and/or tweak the methods in some code/data.
+\end{itemize}
+
+\medskip
+We have few spare resources (time)
+with which to overcome these hurdles.
+
+\medskip
+When those run out, we are forced into workarounds,
+‘hacks',
+reducing scope,
+pushing back timelines,
+overtime,
+and other \structure{undesirable responses}.
+\end{frame}
+
+\begin{frame}
+\frametitle{Contribution standards}
+
+The reason we have these is to \structure{\bfseries make our work more intelligible} to ourselves.
+
+\medskip
+The standards are designed to:
+\begin{itemize}
+  \item make it easy for any team member to look at their own or another's work,
+  tomorrow or in 5 years;
+  \item help that person understand all the 6 steps \structure{well enough to make decisions} like
+    “Can I use this?" or “(How) Should I revise this?";
+  \item aid with \structure{self-discipline} and development of good habits and skills;
+  \item result in \structure{consistent forms} of information: ones that new colleagues can learn—%
+    easily and only once—%
+    to read.
+\end{itemize}
+
+More broadly, they can help remind us that our work is not merely to \structure{“crank something out”} today, but also to prepare a \structure{usable and useful toolkit} for our own and teammates' future work.
+\end{frame}
+
+\begin{frame}
+\frametitle{More context: skills and training}
+
+Topics like programming and software engineering are \structure{very unevenly included} in undergrad/graduate curricula.
+Through no fault of their own,
+people join our team having learned a little, or a lot, about these.
+
+\bigskip
+Result: following the standards is initially \structure{easier for some}, harder for others
+—even if they want to and are quick to learn.
+
+\bigskip
+We \structure{balance costs and benefits} when we decide on contribution standards:
+\begin{itemize}
+  \item Some colleagues will need to spend time to help others learn our shared practices and concepts%
+    —both current practices and any new ones.
+  \item Investing in quality now brings greater benefits/saving in the long term…
+  \item …but we don't have $\infty$ time to help all meet arbitrarily high standards.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{What does any of this have to do with ‘AI’?}
+
+Some things that are \structure{always true}:
+\begin{itemize}
+  \item As members of a team, we have responsibilities and obligations to our team members.
+  \item Actions have consequences, for oneself and for others.
+  \item Some choices make it more costly to understand, apply, maintain, and develop our research code/data.
+  \item It is wise to consider a choice of tools from the standpoint of
+    whether they offer the affordances\footnote{features, roughly} to do the work required.
+    \begin{itemize}
+      \item Example: asked to carve a wooden doorknob,
+        you reach for a chainsaw.
+
+        This may ‘work’, but probably adds needless difficulty.
+    \end{itemize}
+\end{itemize}
+
+\medskip
+These \structure{remain true} whether or not ‘AI’ coding tools are available,
+or whether one chooses to use them.
+\end{frame}
+
+\begin{frame}
+\frametitle{Observed failure modes of ‘AI’ coding tools}
+
+Only a few we've already observed:
+
+\begin{enumerate}
+  \item The tools will \structure{‘confidently’} produce incorrect responses.
+  \item Reliance on the tools inhibits users' ability for independent cognition.%
+    \footnote{\href{https://doi.org/10.1145/3706598.3713778}{doi: 10.1145/3706598.3713778}}
+\end{enumerate}
+
+\bigskip
+For example: Suppose you prompt a tool, “Write a Python function that implements the method described in \structure{Smith \& Jones (2022)}.”
+
+\medskip
+The tool may be able to locate and input the paper, and output code that doesn't error.
+
+\medskip
+However: since you have not read the paper
+and understood the method yourself,
+you may be unable to inspect the code
+and realize there are subtle mistakes in the implementation.
+\end{frame}
+\note{
+There's not enough time to recap all of these,
+much less get into the ethical, moral,
+and social issues surrounding them.
+}
+
+\begin{frame}
+\frametitle{From individual → team impacts}
+
+Next, suppose you put forward the tool's output as your own work.
+
+It appears in a PR that must be reviewed, used, and maintained by colleagues.
+
+\medskip
+During this process, you may be unable to:
+\begin{itemize}
+  \item provide useful answers to questions about \emph{how} you chose to implement the method.
+  \item communicate (in docs, tests, even orally) about \structure{limitations} and applicability of the code and method.
+\end{itemize}
+
+\medskip
+The impact is \structure{extra work}—potentially lots of it—for your colleagues.
+
+\medskip
+You might, for instance, force a colleague who reviews the code to \emph{themselves} read Smith \& Jones (2022);
+understand the method;
+read through the ‘AI’ tool's output;
+and identify where the code fails to implement it.
+\end{frame}
+\note{
+This is an attempt to shift your own work into someone else.
+Sometimes reassigning tasks within a team is a smart choice!
+But that should be discussed directly and agreed together.
+}
+
+\begin{frame}
+\frametitle{More specific failure modes}
+
+\begin{enumerate}
+  \item [3.] The tools don't appear able to digest and conform to our code style,
+    Git/docs conventions,
+    and PR templates.
+  \item [4.] The code usually makes poor use of existing utilities,
+    leading to bloat and duplication
+    that could make maintenance impossibly costly.
+\end{enumerate}
+
+\medskip
+For (4), suppose we have utility functions that do tasks A, B, and C.
+
+\medskip
+A tool prompted to write code for D will write a very long function that internally duplicates A, B, and C, and does not call them or even comment “These lines are the same as A/B/C.”
+
+\medskip
+Allowing this (and future duplicates for E, F, G, etc.) into our code base forces us to later waste time puzzling over differences between these.
+It can add 100s or 1000s of needless lines of code, and is not parsimonious.
+\end{frame}
+
+\begin{frame}
+\frametitle{More uncertain failure modes}
+
+Because these are uncertain,%
+\footnote{in these sense of \emph{how}, not \emph{if}.}
+they create further costs for us to investigate,
+identify concrete risks/impacts,
+and develop/promote ways (if possible) to avoid those.
+
+\medskip
+\begin{itemize}
+  \item Legal, e.g. licensing and copyright of training material/output.
+  \item Moral, ethical, and social.
+  \item Environmental.
+  \item Financial, i.e. costs and fees.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{What can we do? Some suggestions}
+
+\begin{enumerate}
+  \item \structure{Remember}:
+    \begin{itemize}
+      \item “I am part of a team.”
+      \item “My choices have impacts on my teammates.”
+      \item “I am ultimately responsible for my own work,
+      no matter which tools I use to produce it.”
+    \end{itemize}
+  \item \structure{Consider/factor-in} the clean-up time needed to refine contributions of acceptable quality from the raw output of ‘AI’ tools.
+    \begin{itemize}
+      \item This involves learning (yourself) what “acceptable quality” means,
+
+        and knowing how to discern when ‘AI’ does not produce it.
+    \end{itemize}
+  \item \structure{Be purposeful and strategic} about your own skills development.
+    \begin{itemize}
+      \item Skills to read/understand/implement research methods are valuable.
+      \item Time and energy spent learning how to prompt a tool to mimic these things is time and energy you can not spend improving your own skills.
+    \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{What can we do? More + your suggestions}
+
+\begin{enumerate}
+  \item [4.] \structure{Disclose up front} any text or code produced using an ‘AI’ tool:
+  indicate which tool(s) you used, and how.
+    \begin{itemize}
+      \item This alerts colleagues that there may be extra cost in reviewing your work.
+    \end{itemize}
+  \item [5.] \structure{“Request changes”} on PRs with ‘AI’ content that fail to follow standards.
+    \begin{itemize}
+      \item This feels rude, and we don't like to do it.
+
+        But maintainers do not have time to do the extra work that is created.
+    \end{itemize}
+  \item [6.] \structure{Update our Code of Conduct} to include some of the above.
+  \item [NOT:] Entirely prohibit use of ‘AI’ tools.
+    We can't afford the cost to police this.
+\end{enumerate}
+
+\bigskip
+\structure{\bfseries What do you think?}
+
+\medskip
+How can we \structure{as a team} guard against unsustainable costs if/as colleagues choose to experiment with these tools?
+\end{frame}
+
+\makefinalslide
+
+\end{document}
