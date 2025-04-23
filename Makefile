@@ -8,7 +8,8 @@ SUBDIRS = 0_demo \
 	"2021/06-23\ ISSST" \
 	2022 \
 	2023 \
-	2024
+	2024 \
+	2025
 
 # Default target: all subdirectories
 all: image subdirs
