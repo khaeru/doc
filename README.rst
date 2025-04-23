@@ -15,7 +15,7 @@ This repository contains presentation slides and other documents made available 
 .. |doi| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.4042089.svg
    :target: https://doi.org/10.5281/zenodo.4042089
 
-Copyright © 2019–2024 Paul Natsuo Kishimoto <mail@paul.kishimoto.name>.
+Copyright © 2019–2025 Paul Natsuo Kishimoto <mail@paul.kishimoto.name>.
 
 |cc| |by| |sa| Licensed `CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>`_, except where noted.
 
