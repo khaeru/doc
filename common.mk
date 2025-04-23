@@ -33,4 +33,8 @@ LATEXMK = latexmk -r $(ROOT)/latexmkrc $(LATEXMK_OPTS)
 %.pdf: %.svg
 	inkscape $< --export-filename=$@
 
+# Convert .dot to .tex using dot2tex
+%.tex: %.dot
+	dot2tex $< --figonly --output=$@
+
 .PHONY: clean-latex FORCE_LATEXMK
