@@ -1,0 +1,396 @@
+\documentclass[12pt,aspectratio=169]{beamer}
+\usetheme[version=2024]{iiasa}
+
+\usepackage[
+  maxnames = 1,
+  style = authoryear,
+  giveninits,
+  terseinits,
+  maxcitenames = 3,
+  ]{biblatex}
+\addbibresource{all.bib}
+
+\usepackage{minted}
+\setminted{
+  fontsize=\footnotesize,
+}
+\renewcommand{\mod}[1]{\mintinline{python}{#1}}
+\newcommand{\func}[1]{\mintinline{python}{#1()}}
+\newcommand{\py}[1]{\mintinline{python}{#1}}
+
+\setcounter{secnumdepth}{3}
+
+\title{Model data pre- and post-processing with \texttt{genno}}
+
+\date{
+  \texorpdfstring{Message Community Meeting — Tuesday, 19 May 2025}%
+  {2025-05-19}}
+
+\author{\texorpdfstring{Paul Natsuo Kishimoto\\
+  \href{mailto:kishimot@iiasa.ac.at}{\ttfamily \scriptsize <kishimot@iiasa.ac.at>}%
+  }{Paul Natsuo Kishimoto <kishimot@iiasa.ac.at>}}
+
+\begin{document}
+
+\maketitle
+
+\section{Whence and why \texttt{genno}?}
+
+\subsection{Origin story}
+
+\begin{frame}
+\frametitle{Origin story}
+
+\structure{‘Reporting’} is to take the raw, numerical model solution
+and produce things of interest: derived data, tables, figures, etc.
+\begin{itemize}
+  \item In other words: \emph{everything} that happens after the GAMS/CPLEX optimizer finds optimal values for MESSAGE variables like CAP, ACT, etc.
+\end{itemize}
+
+\medskip
+We have (and still use) some reporting code developed during a 2018 ‘hackathon’.
+In 2019 we identified some issues with this code, chiefly:
+
+\begin{description}
+  \item [Complexity] the code is on the order of 5000–10000 lines,
+    bigger than the model ‘core’ and the code used to set up the model.
+  \item [Performance] the code can take longer to run than the optimizer itself.
+\end{description}
+
+So, we set out to address these issues.
+\end{frame}
+
+\begin{frame}
+\frametitle{Outline}
+
+\tableofcontents
+
+\end{frame}
+
+\subsection{Design goals \& outcomes}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Design goals}
+We had many of these, but most importantly:
+\begin{itemize}
+  \item Make best use of and rely as much as possible on high-quality and high-performance upstream packages.
+    \begin{itemize}
+      \item Performance: pandas, numpy, and others have good support for vectorized operations, and are regularly used for data that's much larger than the data going in to/out of MESSAGE.
+      \item Quality: many of these projects have dedicated developers and maintainers. Make use of their features instead of duplicating them.
+    \end{itemize}
+  \item Automate repetitive tasks:
+    \begin{itemize}
+      \item High-level: common operations that one nearly 'always' wants to do when working with MESSAGE data. (Examples to come.)
+      \item Low-level: handle dimensionality, sparsity of our data. Unit alignment, conversion, and derivation.
+    \end{itemize}
+  \item Reduce developer/maintainer workload and provide flexibility.
+    \begin{itemize}
+      \item Reduce or hide boilerplate.
+    \end{itemize}
+\end{itemize}
+This led to a core set of capabilities that we packaged as 'genno'—“hammer” in Japanese. This is a tongue-in-cheek reference to the saying:
+
+“When you have a hammer, every problem looks like a nail.”
+
+…which resonates with George Box's famous saying:
+
+“All models are wrong, but some are useful.”
+
+\begin{itemize}
+  \item It turns out these affordances (features) are also very useful for **pre-** processing: dealing with the data that go in to the core model.
+  \item So now, for instance, the entire MESSAGEix-Transport build process is structured as a set of genno operations. And this has given us flexibility to make changes to our workflow as required by many ongoing projects.
+\end{itemize}
+
+Today:
+\begin{itemize}
+  \item Some basic concepts.
+  \item Use for reporting.
+  \item Use for model data prep.
+  \item Where to learn more.
+\end{itemize}
+\end{frame}
+
+\subsection{Basic concepts: chained operations}
+
+\begin{frame}[allowframebreaks,fragile]
+\frametitle{Basic concepts: chained operations}
+If you've used \mod{pandas},
+you will have seen code like \href{https://github.com/iiasa/message-ix-models/blob/7a999bc0c636f0afea73f89f12e5cfe593d6d23c/message_ix_models/tools/iamc.py#L240-L254}
+{this}:
+
+\begin{minted}{python}
+data.drop(columns=drop or [])
+.query(query)
+.replace(replace or {})
+.dropna(how="all", axis=1)
+.rename(columns=lambda c: c.upper())
+.pipe(_raise_empty, query=query)
+.pipe(_drop_unique, columns=unique, record=unique_values)
+.pipe(_assign_n, missing=non_iso_3166)
+.dropna(subset=["n"])
+.drop("REGION", axis=1)
+.set_index(set_index)
+.rename(columns=lambda y: int(y))
+.rename_axis(columns="y")
+.stack()
+.dropna()
+\end{minted}
+
+\begin{itemize}
+  \item Here, \structure{\bfseries chained operations} is the paradigm:
+    Each method call (like \py{.rename()}) \emph{acts on} the data structure (usually a \py{pandas.DataFrame} from the previous step), and \emph{returns} a modified data structure that is acted on by the next step/operation.
+  \item This code can be compact and performant.
+\end{itemize}
+
+Some issues we noted in the 'legacy' reporting code:
+\begin{itemize}
+  \item It's not simple to \structure{reuse an intermediate product} from a chain
+    —to branch and carry on without having to recompute.
+  \item It's challenging to deal with operations involving multi-dimensional parameters.
+    In MESSAGE reporting, we almost always work with
+    \texttt{input} parameter with 10 dimensions,
+    \texttt{ACT} variable (6-D), etc.
+  \item It takes experience to use \mod{pandas} chained operations efficiently;
+    falling back to e.g. nested loops makes for very slow code.
+\end{itemize}
+\end{frame}
+
+\subsection{Basic concepts: task graphs and \texttt{dask}}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Basic concepts: task graphs and \texttt{dask}}
+The core logic of \mod{genno} relies on a package named \mod{dask}.
+
+\medskip
+Dask is built and used for actual “Big Data”.
+\begin{itemize}
+  \item Imagine you have data spread across 10s or 100s of machines
+    and want to do some operation on it—say, compute an average.
+  \item We break this task into chunks:
+    \begin{enumerate}
+      \item On each machine: load the local data,
+        compute its average \emph{and} number of data points.
+      \item Return these intermediate values to a 'master' machine/process.
+      \item Aggregate the sub-averages to an overall average.
+    \end{enumerate}
+  \item In order to prepare and execute this kind of algorithm,
+    the atomic tasks can be represented as a mathematical \structure{graph}
+    of \structure{nodes} (operations/tasks)
+    and \structure{edges} (data that's output from one task/input to the next).
+\end{itemize}
+
+\framebreak
+
+This nodes-and-edges paradigm is also useful on a single machine.
+
+\mod{genno} uses this nodes-and-edges paradigm from \mod{dask}.
+
+\end{frame}
+
+\subsection{Quantities: xarray, pandas, and pint}
+
+\begin{frame}[allowframebreaks,fragile]
+\frametitle{Quantities: xarray, pandas, and pint}
+\begin{itemize}
+  \item \mod{xarray} is a package that provides data structures like \py{xr.DataArray} for N-dimensional data.
+    \begin{itemize}
+      \item Example: climate data with dimensions (latitude, longitude, elevation, time)
+      for multiple measures like temperature (°C) and pressure (kPa).
+    \end{itemize}
+  \item Genno provides a Quantity class that:
+    \begin{itemize}
+      \item Has the same interface as xarray.DataArray.
+      \item Handles large, 'sparse' data (using pandas under the hood, for good performance).
+      \item Carries and handles units for entire quantities.
+    \end{itemize}
+\end{itemize}
+
+\begin{minted}{python-console}
+>>> from genno import Quantity as Q
+>>> days = {"day": ["Mon", "Tue"]}               # Dimension ID & labels
+>>> q1 = Q([1.0, 2.0], units="km", coords=days)  # 1-D quantity
+>>> q2 = Q(1.0, units="mile")                    # 0-D quantity
+>>> q1 + q2                     # Alignment and compatible units handled
+day
+Mon    2.609344
+Tue    3.609344
+dtype: float64, units: kilometer
+
+>>> q3 = Q([10., 8.], units="km/h", coords=days)
+>>> q1 / q3                                       # Units are derived
+day
+Mon    0.10
+Tue    0.25
+dtype: float64, units: hour
+\end{minted}
+\end{frame}
+
+\subsection{Operations}
+
+\begin{frame}[allowframebreaks]
+\frametitle{ Operations}
+A sizeable library that allows to do common operations on Quantities and other, ordinary Python data structures:
+
+\begin{itemize}
+  \item genno: 42 operators including basic arithmetic, manipulating dimensions and units, compatibility with SDMX and IAMC data structures.
+  \item ixmp: 7 operators —retrieve and setting Scenarios, time-series, and model data
+  \item message_ix: 4 operators —construct and handle MESSAGE parameter data
+  \item message-ix-models: 20 general operators + 53 for MESSAGEix-Transport.
+\end{itemize}
+\end{frame}
+
+\section{Reporting / post-processing}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Reporting}
+\begin{itemize}
+  \item Example: input:nl-t-yv-ya-m-no-c-l-h-ho —10 dimensions.
+  \item ACT:nl-t-yv-ya-m-h —6 dimensions, a strict subset of 'input'.
+  \item out = input × ACT will have 10 dimensions, same as input
+  \item Often output data is destined for a Scenario Explorer instance, like the IPCC scenario explorer.
+  \item This means it has to be the IAMC data structure with ~7 dimensions
+    \begin{itemize}
+      \item model-scenario-region-variable-unit-year-subannual (the last rarely used).
+      \item (model, scenario) are fixed for a given MESSAGEix Scenario.
+      \item So we likely want to populate:
+      \item region: from nl and/or no.
+      \item variable: from some combination of t, m, c, l, plus an ID or name for _what_ is being measured.
+        \begin{itemize}
+          \item But sometimes also/instead nl, no —for example, import or export technologies that move commodities between nodes.
+        \end{itemize}
+      \item unit: consistent with any intermediate operations.
+    \end{itemize}
+  \item We also want to do _many, similar_ such transformations and then _concatenate_ them together.
+  \item We want to both _write to file_ and _store_ as IAMC time-series data in the ixmp database.
+  \item We may also want to produce _other_ output files or data, tailored to other models/code/tools.
+\end{itemize}
+
+#TODO Add reporter graph
+\end{frame}
+
+\subsection{Example: 'collecting' multiple outputs}
+
+\begin{frame}[allowframebreaks,fragile]
+\frametitle{Example: 'collecting' multiple outputs}
+
+\begin{minted}{python}
+>>> def speak(sound: str):
+...     print(f"{sound.title()}!")
+>>> speak("hi")
+Hi!
+
+>>> from genno import Computer
+>>> c = Computer()
+>>> c.add("cow", speak, "moo")
+>>> c.add("pig", speak, "oink")
+>>> c.add("both", ["cow", "pig"])
+>>> c.get("both")
+Oink!
+Moo!
+
+>>> c.add("hen", speak, "cluck")
+>>> c.add("all three", ["both", "hen"])
+>>> c.get("all three")
+Oink!
+Moo!
+Cluck!
+
+>>> print(c.describe("all three"))
+'all three':
+- list of:
+  - 'both':
+    - list of:
+      - 'cow':
+        - speak
+        - moo
+      - 'pig':
+        - '<function speak at 0x7f0b403a0fe0>' (above)
+        - oink
+  - 'hen':
+    - '<function speak at 0x7f0b403a0fe0>' (above)
+    - cluck
+
+>>> c.visualize("example.svg", "all three", rankdir="LR")
+\end{minted}
+
+Very easy to have \emph{dozens} of such effects, side-calculations, and output files.
+
+E.g. one key "transport all" set up by MESSAGEix-Transport reporting produces:
+\begin{itemize}
+  \item 'Main' IAMC-structure output as CSV and Excel.
+  \item 16 multi-page PDFs with figures.
+  \item 24 intermediate files for debugging.
+  \item 5 SDMX data flows + structural metadata for some collaborators.
+\end{itemize}
+\end{frame}
+
+\subsection{Features for use and development}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Features for use and development}
+\begin{itemize}
+  \item Mix auto & custom tasks.
+    \begin{itemize}
+      \item Default message_ix reporting configuration adds about 16,000 keys (not all used—genno/dask prunes the unneeded ones).
+      \item Can add, remove, modify a few with own code, interactively or automatically.
+    \end{itemize}
+  \item Describe and visualize.
+  \item Compute intermediate values.
+  \item Checks.
+    \begin{itemize}
+      \item Make some assertions about the Quantity/data produced at a certain point in the process, then carry on.
+      \item E.g. that data is produced for certain numbers or lists of expected nodes, technologies.
+      \item That data have certain units or dimensionality.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Model data prep or pre-processing}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Model data prep}
+\begin{itemize}
+  \item Example: MESSAGEix-Transport has `demand` parameter values for 5 different passenger modes (2W AIR BUS LDV RAIL) expressed as total passenger-distance travelled (PDT) [kilometre/year] (n, t, y).
+  \item Our "standard" configuration uses a certain logic:
+    \begin{itemize}
+      \item From GDP and population compute GDP per capita (node, year).
+      \item From base-year (t=0) PDT values _and_ GDP, project future PDT per capita (node, year)
+      \item From other input data, compute the **mode share** (node, year, technology) e.g. (n=R12_SAS, y=2060, t=2W) = 0.2 indicating 20\% of all PDT in this (n, y) is by the 2W mode.
+      \item Product of (2) and (3) = PDT per capita for each (node, year, technology).
+      \item Product of (4) and population = total PDT (n, t, y) = `pdt total:n-t-y` = `demand:n-t-y`
+      \item Convert `demand:n-t-y` into a MESSAGE-format `demand` data frame
+      \item Add to a target MESSAGE scenario.
+    \end{itemize}
+  \item But for a certain project, we want to imagine a particular scenario where behavioural changes, digitalization, etc. change how LDVs are used.
+    \begin{itemize}
+      \item Our partners in such a project have produced 2 data files give total LDV **vehicle**-distance travelled and **occupancy** of LDVs, for many countries.
+    \end{itemize}
+\end{itemize}
+
+Implementing this with genno is very simple: we 'graft' these on to our existing structure of calculations.
+\begin{itemize}
+  \item Replace `demand:n-t-y` with the concatenation of two quantities:
+    \begin{itemize}
+      \item `LDV pdt total:n-t-y`
+      \item `OTHER pdt total:n-t-y`
+    \end{itemize}
+  \item `OTHER pdt total:n-t-y` is computed by selecting all n $\in$ (2W AIR BUS RAIL) from `pdt total:n-t-y`—this means all of our other steps to compute that quantity are |\emph{unchanged}.
+  \item `LDV pdt total:n-t-y` (n=LDV) is prepared by a few new steps that read, manipulate, aggregate the files provided by our colleagues.
+  \item All the rest of our input data prep is *unchanged*.
+\end{itemize}
+
+For other projects, we can make different changes to the same or other keys in the task graph.
+\end{frame}
+
+\section{Conclusion and discussion}
+
+\subsection{Where to learn more}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Where to learn more}
+\begin{itemize}
+  \item …
+\end{itemize}
+\end{frame}
+
+\end{document}
